@@ -1,0 +1,200 @@
+{%- assign blog = blogs[section.settings.blog] -%}
+
+<section class="section" data-section-id="{{ section.id }}" data-section-type="blog-posts">
+  <div class="container">
+    {%- if section.settings.title != blank -%}
+    <header class="section__header">
+      <h2 class="section__title heading h3">{{ section.settings.title | escape }}</h2>
+
+      {%- unless blog.empty? or section.settings.link_title == blank -%}
+      <a href="{{ blog.url }}" class="section__action-link link">{{ section.settings.link_title }} </a>
+      {%- endunless -%}
+    </header>
+    {%- endif -%}
+
+    {%- capture block_list -%}
+    <div class="block-list block-list--loose">
+      {%- for article in blog.articles limit: 4 -%}
+      <div class="block-list__item 1/2--tablet 1/3--lap-and-up {% if section.settings.stack_mobile and forloop.index == 3 %}hidden-tablet{% endif %}">
+        {%- render 'article-item', article: article, featured: false -%}
+      </div>
+      {%- else -%}
+      {%- for i in (1..3) -%}
+      <div class="block-list__item 1/2--tablet 1/3--lap-and-up {% if section.settings.stack_mobile and i == 3 %}hidden-tablet{% endif %}">
+        <div class="article-item">
+
+          {% comment %}
+          {%- capture article_meta -%}
+          {%- if section.settings.show_category -%}
+          <span class="article-item__meta-item">{{ 'home_page.onboarding.article_category' | t }}</span>
+          {%- endif -%}
+
+          {%- if section.settings.show_author -%}
+          <span class="article-item__meta-item">{{ 'home_page.onboarding.article_author' | t }}</span>
+          {%- endif -%}
+
+          {%- if section.settings.show_date -%}
+          <time class="article-item__meta-item">{{ 'now' | date: format: 'short_month_day_year' }}</time>
+          {%- endif -%}
+          {%- endcapture -%}
+
+          {%- if article_meta != blank -%}
+          <div class="article-item__meta">
+            {{ article_meta }}
+          </div>
+          {%- endif -%}
+          {% endcomment %}
+          <h3 class="article-item__title heading link h4">{{ article.title }}</h3>
+
+          {%- if section.settings.show_excerpt -%}
+          <div class="article-item__excerpt rte">{{ article.excerpt }}</div>
+          {%- endif -%}
+        </div>
+      </div>
+      {%- endfor -%}
+      {%- endfor -%}
+    </div>
+    {%- endcapture -%}
+
+    {%- if section.settings.stack_mobile -%}
+    {{ block_list }}
+    {%- else -%}
+    <div class="scroller">
+      <div class="scroller__inner">
+        {{ block_list }}
+      </div>
+    </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+"name": "Blog posts",
+"settings": [
+{
+"type": "blog",
+"id": "blog",
+"label": "Blog"
+},
+{
+"type": "text",
+"id": "title",
+"label": "Heading",
+"default": "Blog posts"
+},
+{
+"type": "text",
+"id": "link_title",
+"label": "Link title",
+"default": "View all"
+},
+{
+"type": "checkbox",
+"id": "show_category",
+"label": "Show category",
+"info": "The first article's tag will be shown as category.",
+"default": true
+},
+{
+"type": "checkbox",
+"id": "show_author",
+"label": "Show author",
+"default": true
+},
+{
+"type": "checkbox",
+"id": "show_date",
+"label": "Show date",
+"default": true
+},
+{
+"type": "checkbox",
+"id": "show_excerpt",
+"label": "Show excerpt",
+"default": false
+},
+{
+"type": "checkbox",
+"id": "stack_mobile",
+"label": "Stack on mobile",
+"default": false
+}
+],
+"presets": [
+{
+"category": "Blog",
+"name": "Blog posts",
+"settings": {
+"blog": "news"
+}
+}
+]
+}
+{% endschema %}
+<style>
+  section[data-section-type="blog-posts"] {
+    margin: 30px 0;
+  }
+  .block-list.block-list--loose {
+    display: grid;
+    width: 100%;
+    grid-template-columns: repeat(4,auto);
+    gap: 15px;
+  }  
+  img.article-item__image {
+    width: 100%;
+    height: 300px;
+    margin: 0 auto;
+    object-fit: cover;
+    object-position: right;
+  }
+  header.section__header h2.section__title.heading.h3 {
+    font-family: 'M PLUS 1p';
+    font-weight: Bold;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+  } 
+  header.section__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  header.section__header .section__action-link.link {
+    font-size: 15px;
+    color: #000;
+    font-weight: 600;
+    text-transform: uppercase;
+    border-bottom: 1px solid;
+  } 
+  h3.article-item__title.heading.h4 a {
+    font-size: 20px;
+    color: #000;
+    margin-bottom: 15px;
+    display: block;
+    font-family: 'M PLUS 1p';
+    font-weight: 600;
+    min-height: 4em;
+  }
+  .article-item__meta time.article-item__meta-item {
+    color: #9D9D9C;
+    font-weight: 600;
+    font-family: 'M PLUS 1p';
+  }
+  @media(max-width:900px){
+    img.article-item__image {
+      width: auto;
+      height: 250px;
+    }
+    .block-list.block-list--loose {
+      display: flex;
+      width: 100%;
+      gap: 15px;
+      overflow: scroll;
+    }
+    .block-list__item {
+      padding-bottom: 15px;
+    }
+  }
+</style>

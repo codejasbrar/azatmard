@@ -1,0 +1,255 @@
+{% comment %}
+This is section that can be moved and placed anywhere on the page.
+
+You will need:
+ 
+- Slick CDN files (found in the layout/theme.liquid)
+- Custom Styles (found in styles/sections/featured-products.scss)
+{% endcomment %}
+
+{%- assign collection = collections[section.settings.collection] -%}
+{%- assign product_limit = section.settings.product_limit -%}
+
+{% comment %} 
+Desktop for 992px and up
+{% endcomment %}
+
+{% assign slickShow = section.settings.slide_show %}
+{% assign slickScroll = section.settings.slide_scroll %}
+{% assign slickInfinite = section.settings.slide_infinite %}
+{% assign slickDots = section.settings.slide_dots %}
+{% assign slickAutoplay = false %}
+{% assign slickSpeed = 1000 %}
+
+{% comment %} 
+Tablet Options Between 992px - 576px
+BG: This used to be editable by the client, but decided to take this control away from them
+{% endcomment %}
+
+{% assign slickTabletShow = 2 %}
+{% assign slickTabletScroll = 2 %}
+{% assign slickTabletInfinite = false %}
+{% assign slickTabletDots = true %}
+{% assign slickTabletArrows = true %}
+{% assign slickTabletAutoplay = false %}
+{% assign slickTabletSpeed = 2000 %}
+
+{% comment %} 
+Mobile options for 576px and below
+BG: This used to be editable by the client, but decided to take this control away from them
+{% endcomment %}
+
+{% assign slickMobileShow = 1 %}
+{% assign slickMobileScroll = 1 %}
+{% assign slickMobileInfinite = false %}
+{% assign slickMobileDots = true %}
+{% assign slickMobileArrows = true %}
+{% assign slickMobileAutoplay = false %}
+{% assign slickMobileSpeed = 2000 %}
+
+{% case section.settings.slide_show %}
+	{% when 1 %}
+		{%- assign colWidth = 'col-lg-12' -%}
+	{% when 2 %}
+		{%- assign colWidth = 'col-lg-6' -%}
+	{% when 3 %}
+		{%- assign colWidth = 'col-lg-4' -%}
+ 	{% when 4 %}
+		{%- assign colWidth = 'col-lg-3' -%}
+ 	{% when 5 %}
+		{%- assign colWidth = 'col-lg' -%}
+{% endcase %}
+
+{% capture slide_settings %}{"slidesToShow": {{slickShow}}, "slidesToScroll": {{slickScroll}}, "arrows": {{false}}, "dots": {{slickDots}}, "infinite": {{slickInfinite}}, "responsive":[{"breakpoint": 992,"settings":{"slidesToShow": {{slickTabletShow}}, "slidesToScroll": {{slickTabletScroll}}, "arrows":{{slickTabletArrows}}, "dots": {{slickTabletDots}}, "infinite": {{slickTabletInfinite}}}},{"breakpoint": 768,"settings":{"slidesToShow": {{slickMobileShow}}, "slidesToScroll": {{slickMobileScroll}}, "arrows":{{slickMobileArrows}}, "dots": {{slickMobileDots}}, "infinite": {{slickMobileInfinite}}}},{"breakpoint": 576,"settings":{"slidesToShow": {{slickMobileShow}}, "slidesToScroll": {{slickMobileScroll}}, "arrows":{{slickMobileArrows}}, "dots": {{slickMobileDots}}, "infinite": {{slickMobileInfinite}}}}]}{% endcapture %}
+
+<section class="featured-products" data-aos="fade-up">
+	<div class="container-fluid">
+	{% if section.settings.section_title != blank %}
+	<div class="row">
+		<div class="col-12 text-center">
+			{% if section.settings.section_title != blank %}
+				<h2 class="h2 text-uppercase">{{ section.settings.section_title }}</h2>
+			{% endif %}
+		</div>
+	</div>
+	{% endif %}
+	
+    <div class="container-fluid">  
+		<div class="row featured-products-slick" data-slick='{{ slide_settings }}'>
+        {% assign count = 0 %}
+		{% for product in collection.products limit: product_limit %}
+			<div class="col-4 featured-product {% if count > 1 %}featured-product-hide{% endif %}">
+				<div class="product-image">
+                  <span class="product-wishlist"><span class="smartwishlist" data-product="{{ product.id }}" data-variant="{{ product.variants.first.id }}"></span></span>
+					<a href="{{ product.url | within: collection }}" title="{{product.title}}" class="{{section.settings.ratio}}">
+						{% if product.featured_image != blank %}
+                            {% include 'responsive-image' with image: product.featured_image, image_class: "img-fluid", max_width: 442, max_height: 553 %}
+						{% else %}
+							{{ 'image' | placeholder_svg_tag: 'product-placeholder img-fluid' }}
+						{% endif %}
+					</a>
+
+					<!-- Hide mouseover show&select sizes s ection on request
+						<div class="product-variants">
+						<ul>
+						{% for variant in product.variants %}
+							<li class="{% if variant.available %}available{% else %}soldout{% endif %}"><label>{{variant.title}}<input class="variantInput" type="radio" id="{{variant.id}}"/></label></li>
+						{% endfor %}
+						</ul>
+					</div> -->
+				</div>
+				<div class="product-details">
+					<a href="{{ product.url | within: collection }}" title="{{product.title}}">
+						<span class="product-title">{{ product.title | truncate: 30 }}</span>
+					</a>
+					<span class="product-price">
+						{{ product.price_min | money }}
+						{% if product.compare_at_price_min > product.price_min %}
+							<span class="product-price-original">{{product.compare_at_price | money}}</span>
+						{% endif %}
+					</span>
+                  <!--
+					<form method="post" action="/cart/add">
+						{%- assign current_variant = product.selected_or_first_available_variant -%}
+						{%- assign current_variant_id = current_variant.id -%}
+						<input min="1" type="number" id="quantity" name="quantity" value="1" class="d-none" />
+						<input type="hidden" name="id" class="product-variant-id" value="{{ current_variant_id }}" />
+						<button type="submit" name="add" data-add-to-cart class="btn-add-to-cart btn btn-primary {% if product.available %}variant-available{% else %}btn-disabled{% endif %}">
+							<span data-add-to-cart-text>{% if current_variant.available %}
+								{{ 'products.product.add_to_cart' | t }}
+							{% else %}
+								{{ 'products.product.sold_out' | t }}
+							{% endif %}</span>
+						</button>
+					</form> -->
+                  	<form>
+                      <button type="button" name="add" class="btn-add-to-cart btn btn-primary" onclick="location.href='{{ product.url }}'" >
+                            View Now
+                      </button>
+              		</form>
+				</div> 
+			</div>
+          {% assign count = count | plus: 1 %}
+		{% endfor %}
+	</div>
+    </div>
+	</div>
+</section>
+
+{% schema %}
+{
+  "name": "Featured products",
+  "settings": [
+    {
+		"type": 		"text",
+		"id": 			"section_title",
+      	"label": 		"Heading",
+      	"default": 		"Featured products"
+    },
+    {
+		"id": 			"collection",
+		"type": 		"collection",
+		"label": 		"Collection"
+    },
+	{
+      	"type": 		"header",
+      	"content": 		"Slider Desktop Options"
+	},
+	{
+		"type":      	"range",
+		"id":        	"product_limit",
+		"min":       	4,
+		"max":       	18,
+		"step":      	1,
+		"label":     	"Product Limit",
+		"default":   	8,
+		"info": 		"Total amount of products to display"
+	},
+	{
+		"type": 		"range",
+		"id": 			"slide_show",
+		"label": 		"Products to show",
+		"min": 			1,
+		"max": 			6,
+		"step": 		1,
+		"default": 		4,
+		"info": 		"Products to show on Desktop"
+	},
+	{
+		"type": 		"range",
+		"id": 			"slide_scroll",
+		"label": 		"Products to scroll",
+		"min": 			1,
+		"max": 			5,
+		"step": 		1,
+		"default": 		2,
+		"info": 		"Products to scroll on Desktop"
+	},
+	{
+		"type": 		"checkbox",
+		"id": 			"slide_infinite",
+		"label": 		"Infinite Loop?",
+		"default": 		true
+	},
+	{
+	  	"type": 		"checkbox",
+	  	"id": 			"slide_dots",
+	  	"label": 		"Dots?",
+	  	"default": 		true
+	},
+    {
+      	"type": 		"header",
+      	"content": 		"Image Ratio"
+	},
+    {
+        "type": 	"paragraph",
+        "content": 	"Determine where the content should be positioned both vertical and horizontal."
+    },
+    {
+        "type":         "select",
+        "id":           "ratio",
+        "label":        "Fixed Ratio?",
+        "options": [
+            {
+                "value": "fixed-ratio square-crop",
+                "label": "Square (4x4 Cropped)"
+            },
+            {
+                "value": "fixed-ratio square",
+                "label": "Square (4x4)"
+            },
+            {
+                "value": "fixed-ratio portrait-crop",
+                "label": "Portrait (4x5 Cropped)"
+            },
+            {
+                "value": "fixed-ratio portrait",
+                "label": "Portrait (4x5)"
+            },
+            {
+                "value": "",
+                "label": "No Set Ratio"
+            }
+        ],
+        "default":   "fixed-ratio portrait-crop"
+    }
+],
+  "presets": [
+    {
+		"name": 		"Featured Products",
+		"category": 	"Product"
+    }
+  ]
+}
+{% endschema %}
+{% javascript %}
+$(document).ready(function() {
+	$('.featured-products-slick').each(function(){
+		$(this).slick({
+		//	lazyLoad: 'ondemand',
+			prevArrow: slickPrevArrow,
+			nextArrow: slickNextArrow
+		});
+	});
+});
+{% endjavascript %}

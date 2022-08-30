@@ -1,0 +1,68 @@
+<div id="product_single" class="product-single col aos-init aos-animate" data-aos="fade-up">
+    {% if product.featured_image != blank %}
+
+        {% if product.images.size > 1 %}
+            {% assign imageHover = "product-image-hover"%}
+        {% else %}
+            {% assign imageHover = "" %}
+        {% endif %}
+    
+    <div class="product-image {{imageHover}}">
+        <a href="{{ product.url | within: collection }}" class="{{section.settings.ratio}}">
+            
+            <img class="img-fluid lazyload" src="{{product.featured_image.src | img_url: '300x' }}" data-src="{{ product.featured_image.src | img_url: '600x' }}" data-srcset="{{ product.featured_image.src | img_url: '400x' }} 400w, {{ product.featured_image.src | img_url: '600x' }} 600w, {{ product.featured_image.src | img_url: '900x' }} 900w" data-sizes="auto" {% if product.images.size > 1 %}data-second-image="{{ product.images[1].src | img_url: '600x' }}"{% endif %} alt="{{ product.featured_image.alt }}">
+                
+                {% if product.compare_at_price > product.price %}
+                    <span class="product-status sale">
+                        {{ 'products.product.on_sale' | t }}
+                    </span>
+                {% endif %}
+                
+                {% unless product.available %}
+                    <span class="product-status sold-out">
+                        {{ 'products.product.sold_out' | t }}
+                    </span>
+                {% endunless %}
+
+        </a>
+        <span class="product-wishlist"><span class="smartwishlist" data-product="{{ product.id }}" data-variant="{{ product.variants.first.id }}"></span></span>
+    </div><!-- product-image -->
+    {% endif %}
+
+    <div class="product-details">
+        <h3 class="product-title test"><a href="{{ product.url | within: collection }}">{{ product.title }}</a></h3>
+        
+        <span class="product-price test">
+            {% if product.compare_at_price > product.price %}
+
+            {% if product.price_varies %}
+                {%- assign sale_price = product.price | money -%}
+                {{ 'products.product.on_sale_from_html' | t: price: sale_price }}
+            {% else %}
+            
+            <span class="money">{{ product.price | money }}</span>
+            {% endif %}
+
+            {% else %}
+
+            {% if product.price_varies %}
+                {%- assign price = product.price | money -%}
+                {{ 'products.product.from_text_html' | t: price: price }}
+            {% else %}
+            <span class="money">{{ product.price | money }}</span>
+            {% endif %}
+
+            {% endif %}
+
+            {% if product.compare_at_price > product.price %}
+            <span class="visually-hidden"><span class="money">{{ 'products.product.regular_price' | t }}</span></span>
+            <span class="product-price-original"><span class="money">{{ product.compare_at_price | money }}</span></span>
+            {% endif %}
+
+            {% comment %} <span class="product-quickview"> <span class="btn btn-tertiary" data-product-availability="{{product.available}}" data-product-url="{{ product.url | within: collection }}">Quick View</span></span> {% endcomment %}
+        </span><!-- product-price -->
+        </div><!-- product-details -->
+  
+  		{% include "addtocart-on-collection" %}
+        
+</div><!-- product-single -->

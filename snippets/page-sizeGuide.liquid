@@ -1,0 +1,39 @@
+<div class="container-fluid py-3 py-md-5">
+	<div class="row">
+		<div class="col-12 text-center">{% include 'breadcrumbs' %}</div>
+	</div><!-- row -->
+</div><!-- container -->
+
+<header class="page-header{% if section.settings.background %} image lazyload{%endif%}" {% if section.settings.background %} data-bgset="{% include 'responsive-bg-image', image: section.settings.background %}"{% endif %}>
+	<div class="container">
+		<div class="row align-items-center">
+			<div class="col-12 mb-3 text-center">
+				<a href="/pages/customer-service" class="d-sm-none back-button mb-3">Back</a>
+				<h1>{{ page.title }}</h1>
+			</div>
+		</div><!-- row -->
+	</div>
+</header>
+
+<div class="container mb-5">
+	<div class="row mt-3">
+		<div class="col-12 col-md-3 order-2 order-md-1 d-none d-sm-block">
+			<aside class="sidebar-navigation mt-5 mt-md-0 text-center text-md-left">
+				<div class="sideNavWrapperInformation">
+				<ul>
+				{% for link in linklists.customer-service.links %}
+					<li><a href="{{ link.url }}" class="{% if link.active %}active{% endif %}">{{ link.title }}</a></li>
+				{% endfor %}
+				</ul>
+				</div><!-- sidebar-content -->
+			</aside><!-- sidebar-navigation -->
+		</div>
+		<div class="col-12 col-md-9 order-1 order-md-2 sizeGuideTables">
+			<div class="row">
+				<div class="col-12">
+					<div class="rte mb-4">{{page.content}}</div>
+				</div>
+			</div>	
+		</div>
+	</div>
+</div>

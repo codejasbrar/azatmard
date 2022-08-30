@@ -1,0 +1,14 @@
+<div id="product-countdown-timer" class="uk-content">
+{% if block.settings.countdown_top != blank %}
+    <p>{{ block.settings.countdown_top }}</p>
+{% endif %}
+    <div id="product-countdown">
+        <div><span class="hours">00</span><span class="smalltext">Hours</span></div>
+        <div><span class="minutes">00</span><span class="smalltext">Minutes</span></div>
+        <div><span class="seconds">00</span><span class="smalltext">Seconds</span></div>
+    </div>
+{% if block.settings.countdown_bottom %}   
+    <p>{{ block.settings.countdown_bottom }}</p>
+{% endif %}
+</div>
+

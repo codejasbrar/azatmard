@@ -1,0 +1,28 @@
+<style>
+#collection-add-to-cart {
+    display:none;
+}
+  
+@media screen and (max-width: 768px){
+    #collection-add-to-cart {
+        display:block;
+    }
+}
+</style>
+
+<div id="collection-add-to-cart" class="collection-add-to-cart">
+  <div class="add-to-cart-wrapper pseudo-blue">
+    <form method="post" action="/cart/add">
+      {% for variant in product.variants %}
+      {% if variant.available == true and variant.inventory_quantity >=1 %}
+      <input type="hidden" name="id" value="{{ variant.id }}" />
+      {% break %}
+      {% endif %}
+      {% endfor %}
+      <input min="1" type="hidden" id="quantity" name="quantity" value="1"/>
+      <button type="submit" name="add" data-add-to-cart="" class="btn-add-to-cart btn btn-tertiary variant-available">
+        <span data-add-to-cart-text="">Add to Bag</span>
+      </button>
+    </form> 
+  </div>
+</div>

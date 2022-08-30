@@ -1,0 +1,64 @@
+<article class="col-6 col-md-3 blog-listing mb-4">
+
+    <div class="blog-listing-image">
+        <a href="{{ article.url }}" class="fixed-ratio portrait">
+            {% if article.image %}
+                {{ article | img_url: '450x' | img_tag: article.title, 'd-block img-fluid' }}
+            {% else %}
+                {{ 'image' | placeholder_svg_tag: 'd-block image-placeholder img-fluid' }}
+            {% endif %}
+        </a>
+    </div>
+
+    <div class="blog-listing-content">
+
+        <header>
+            <h3>
+                <a href="{{ article.url }}">{{ article.title }}</a>
+            </h3>
+        </header>
+
+        {% capture date %}{{ article.published_at | time_tag: format: 'day_month_year' }}{% endcapture %}
+        {% capture dateDetailed %}{{ article.published_at | time_tag: format: "%Y-%m-%d %H:%M" }}{% endcapture %}
+
+
+        <div class="rte mb-3 visually-hidden">
+            {% if article.excerpt.size > 0 %}
+            {{ article.excerpt }}
+            {% else %}
+            <p>
+                {{ article.content | strip_html | truncatewords: 30 }}
+            </p>
+            {% endif %}
+        </div>
+
+        <footer>
+            <time datetime="{{dateDetailed}}">{{ date }}</time>
+        </footer>
+
+        {% if blog.comments_enabled? or article.tags.size > 0 %}
+            <ul>
+            {% if blog.comments_enabled? %}
+                <li>
+                <a href="{{ article.url }}#comments">
+                    {{ 'blogs.comments.with_count' | t: count: article.comments_count }}
+                </a>
+                </li>
+            {% endif %}
+
+            <!--
+            {% if article.tags.size > 0 %}
+                {% for tag in article.tags %}
+                <li>
+                    <a href="{{ blog.url }}/tagged/{{ tag | handle }}">{{ tag }}</a>
+                    {% unless forloop.last %}, {% endunless %}
+                </li>
+                {% endfor %}
+            {% endif %}
+            -->
+            
+            </ul>
+        {% endif %}
+        {% comment %} <a href="{{ article.url }}" class="btn btn-primary">{{ 'blogs.article.read_more' | t }} &rarr;</a> {% endcomment %}
+    </div>
+</article>

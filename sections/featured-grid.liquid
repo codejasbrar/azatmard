@@ -1,0 +1,274 @@
+<div class="container-fluid">
+    <div id="section-grid-{{section.id}}" class="featured-grid">
+        {% for block in section.blocks %}
+
+            {% if block.type == 'featured' %}
+                {% assign gridItemClass = " featured" %}
+            {% else %}
+                {% assign gridItemClass = "" %}
+            {% endif %}
+
+            {% if block.settings.grid_text_horizontal == "justify-content-start" %}
+                {% assign textAlignment = "text-left" %}
+            {% elsif block.settings.grid_text_horizontal == "justify-content-center" %}
+                {% assign textAlignment = "text-center" %}
+            {% elsif block.settings.grid_text_horizontal == "justify-content-end" %}
+                {% assign textAlignment = "text-right" %}
+            {% endif %}
+
+            <div class="grid-item lazyload {{gridItemClass}} {{block.settings.grid_image_opacity_colour}} opacity-{{block.settings.grid_image_opacity}}" data-bgset="{% include 'responsive-bg-image', image: block.settings.grid_image %}">
+                <div class="grid-item-container">
+					<div class="grid-item-content d-flex {{block.settings.grid_text_vertical}} {{block.settings.grid_text_horizontal}} {{textAlignment}} {{block.settings.content_colour}}">
+						<div>
+							<h3>{{ block.settings.grid_title }}</h3>
+
+							{% if block.settings.grid_content != blank %}
+								<div class="rte mt-2">
+								{{block.settings.grid_content}}
+								</div><!-- rte -->
+							{% endif %}
+						</div>
+					</div><!-- grid-item-content -->
+                    <a href="{{block.settings.grid_link}}"></a>
+                </div><!-- grid-item-container -->
+            </div><!-- grid-item -->
+        {% endfor %}
+    </div><!-- featured-grid -->
+</div><!-- container -->
+
+
+{% schema %}
+{
+    "name": "Featured Grid",
+    "settings": [
+       	{
+		    "type":         "header",
+			"content":      "Grid Options"
+		}
+	],
+    "blocks": [
+		{
+			"type": "standard",
+			"name": "Standard Grid Item",
+			"settings": [
+                {
+				    "type":     "image_picker",
+				    "id":       "grid_image",
+				    "label":    "Image"
+				},
+                {
+                    "type":      "range",
+                    "id":        "grid_image_opacity",
+                    "min":       0,
+                    "max":       9,
+                    "step":      1,
+                    "label":     "Opacity Layer - Between image and text",
+                    "default":   0
+                },
+				{
+					"type":      "select",
+					"id":        "grid_image_opacity_colour",
+					"label":     "Overlay Colour",
+					"options": [
+						{
+							"value": "overlay-default",
+							"label": "Black"
+						},
+						{
+							"value": "overlay-white",
+							"label": "White"
+						}
+					],
+					"default":   "overlay-default"
+				},
+                {
+                    "type":     "text",
+                    "id":       "grid_title",
+                    "default":  "Collection Title",
+                    "label":    "Title"
+                },
+				{
+					"type":     "richtext",
+					"id":       "grid_content",
+					"label":    "Content"
+				},
+                {
+                    "type":     "url",
+                    "id":       "grid_link",
+                    "label":    "URL"
+                },
+				{
+					"type":      "select",
+					"id":        "content_colour",
+					"label":     "Content Colour",
+					"options": [
+						{
+							"value": "text-black",
+							"label": "Black"
+						},
+						{
+							"value": "text-white",
+							"label": "White"
+						}
+					],
+					"default":   "text-black"
+				},
+                {
+					"type":      "select",
+					"id":        "grid_text_vertical",
+					"label":     "Text Vertical Alignment",
+					"options": [
+						{
+							"value": "align-items-start",
+							"label": "Top"
+						},
+						{
+							"value": "align-items-center",
+							"label": "Middle"
+						},
+						{
+							"value": "align-items-end",
+							"label": "Bottom"
+						}
+					],
+					"default":   "align-items-end"
+				},
+                {
+					"type":      "select",
+					"id":        "grid_text_horizontal",
+					"label":     "Text Horizontal Alignment",
+					"options": [
+						{
+							"value": "justify-content-start",
+							"label": "Left"
+						},
+						{
+							"value": "justify-content-center",
+							"label": "Center"
+						},
+						{
+							"value": "justify-content-end",
+							"label": "Right"
+						}
+					],
+					"default":   "justify-content-start"
+				}
+			]
+		},
+        {
+			"type": "featured",
+			"name": "Featured Grid Item",
+			"settings": [
+                {
+				    "type":     "image_picker",
+				    "id":       "grid_image",
+				    "label":    "Image"
+				},
+                {
+                    "type":      "range",
+                    "id":        "grid_image_opacity",
+                    "min":       0,
+                    "max":       9,
+                    "step":      1,
+                    "label":     "Opacity Layer - Between image and text",
+                    "default":   0
+                },
+				{
+					"type":      "select",
+					"id":        "grid_image_opacity_colour",
+					"label":     "Overlay Colour",
+					"options": [
+						{
+							"value": "overlay-default",
+							"label": "Black"
+						},
+						{
+							"value": "overlay-white",
+							"label": "White"
+						}
+					],
+					"default":   "overlay-default"
+				},
+                {
+                    "type":     "text",
+                    "id":       "grid_title",
+                    "default":  "Collection Title",
+                    "label":    "Title"
+                },
+				{
+					"type":     "richtext",
+					"id":       "grid_content",
+					"label":    "Content"
+				},
+                {
+                    "type":     "url",
+                    "id":       "grid_link",
+                    "label":    "URL"
+                },
+				{
+					"type":      "select",
+					"id":        "content_colour",
+					"label":     "Content Colour",
+					"options": [
+						{
+							"value": "text-black",
+							"label": "Black"
+						},
+						{
+							"value": "text-white",
+							"label": "White"
+						}
+					],
+					"default":   "text-black"
+				},
+                {
+					"type":      "select",
+					"id":        "grid_text_vertical",
+					"label":     "Text Vertical Alignment",
+					"options": [
+						{
+							"value": "align-items-start",
+							"label": "Top"
+						},
+						{
+							"value": "align-items-center",
+							"label": "Middle"
+						},
+						{
+							"value": "align-items-end",
+							"label": "Bottom"
+						}
+					],
+					"default":   "align-items-start"
+				},
+                {
+					"type":      "select",
+					"id":        "grid_text_horizontal",
+					"label":     "Text Horizontal Alignment",
+					"options": [
+						{
+							"value": "justify-content-start",
+							"label": "Left"
+						},
+						{
+							"value": "justify-content-center",
+							"label": "Center"
+						},
+						{
+							"value": "justify-content-end",
+							"label": "Right"
+						}
+					],
+					"default":   "justify-content-start"
+				}
+			]
+		}
+	],
+	"presets": [
+    {
+      "name":       "Featured Grid",
+      "category":   "Images"
+    }
+  ]
+}
+{% endschema %}

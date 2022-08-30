@@ -1,0 +1,79 @@
+{% paginate blog.articles by 12 %}
+
+<div class="container-fluid py-3 py-md-5">
+	<div class="row">
+		<div class="col-12 text-center">{% include 'breadcrumbs' %}</div>
+	</div><!-- row -->
+</div><!-- container -->
+
+<header class="page-header">
+	<div class="container">
+		<div class="row align-items-center">
+			<div class="col-12 mb-3 text-center">
+				<h1>Blog</h1>
+			</div>
+		</div><!-- row -->
+	</div>
+</header>
+
+<div class="container mt-3 mt-md-5">
+    <div class="row">
+		<div class="col-12 text-center pb-3 d-none return-to-blog"><a href="/blogs/news">Return to Blog</a></div>
+        <div class="col-12 text-center">
+        {% if blog.all_tags.size > 0 %}
+            <div class="blog-tags">
+            <ul>
+            {% for tag in blog.all_tags %}
+					{% if current_tags contains tag %}
+						<li>{{ tag | link_to_add_tag: tag | replace: 'title=', 'class="btn btn-primary tag-link active" title=' }}</li>
+					{% else %}
+						<li>{{ tag | link_to_add_tag: tag | replace: 'title=', 'class="btn btn-primary tag-link" title=' }}</li>
+					{% endif %}
+            {% endfor %}
+            </ul>
+            </div><!-- blog-tags -->
+        {% endif%}
+        </div><!-- col -->
+    </div><!-- row -->
+</div><!-- container -->
+
+<div class="container-fluid mt-3 mt-md-5">
+    <div class="row">
+        {% for article in blog.articles %}
+            {% include 'blog-article' %}
+        {% endfor %}
+    </div>
+</div>
+
+{% if paginate.pages > 1 %}
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-12 text-center mt-5 mb-5">
+		    {% include 'pagination' %}
+		</div>
+	</div>
+</div>
+{% endif %}
+	
+{% endpaginate %}
+</div>
+
+{% schema %}
+{
+  "name": "Blog Listing",
+	"settings": [
+		{
+			"type": "image_picker",
+			"id": "background",
+			"label": "Header Background Image",
+			"info": "Optimal image size: 1920 x 350"
+		}
+	],
+  "presets": [
+    {
+      "name": 		"Blog News",
+      "category": 	"blog"
+    }
+  ]
+}
+{% endschema %}

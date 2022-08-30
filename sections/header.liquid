@@ -1,0 +1,448 @@
+  <style>
+    
+    .navbar_custom {
+  overflow: hidden;
+ 
+}
+
+.navbar_custom a {
+  float: left;
+  font-size: 16px;
+  color: #000;
+  text-align: center;
+  padding: 14px 32px;
+  text-decoration: none;
+  padding-left:0px;
+}
+
+.dropdown_custom {
+  float: left;
+  overflow: hidden;
+}
+
+.dropdown_custom .dropbtn {
+  font-size: 16px;  
+  border: none;
+  outline: none;
+  color: #000;
+  padding: 14px 32px;
+  background-color: inherit;
+  font-family: inherit;
+  margin: 0;
+  padding-left:0px;
+}
+
+.navbar_custom a:hover, .dropdown_custom:hover .dropbtn {
+  background-color: #fff;
+}
+
+.dropdown_custom-content {
+  display: none;
+  position: absolute;
+  background-color: #fff;
+  min-width: 160px;
+  z-index: 1;
+}
+
+.dropdown_custom-content a {
+  float: none;
+  color: black;
+  padding: 5px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+.dropdown_custom-content a:hover {
+  background-color: #fff;
+}
+
+.dropdown_custom:hover .dropdown_custom-content {
+  display: block;
+}
+    
+    .header-nav.d-none.d-sm-block {
+    margin-left: 0px;
+}
+   .site-logo {
+   
+    text-align: left;
+} 
+  
+   .header-actions {
+    
+    justify-content: center !important;
+}
+    .desktop{
+    	display:flex;
+    }
+    .mobile{
+    	display:none;
+    }
+    
+    @media only screen and (max-width: 767px) {
+    
+    .desktop{
+    	display:none;
+    }
+    .mobile{
+    	display:block;
+    }
+      .mobile .site-logo{
+      	text-align:center;
+      }
+      
+      .mobile .col-8.text-center.logo-wrapper {
+	float: left;
+}
+      .mobile .col-2.left-header-actions {
+	float: left;
+}
+      .mobile .col-2.right-header-actions {
+/* 	display: inline-block; */
+	float: none;
+}
+    }
+
+    
+  </style>
+{% if template == "index" %}
+<header id="site-header" role="banner">
+{% else %}
+<header id="site-header" role="banner" class="InsidePage">
+{% endif%}  
+	<div class="container-fluid">
+		<div class="row align-items-center header-row desktop">
+
+			
+
+			<div class="col-3 text-center logo-wrapper" style="position: static;">
+   				<div class="site-navigation-container d-none">
+					{% include 'site-navigation' %}
+                </div>
+              <div class="">
+              		{% include 'site-logo' %}
+              </div>
+			</div><!-- col -->
+			
+          <div class="col-6 left-header-actions">
+				<div class="header-actions justify-content-start">
+
+					<div class="header-currency-select d-none">
+						<div class="doubly-wrapper">
+						</div>
+					</div>
+
+					<div class="header-account d-none">
+						{% include 'my-account-link' %}
+					</div><!--header-account -->
+					
+                    <div class="header-nav d-none d-sm-block">
+                   
+                      <div class="navbar_custom">
+    {% for link in linklists['main-menu'].links %}
+                        
+    {%- assign three_level_nav = false -%}
+    {% if link.links != blank %}
+      {% if link.levels == 2 %}
+        {%- assign three_level_nav = true -%}
+      {% endif %}
+    {% endif %}
+                        
+     {% if link.links != blank %}
+                        
+ 		
+                        <div class="dropdown_custom">
+          <button class="dropbtn">{{ link.title | escape }} 
+            <i ><img src="https://cdn.shopify.com/s/files/1/0175/6626/9494/t/11/assets/icon-arrow_down.svg?v=4868913792626623586"></i>
+          </button>
+          <div class="dropdown_custom-content">
+            {% for childlink in link.links %}
+            <a href="{{ childlink.url }}">{{ childlink.title | escape }}</a>
+            {% endfor %}
+            
+          </div>
+        </div>
+                        
+      {% else %}
+        
+        <a href="{{link.url }}">{{ link.title | escape }}</a>
+    
+      {% endif %}
+                        
+     {% endfor %}
+  
+ 
+   
+</div>
+
+                  
+                    </div>
+                  
+					<div class="header-mobile-menu ml-0 d-block d-sm-none">
+						<span class="burger"></span>
+                        
+                        
+					</div>
+
+				  </div>
+                  <div class="d-none d-lg-none">
+                        {% include 'site-logo' %}
+                  </div>
+			</div>
+          
+			<div class="col-3 right-header-actions">
+				<div class="header-actions justify-content-end">
+					
+                  	<div class="header-currency-select d-none d-lg-flex">
+						<div class="doubly-wrapper">
+						</div>
+					</div>
+                  
+					<div class="header-search d-none d-lg-flex">
+						{% include 'icon-search' %}
+					</div>
+
+					<div class="header-search-icon d-none d-lg-flex">
+						{% include 'icon-search' %}
+					</div>
+
+					<div class="header-wishlist d-none d-lg-block">
+						<a href="/a/wishlist">{% include 'wishlist' %}</a>
+					</div>
+
+					<div class="header-account d-none d-lg-block">
+						{% include 'my-account-link' %}
+					</div><!--header-account -->
+				
+					<div class="header-basket">
+						<a href="/cart">
+							<span class="cart-icon">
+								{% include 'icon-shopping-bag' %}
+								<span class="cart-count {% if cart.item_count == 0 %}no-items{% endif %}">{{ cart.item_count }}</span>
+							</span>
+						</a>
+					</div>
+				</div>
+			</div><!-- col -->
+		</div><!-- row -->
+      
+      <!--Mobile navigation-->
+      <div class="row align-items-center header-row mobile">
+
+			
+
+			
+          <div class="col-2 left-header-actions">
+				<div class="header-actions justify-content-start">
+
+					<div class="header-currency-select d-none">
+						<div class="doubly-wrapper">
+						</div>
+					</div>
+
+					<div class="header-account d-none">
+						{% include 'my-account-link' %}
+					</div><!--header-account -->
+					
+                    <div class="header-nav d-none d-sm-block">
+                   
+                      <div class="navbar_custom">
+    {% for link in linklists['main-menu'].links %}
+                        
+    {%- assign three_level_nav = false -%}
+    {% if link.links != blank %}
+      {% if link.levels == 2 %}
+        {%- assign three_level_nav = true -%}
+      {% endif %}
+    {% endif %}
+                        
+     {% if link.links != blank %}
+                        
+ 		
+                        <div class="dropdown_custom">
+          <button class="dropbtn">{{ link.title | escape }} 
+            <i ><img src="https://cdn.shopify.com/s/files/1/0175/6626/9494/t/11/assets/icon-arrow_down.svg?v=4868913792626623586"></i>
+          </button>
+          <div class="dropdown_custom-content">
+            {% for childlink in link.links %}
+            <a href="{{ childlink.url }}">{{ childlink.title | escape }}</a>
+            {% endfor %}
+            
+          </div>
+        </div>
+                        
+      {% else %}
+        
+        <a href="{{link.url }}">{{ link.title | escape }}</a>
+    
+      {% endif %}
+                        
+     {% endfor %}
+  
+ 
+   
+</div>
+
+                  
+                    </div>
+                  
+					<div class="header-mobile-menu ml-0 d-block d-sm-none">
+						<span class="burger"></span>
+                        
+                        
+					</div>
+
+				  </div>
+                  <div class="d-none d-lg-none">
+                        {% include 'site-logo' %}
+                  </div>
+			</div>
+        <div class="col-8 text-center logo-wrapper" style="position: static;">
+   				<div class="site-navigation-container d-none">
+					{% include 'site-navigation' %}
+                </div>
+              <div class="">
+              		{% include 'site-logo' %}
+              </div>
+			</div><!-- col -->
+			
+          
+			<div class="col-2 right-header-actions">
+				<div class="header-actions justify-content-end">
+					
+                  	<div class="header-currency-select d-none d-lg-flex">
+						<div class="doubly-wrapper">
+						</div>
+					</div>
+                  
+					<div class="header-search d-none d-lg-flex">
+						{% include 'icon-search' %}
+					</div>
+
+					<div class="header-search-icon d-none d-lg-flex">
+						{% include 'icon-search' %}
+					</div>
+
+					<div class="header-wishlist d-none d-lg-block">
+						<a href="/a/wishlist">{% include 'wishlist' %}</a>
+					</div>
+
+					<div class="header-account d-none d-lg-block">
+						{% include 'my-account-link' %}
+					</div><!--header-account -->
+				
+					<div class="header-basket">
+						<a href="/cart">
+							<span class="cart-icon">
+								{% include 'icon-shopping-bag' %}
+								<span class="cart-count {% if cart.item_count == 0 %}no-items{% endif %}">{{ cart.item_count }}</span>
+							</span>
+						</a>
+					</div>
+				</div>
+			</div><!-- col -->
+		</div><!-- row -->
+		<div class="cart-mini-contents">
+			<div class="cart-title">Bag</div>
+			<div class="cart-row">
+			{% for item in cart.items %}
+				<div class="cart-item">
+					<div class="cart-item-left">
+						<div class="cart-prod-img">
+							{% if item.image != blank %}
+							<a href="{{ item.url | within: collections.all }}">
+								{{ item | img_url: '240x' | img_tag: item.title, 'img-fluid' }}
+							</a>
+							{% endif %}
+						</div>
+						<div class="cart-prod-remove">
+							<span data-variant-id="{{item.variant_id}}">Remove</span>
+						</div>
+					</div>
+					<div class="cart-item-right">
+						<div class="cart-prod-name">
+							<a href="{{ item.url }}">{{ item.product.title }}</a>
+						</div>
+						<div class="cart-prod-variant">
+							{% unless item.product.has_only_default_variant %}
+							<span>Size : {{ item.variant.title }}</span>
+							{% endunless %}
+						</div>
+						<div class="cart-prod-quantity">
+							<span class="label">Quantity : </span><span class="quantity-value">{{ item.quantity}}</span>
+						</div>
+						<div class="cart-prod-price">
+							<span class="money">{{ item.price | money }}</span>
+						</div>
+					</div>
+				</div>
+			{% endfor %}
+			</div>
+			<div class="cart-mini-actions">
+				<div class="cart-mini-total">
+					<span class="mini-cart-label">Total:</span> <span class="mini-cart-total"><span class="money">{{ cart.total_price | money }}</span></span>
+				</div>
+				<a href="/cart" class="btn btn-primary">View Bag</a>
+				<a href="/checkout" class="btn btn-tertiary">Checkout</a>
+			</div>
+		</div>
+		<div class="search-bar">
+			<div class="container">
+				<div class="row">
+					<div class="col">
+						{% include 'search', search_icon: 'false', search_button: 'false' %}
+					</div>
+				</div>
+			</div><!-- container -->
+		</div><!-- search-bar -->
+	</div><!-- container-fluid -->
+</header>
+{% include 'SS20HomePage' %}
+{% schema %}
+{
+    "name": "Header",
+	"blocks": [
+		{
+			"type": "nav_one",
+			"name": "Nav (Text)",
+			"settings": [
+		    	{
+					"type": 	"header",
+					"content": 	"Top Level Navigation"
+				},
+				{
+				  	"type": 	"paragraph",
+				  	"content": 	"The below options determine what is displayed on the top level navigation. When hovering on the below title the megamenu will appear."
+				},
+				{
+				   "type":      "text",
+				   "id":        "first_level_title",
+				   "label":     "Navigation Title",
+				   "info": 		"Hovering on this Title will display the megamenu"
+				},
+				{
+				   "type":      "url",
+				   "id":        "first_level_url",
+				   "label":     "Navigation URL",
+				   "info": 		"When clicking Navigation Title, where should it link too?"
+				},
+				{
+					"type": "header",
+					"content": "Sub Menu"
+				},
+				{
+				  	"type": 	"paragraph",
+				  	"content": 	"The Sub Menu will appear when the user hovers on the Navigation Title."
+				},
+				{
+					"type":     "link_list",
+			   		"id":       "submenu_one",
+			   		"label":    "Sub Menu"
+				}
+			]
+		}
+	]
+}
+{% endschema %}
+  

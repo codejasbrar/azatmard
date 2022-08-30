@@ -1,0 +1,400 @@
+<div class="container-fluid py-3 py-md-5">
+	<div class="row">
+		<div class="col-12 text-center basket">
+			<div class="breadcrumb">
+				<nav aria-label="breadcrumbs">
+					<a href="/" title="Home">Home</a>
+					<span class="seperator" aria-hidden="true">/</span>
+					<span>{{ 'cart.general.title' | t }}</span>
+				</nav>
+			</div>
+		</div>
+	</div><!-- row -->
+</div><!-- container -->
+
+<header class="page-header mb-3 mb-md-5 page_header">
+	<div class="container">
+		<div class="row align-items-center">
+			<div class="col-12 text-center">
+				<h1 class="page_title">{{ 'cart.general.title' | t }}</h1>
+			</div>
+		</div><!-- row -->
+	</div>
+</header>
+
+{% comment %}
+<div class="container">
+{% if cart.item_count > 0 %}
+<div class="header-total-cart-count cart-count text-center mb-3 mb-md-4">
+	You have {{cart.item_count}} item(s) in your bag.
+</div>
+{% endif %}
+<div id="bold-cart-msg"></div>
+<form action="/cart" method="post">
+	<div class="row">
+		<div class="col-12 col-lg-8 pr-md-0 basket-main">
+			{%- if cart.item_count > 0 -%}
+
+			{%- for item in cart.items -%}
+			<div class="basket-item" data-variant-id="{{item.variant.id}}">
+				<div class="basket-item-image">
+				<a class="{{section.settings.ratio}}" href="{{ item.url | within: collections.all }}">
+					{% include 'responsive-image' with image: item.image, image_class: "img-fluid", max_width: 210, max_height: 1125 %}
+				</a>
+				<div class="basket-actions d-md-none">
+					<a aria-label="Remove {{ item.product.title }}" href="/cart/change?line={{ forloop.index }}&amp;quantity=0">Remove</a>
+				</div>
+				</div>
+				<div class="basket-item-details">
+					<h3 class="product-title"><a href="{{ item.url | within: collections.all }}">{{ item.product.title }}</a></h3>
+					{% comment %} <p class="product-sku"><span class="label">SKU:</span> {{item.product.first_available_variant.sku}}</p> {% endcomment %}
+					<p class="product-variant">
+						{%- unless item.variant.title contains 'Default' -%}
+							Size : {{item.variant.title }}
+						{%- endunless -%}
+					</p>
+                    <div class="product-quantity">
+                        <span class="label">Quantity : </span>
+                        <select class="product-quantity-select" data-variant-id="{{item.id}}">
+                          <option value="1">1</option>
+                          <option value="2">2</option>
+                          <option value="3">3</option>
+                          <option value="4">4</option>
+                          <option value="5">5</option>
+                          <option value="6">6</option>
+                          <option value="7">7</option>
+                          <option value="8">8</option>
+                          <option value="9">9</option>
+                          <option value="10">10</option>
+                        </select>
+                        <input type="hidden" name="updates[]" id="updates_{{ item.id }}" class="quantity product-quantity-value" value="{{ item.quantity }}" />
+                    </div><!-- product-quantity -->
+					<div class="product-price">
+						<span class="money">
+                            <span class="Bold-theme-hook-DO-NOT-DELETE bold_cart_item_price" data-item-key="{{item.key}}" style="display:none !important;"></span>{{ item.price | money }}
+						</span><!-- money -->
+						{% if item.product.compare_at_price > item.price %}
+							<span class="product-price-original"><span class="money">{{ item.product.compare_at_price | money }}</span></span>
+						{% endif %}
+					</div><!-- product-price -->
+
+					<div class="basket-actions d-none d-md-block">
+						<a aria-label="Remove {{ item.product.title }}" href="/cart/change?line={{ forloop.index }}&amp;quantity=0">Remove</a>
+					</div>
+                    
+				</div>
+			</div><!-- basket-item -->
+			{%- endfor -%}
+
+			{%- else -%}
+			<p>The cart is empty. <a href="/collections/all">Continue shopping</a></p>
+			{%- endif -%}
+
+		</div><!-- basket-main -->
+
+		<div class="col-12 col-lg-4 pl-md-0 basket-sidebar">
+			<div class="basket-checkout">
+				<div class="basket-total"><span>Total:</span><span class="basket-total-value"><span class="money"><span class="Bold-theme-hook-DO-NOT-DELETE bold_cart_total" style="display:none !important;"></span>{{ cart.total_price | money }}</span></span></div>
+				<button class="btn btn-primary" type="submit" name="checkout" value="{{ 'cart.general.checkout_btn' | t }}" {% if cart.item_count == 0 %} disabled {% endif %}>{{ 'cart.general.checkout_btn' | t }}</button>
+				<span class="d-block mt-3">{{'cart.general.discount_text' | t}}</span>
+				<div class="doubly-message mt-3"></div>
+			</div><!-- basket-checkout -->
+
+			<div class="basket-sidebar-section">
+				<h4>We Accept</h4>
+				<div class="content">
+					<div class="rte">
+					{{section.settings.payment_text}}
+					</div>
+					{% include 'payment-icons' %}
+				</div>
+			</div><!-- basket-sidebar-section -->
+
+			{% if section.settings.assistance_text != blank %}
+			<div class="basket-sidebar-section">
+				<h4>Need Assistance?</h4>
+				<div class="content">
+					<div class="rte">
+					{{section.settings.assistance_text}}
+					</div>
+				</div>
+			</div><!-- basket-sidebar-section -->
+			{% endif %}
+
+		</div><!-- basket-sidebar -->
+	</div>
+</form>
+</div><!-- container -->
+{% endcomment %}
+{% comment %}
+// pretty-basket
+<div class="container">
+{% if cart.item_count > 0 %}
+<div class="header-total-cart-count cart-count text-center mb-3 mb-md-4">
+	You have {{cart.item_count}} item(s) in your bag.
+</div>
+{% endif %}
+<div class="cart">
+    <div class="page-title title-buttons">
+        <h3>Your bag</h3>
+    </div>
+  <div id="monetate_selectorHTML_8e5e73c5_0" class=" monetate_selectorHTML_8e5e73c5"><div class="delivery_message-cart-wrap">
+<div class="delivery_message-cart"><img class="mobilereturn_icon" src="https://cdn-media.prettylittlething.com/studio/ux/svgs/returnicon.svg"> <strong>We’re still running business as usual.</strong>
+<ul>
+	<li>We’ve extended our returns timeframe to <span id="delivery_message-cart-wrap-numDays">45</span> days.</li>
+	<li>Our carriers have taken steps to introduce contact-free delivery.</li>
+	<li>Up to date shipping timeframes will be reflected in checkout.</li>
+</ul>
+</div>
+</div>
+</div>
+  {%- if cart.item_count > 0 -%}
+		<div class="checkout-types top">
+          <form action="/cart" method="post">
+            <button name="checkout" class="button btn-proceed track-cart-proceed analytics-tracking btn-proceed--checkout" data-event-category="Basket" data-event-action="Proceed To Checkout" data-event-label="Top Button" type="submit" title="Proceed to the Checkout">
+                <span class="track-cart-proceed analytics-tracking" data-event-category="Basket" data-event-action="Proceed To Checkout" data-event-label="Bottom Button">
+                    <span class="track-cart-proceed analytics-tracking" data-event-category="Basket" data-event-action="Proceed To Checkout" data-event-label="Bottom Button">
+                        Proceed to Checkout            </span>
+                </span>
+            </button>
+          </form>
+</div>
+      	<ul class="cart-table">
+                  <li class="table-header">
+                      <span>Product</span>
+                      <span>Edit</span>
+                      <span>Totals</span>
+                  </li>
+
+                  {%- for item in cart.items -%}
+                           <li class="basket-item" data-variant-id="{{item.variant.id}}">
+                              <div class="product-info">
+                                    <a href="{{ item.url | within: collections.all }}">
+                                    	{% include 'responsive-image' with image: item.image, width: 100, height: 160 %}
+                                    </a>
+									<p class="product-name">{{ item.product.title }}</p>
+									<div class="item-options">
+                                      	{%- unless item.variant.title contains 'Default' -%}
+											<span> Size : </span> <span> {{item.variant.title }} </span>
+										{%- endunless -%}
+                                    </div>
+							  </div>
+                              <div class="product-edit">
+                                      <div class="quantity-selector product-quantity-select">
+                                          	  <span class="fa fa-minus-square js-decrease analytics-tracking" id="minus_{{item.id}}" data-event-category="Basket" data-event-action="Quantity" data-event-label="Decrease" id="cart-qty-decrease"></span>
+                                              <input id="{{ item.id }}" type="text" name="qty" value="{{ item.quantity }}" size="4" title="Qty" readonly="" class="input-text qty" maxlength="3" aria-label="product quantity" data-variant-id="{{item.id}}">
+                                              <span class="fa fa-plus-square js-increase analytics-tracking" id="add_{{item.id}}" data-event-category="Basket" data-event-action="Quantity" data-event-label="Increase" id="cart-qty-increase"></span>
+                                      </div>
+                                      <button type="submit" id="{{ item.id }}" name="update_cart_action" value="update_qty" title="Update cart" class="button btn-update">
+                                          <span><span>Update</span></span>
+                                	  </button>                                  
+                                      		<a id="cart-remove" class="button-cart-remove" href="/cart/change?line={{ forloop.index }}&amp;quantity=0" title="Remove item" data-event-category="Basket" data-event-action="Product Remove" data-event-label="Remove">
+                                           	<span class="fa fa-trash"></span> Remove </a>
+
+                              </div>
+                              <div class="product-totals">
+                                  <span class="global-sale-rrp">
+										<span class="cart-price">
+                                              <span class="price"><span class="Bold-theme-hook-DO-NOT-DELETE bold_cart_item_price_2" data-item-key="{{item.key}}" style="display:none !important;"></span>{{ item.price | money }}</span>                                    </span>
+										</span>
+                              </div>
+						</li>
+                  {% endfor %}
+      </ul>
+		<div class="cart-summary-total">
+	<p class="totals">
+      Subtotal: <span class="price"><span class="Bold-theme-hook-DO-NOT-DELETE bold_cart_total_2" style="display:none !important;"></span>{{ cart.total_price | money }}</span>        
+	</p>
+</div>
+  		<div class="checkout-types top">
+          <form action="/cart" method="post">
+            <button name="checkout" class="button btn-proceed track-cart-proceed analytics-tracking btn-proceed--checkout" data-event-category="Basket" data-event-action="Proceed To Checkout" data-event-label="Top Button" type="submit" title="Proceed to the Checkout">
+                <span class="track-cart-proceed analytics-tracking" data-event-category="Basket" data-event-action="Proceed To Checkout" data-event-label="Bottom Button">
+                    <span class="track-cart-proceed analytics-tracking" data-event-category="Basket" data-event-action="Proceed To Checkout" data-event-label="Bottom Button">
+                        Proceed to Checkout            </span>
+                </span>
+            </button>
+          </form>
+</div>
+  {%- else -%}
+			<p>The cart is empty. <a href="/collections/all">Continue shopping</a></p>
+  {% endif %}
+  <div class="basket-sidebar-section">
+				<h4>We Accept</h4>
+				<div class="content">
+					<div class="rte">
+					{{section.settings.payment_text}}
+					</div>
+					{% include 'payment-icons' %}
+				</div>
+			</div><!-- basket-sidebar-section -->
+{% if section.settings.assistance_text != blank %}
+  <div class="basket-sidebar-section">
+    <h4>Need Assistance?</h4>
+    <div class="content">
+      <div class="rte">
+        {{section.settings.assistance_text}}
+      </div>
+    </div>
+  </div><!-- basket-sidebar-section -->
+{% endif %}
+
+</div>
+</div>
+{% endcomment %}
+<div class="container">
+<div class="cart_content_main">
+  	{% if cart.item_count > 0 %}
+    <div class="header-total-cart-count cart-count text-center mb-3 mb-md-4 items_in_bag">
+        You have {{cart.item_count}} item(s) in your bag.
+    </div>
+	{% endif %}
+	<div class="container-fluid">
+     {%- if cart.item_count > 0 -%}
+		<div class="row">
+			<div class="col-lg-8 col-sm-12 car_items_main">
+		<div class="row cart_items_header">
+			<div class="col-3 product_name cart_item_header">Product</div>
+			<div class="col-3 cart_item_header">Price</div>
+			<div class="col-3 cart_item_header">QTY</div>
+			<div class="col-3 cart_item_header">Total</div>
+		</div>
+	<div class="cart_items">
+      {%- for item in cart.items -%}
+		<div class="row item basket-item product-item" data-variant-id="{{item.variant.id}}">
+			<div class="col-3 cart_value">
+			<div class="cart_item_img">
+              	<a href="{{ item.url | within: collections.all }}">
+                      {% include 'responsive-image' with image: item.image, image_class: "img-fluid", max_width: 210, max_height: 1125 %}                      
+				</a>
+			</div>
+			<div class="cart_item_detail">
+				<div class="cart_item_title">{{ item.product.title }}</div>
+              	{%- unless item.variant.title contains 'Default' -%}
+              		<div class="cart_item_size">Size : <span class="item_size"></span>{{item.variant.title }}</div>
+				{%- endunless -%}
+			</div>
+			</div>
+			<div class="col-3 cart_value cart_item_price"><span class="Bold-theme-hook-DO-NOT-DELETE bold_cart_item_price_3" data-item-key="{{item.key}}" style="display:none !important;"></span>{{ item.price | money }}
+          </div>
+			<div class="col-3 cart_value cart_item_quanitity product-quantity-select">
+			<span class="minus_item js-decrease" id="minus_{{item.id}}"> - </span>
+              <span data-variant-id="{{item.id}}" class="item_quantity" id="{{ item.id }}"> {{ item.quantity }} </span>
+            <span class="plus_item js-increase" id="add_{{item.id}}"> + </span>
+			</div>
+			<div class="col-3 cart_value cart_item_total"><span class="Bold-theme-hook-DO-NOT-DELETE bold_cart_item_total" data-item-key="{{item.key}}" style="display:none !important;"></span>{{ item.line_price | money }}</div>
+          	<div class="col-3 cart_value">
+            	<a id="cart-remove" class="button-cart-remove" href="/cart/change?line={{ forloop.index }}&amp;quantity=0" title="Remove item" data-event-category="Basket" data-event-action="Product Remove" data-event-label="Remove">
+                <span class="fa fa-trash"></span> Remove </a>
+            </div>
+		</div>
+      {% endfor %}
+
+	</div>
+
+	</div>
+			<div class="col-lg-4 col-sm-12 card_detail">
+		<div class="card_detail_inner">
+			<div class="we_accept_text">We Accept</div>
+			<div class="creditcard_image">
+              		<div class="rte">
+					{{section.settings.payment_text}}
+					</div>
+					{% include 'payment-icons' %}
+          	</div>
+			<div class="sub_total_main">
+			<div class="row">
+				<div class="col-5 sub_total_text">Subtotal</div>
+				<div class="col-7 cart_sub_total"><span class="Bold-theme-hook-DO-NOT-DELETE bold_cart_total_3" style="display:none !important;"></span>{{ cart.total_price | money }}</div>
+			</div>	
+			<div class="shipping_and_taxes_text">
+				Shipping & taxes calculated at checkout
+			</div>
+
+			<div class="term_and_condition_box">
+				
+				<label class="checkbox_container">I agree to <span> Term & Conditions </span>
+				  <input type="checkbox" class="term-checkbox" checked="checked">
+				  <span class="checkmark"></span>
+				</label>
+
+			</div>
+
+			<div class="checkout_button text-center">
+              <form action="/cart" method="post">
+                 <button name="checkout" class="button btn-proceed track-cart-proceed analytics-tracking btn-proceed--checkout" data-event-category="Basket" data-event-action="Proceed To Checkout" data-event-label="Top Button" type="submit" title="Checkout">
+                   Checkout
+                </button>
+              </form>
+			</div>
+
+			</div>
+		</div>
+	</div>
+		</div>	
+	{%- else -%}
+			<p>The cart is empty. <a href="/collections/all">Continue shopping</a></p>
+  	{% endif %}
+	</div>
+</div>
+</div>
+{% if section.settings.assistance_text != blank %}
+	<div class="contact_us_before_footer">
+		<div class="container-fluid">
+		<div class="need_assistence_text">NEED ASSISTANCE?</div>
+		<div class="please_contact_customer_text">{{section.settings.assistance_text}}</div>
+		<a href="/pages/contact-us" class="contact_us_button">Contact Us</a>
+		</div>
+	</div>	
+{% endif %}
+{% schema %}
+{
+  "name": "Collection",
+  "settings": [
+    {
+      	"type": 		"header",
+      	"content": 		"Basket Image Ratio"
+	},
+    {
+        "type":         "select",
+        "id":           "ratio",
+        "label":        "Fixed Ratio?",
+        "options": [
+            {
+                "value": "fixed-ratio square-crop",
+                "label": "Square (4x4 Cropped)"
+            },
+            {
+                "value": "fixed-ratio square",
+                "label": "Square (4x4)"
+            },
+            {
+                "value": "fixed-ratio portrait-crop",
+                "label": "Portrait (4x5 Cropped)"
+            },
+            {
+                "value": "fixed-ratio portrait",
+                "label": "Portrait (4x5)"
+            },
+            {
+                "value": "",
+                "label": "No Set Ratio"
+            }
+        ],
+        "default":   "fixed-ratio portrait"
+    },
+	{
+		"type":      "richtext",
+		"id":        "payment_text",
+		"label":     "Payment Text",
+		"default":   "<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.</p>"
+	},
+	{
+		"type":      "richtext",
+		"id":        "assistance_text",
+		"label":     "Need Assistance?",
+		"default":   "<p>Please contact our Customer Care team either by email, telephone or via our Contact Form.</p>"
+	}
+	]
+}
+{% endschema %}

@@ -1,0 +1,60 @@
+<div class="footer-content" data-aos="fade-up">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-6 col-sm-12">
+				<div class="text-center content-box">
+					<span class="footer-title">{{section.settings.footer_content_title}}</span>
+					<div class="footer-text">{{section.settings.footer_content_description}}</div>
+<!-- 					<span class="footer-read-more">Read More</span> -->
+                  	<a class="footer-read-more-anchor" href="/pages/about-us">Read More</a> 
+				</div>
+			</div>
+          <div class="col-lg-6 col-sm-12 image d-none d-lg-block">
+            {% if section.settings.featured_image != blank %}
+								<picture>
+									<source media="(max-width: 760px)" srcset="{{ section.settings.featured_image | img_url: '270x' }}">
+									<source media="(max-width: 1440px)" srcset="{{ section.settings.featured_image | img_url: '690x' }}">
+									<img src="{{ 'transparent-gif.png' | img_url }}" data-src="{{ section.settings.featured_image | img_url: '690x' }}" loading="lazy" class="img-fluid lazyload" alt="{{ section.settings.featured_image.alt }}">
+								</picture>
+								{% else %}
+									{{ 'image' | placeholder_svg_tag: 'hero-placeholder img-fluid' }}
+								{% endif %}
+			</div>
+		</div>
+	</div>
+</div>
+
+{% schema %}
+{
+  "name": "Footer Content",
+    "settings": [
+		{
+		"type": "header",
+		"content": "Footer Content"
+		},
+		{
+			"type":      "text",
+			"id":        "footer_content_title",
+			"label":     "Title",
+			"default":   "About Azat Mard"
+		},
+			{
+			"type":      "richtext",
+			"id":        "footer_content_description",
+			"label":     "Text"
+		},
+		{
+				  "type": "image_picker",
+				  "id": "featured_image",
+				  "label": "Featured Image",
+				  "info": "Optimal image size: 690 x 537."
+		}
+    ],
+	"presets": [
+		{
+			"name": 		"Footer Content",
+			"category": 	"Text"
+		}
+	]
+}
+{% endschema %}

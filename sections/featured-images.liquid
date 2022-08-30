@@ -1,0 +1,294 @@
+{% comment %}
+This is section that can be moved and placed anywhere on the page.
+
+You will need:
+ 
+- Slick CDN files (found in the layout/theme.liquid)
+- Custom Styles (found in styles/sections/featured-products.scss)
+<section class="featured-images" data-aos="fade-up">
+	<div class="container-fluid{% if template == 'index' %} home-page-feture-images {% endif %}">
+		<div class="row">
+			<div class="col-6">
+				{% for block in section.blocks %}
+					{% case block.type %}
+					{% when 'small_image' %}
+						<div class="small-featured-image">
+							<div class="featured-image">
+								<a href="{{ block.settings.featured_link }}" title="{{block.settings.featured_title}}">
+								{% if block.settings.featured_image != blank %}
+								<picture>
+									<source media="(max-width: 760px)" srcset="{{ block.settings.featured_image_mobile | img_url: '270x' }}">
+									<source media="(max-width: 1440px)" srcset="{{ block.settings.featured_image | img_url: '690x' }}">
+									<img src="{{ 'transparent-gif.png' | img_url: '690x537' }}" data-src="{{ block.settings.featured_image | img_url: '690x' }}" class="img-fluid lazyload" alt="{{ block.settings.featured_image.alt }}">
+								</picture>
+								{% else %}
+									{{ 'image' | placeholder_svg_tag: 'hero-placeholder img-fluid' }}
+								{% endif %}
+								</a>
+							</div>
+							{% if block.settings.title_show == true %}
+							<div class="featured-image-details">
+								<a href="{{ block.settings.featured_link }}" title="{{block.settings.featured_title}}">
+									<span class="featured-image-title">{{ block.settings.featured_title }}</span>
+								</a>
+							</div>
+							{% endif %}
+						</div>
+					{% endcase %}
+				{% endfor %}
+			</div>
+			<div class="col-6">
+				{% for block in section.blocks %}
+					{% case block.type %}
+					{% when 'large_image' %}
+						<div class="large-featured-image">
+							<div class="featured-image">
+								<a href="{{ block.settings.large_featured_link }}" title="{{block.settings.large_featured_title}}">
+								{% if block.settings.large_featured_image != blank %}
+								<picture>
+									<source media="(max-width: 760px)" srcset="{{ block.settings.large_featured_image_mobile | img_url: '270x' }}">
+									<source media="(max-width: 1440px)" srcset="{{ block.settings.large_featured_image | img_url: '690x' }}">
+									<img src="{{ 'transparent-gif.png' | img_url: '690x1074' }}" data-src="{{ block.settings.large_featured_image | img_url: '690x' }}" class="img-fluid lazyload" alt="{{ block.settings.large_featured_image.alt }}">
+								</picture>
+								{% else %}
+									{{ 'image' | placeholder_svg_tag: 'hero-placeholder img-fluid' }}
+								{% endif %}
+								</a>
+							</div>
+							{% if block.settings.large_title_show == true %}
+							<div class="featured-image-details">
+								<a href="{{ block.settings.large_featured_link }}" title="{{block.settings.large_featured_title}}">
+									<span class="featured-image-title">{{ block.settings.large_featured_title }}</span>
+								</a>
+							</div>
+							{% endif %}
+						</div>
+					{% endcase %}
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+</section>
+{% endcomment %}
+<section class="featured-images" data-aos="fade-up">
+	<div class="container{% if template == 'index' %} home-page-feture-images {% endif %}">
+      {% if section.settings.section_title != blank %}
+	<div class="row">
+		<div class="col-12 text-center">
+			{% if section.settings.section_title != blank %}
+				<h2 class="h2 text-uppercase">{{ section.settings.section_title }}</h2>
+			{% endif %}
+		</div>
+	</div>
+	{% endif %}
+		<div class="row featured-row">
+          {% for block in section.blocks %}
+			<div class="col-4 featured-col">
+              {% case block.type %}
+					{% when 'small_image_hide' %}
+						<div class="small-featured-image">
+							<div class="featured-image">
+								<a href="{{ block.settings.featured_link }}" title="{{block.settings.featured_title}}">
+								{% if block.settings.featured_image != blank %}
+								<picture>
+									<source media="(max-width: 760px)" srcset="{{ block.settings.featured_image_mobile | img_url: '270x' }}">
+									<source media="(max-width: 1440px)" srcset="{{ block.settings.featured_image | img_url: '690x' }}">
+									<img src="{{ 'transparent-gif.png' | img_url: '690x537' }}" data-src="{{ block.settings.featured_image | img_url: '690x' }}" class="img-fluid lazyload" alt="{{ block.settings.featured_image.alt }}">
+								</picture>
+								{% else %}
+									{{ 'image' | placeholder_svg_tag: 'hero-placeholder img-fluid' }}
+								{% endif %}
+								</a>
+							</div>
+							{% if block.settings.title_show == true %}
+							<div class="featured-image-details">
+								<a href="{{ block.settings.featured_link }}" title="{{block.settings.featured_title}}">
+									<span class="featured-image-title">{{ block.settings.featured_title }}</span>
+								</a>
+							</div>
+                          {% endif %}
+              			</div>
+                        {% when 'large_image_hide' %}
+						<div class="large-featured-image">
+							<div class="featured-image">
+								<a href="{{ block.settings.large_featured_link }}" title="{{block.settings.large_featured_title}}">
+								{% if block.settings.large_featured_image != blank %}
+								<picture>
+									<source media="(max-width: 760px)" srcset="{{ block.settings.large_featured_image_mobile | img_url: '270x' }}">
+									<source media="(max-width: 1440px)" srcset="{{ block.settings.large_featured_image | img_url: '690x' }}">
+									<img src="{{ 'transparent-gif.png' | img_url: '690x900' }}" data-src="{{ block.settings.large_featured_image | img_url: '690x' }}" class="img-fluid lazyload" alt="{{ block.settings.large_featured_image.alt }}">
+								</picture>
+								{% else %}
+									{{ 'image' | placeholder_svg_tag: 'hero-placeholder img-fluid' }}
+								{% endif %}
+								</a>
+							</div>
+							{% if block.settings.large_title_show == true %}
+							<div class="featured-image-details">
+								<a href="{{ block.settings.large_featured_link }}" title="{{block.settings.large_featured_title}}">
+									<span class="featured-image-title">{{ block.settings.large_featured_title }}</span>
+								</a>
+							</div>
+							{% endif %}
+						</div>  
+              			{% when 'medium_image' %}
+						<div class="large-featured-image">
+							<div class="featured-image">
+								<a href="{{ block.settings.medium_featured_link }}" title="{{block.settings.medium_featured_title}}">
+								{% if block.settings.medium_featured_title != blank %}
+								<picture>
+									<source media="(max-width: 760px)" srcset="{{ block.settings.medium_featured_image | img_url: '510x' }}">
+									<source media="(max-width: 1440px)" srcset="{{ block.settings.medium_featured_image | img_url: '510x' }}">
+									<img src="{{ 'transparent-gif.png' | img_url: '413x510' }}" data-src="{{ block.settings.medium_featured_image | img_url: '690x' }}" class="img-fluid lazyload" alt="{{ block.settings.medium_featured_image.alt }}">
+								</picture>
+								{% else %}
+									{{ 'image' | placeholder_svg_tag: 'hero-placeholder img-fluid' }}
+								{% endif %}
+								</a>
+							</div>
+							{% if block.settings.medium_title_show == true %}
+							<div class="featured-image-details">
+								<a href="{{ block.settings.medium_featured_link }}" title="{{block.settings.medium_featured_title}}">
+									<span class="featured-image-title">{{ block.settings.medium_featured_title }}</span>
+								</a>
+							</div>
+							{% endif %}
+						</div>  
+              
+              			{% endcase %}
+              
+			</div>
+          {% endfor %}
+		</div>
+	</div>
+</section>
+{% schema %}
+{
+  "name": "Featured Images",
+  "max_blocks": 3,
+	"settings": [
+			{
+                    "type": 		"text",
+                    "id": 			"section_title",
+                    "label": 		"Heading",
+                    "default": 		"Our Products"
+                }
+		],
+  "blocks": [
+		{
+			"type": "small_image",
+			"name": "Small Image",
+			"limit": 2,
+			"settings": [
+				{
+				  "type": "image_picker",
+				  "id": "featured_image",
+				  "label": "Featured Image",
+				  "info": "Optimal image size: 690 x 537."
+				},
+				{
+				  "type": "image_picker",
+				  "id": "featured_image_mobile",
+				  "label": "Featured Image Mobile",
+				  "info": "Optimal image size: 270 x 225."
+				},
+				{
+					"type":     "checkbox",
+					"id":       "title_show",
+					"label":    "Show Title?",
+					"default":  true
+				},
+				{
+				   "type":      "text",
+				   "id":        "featured_title", 
+				   "label":     "Title",
+				   "default":   "Title"
+				},
+				{
+				   "type":      "url",
+				   "id":        "featured_link",
+				   "label":     "Link"
+				}
+			]
+		},
+		{
+			"type": "large_image",
+			"name": "Large Image",
+			"limit": 3,
+			"settings": [
+				{
+				  "type": "image_picker",
+				  "id": "large_featured_image",
+				  "label": "Featured Image",
+				  "info": "Optimal image size: 690 x 1074."
+				},
+				{
+				  "type": "image_picker",
+				  "id": "large_featured_image_mobile",
+				  "label": "Featured Image Mobile",
+				  "info": "Optimal image size: 270 x 450."
+				},
+				{
+					"type":     "checkbox",
+					"id":       "large_title_show",
+					"label":    "Show Title?",
+					"default":  true
+				},
+				{
+				   "type":      "text",
+				   "id":        "large_featured_title", 
+				   "label":     "Title",
+				   "default":   "Title"
+				},
+				{
+				   "type":      "url",
+				   "id":        "large_featured_link",
+				   "label":     "Link"
+				}
+			]
+		},
+		{
+			"type": "medium_image",
+			"name": "Medium Image",
+			"limit": 3,
+			"settings": [
+				{
+				  "type": "image_picker",
+				  "id": "medium_featured_image",
+				  "label": "Featured Image",
+				  "info": "Optimal image size: 413 x 510."
+				},
+				{
+				  "type": "image_picker",
+				  "id": "medium_featured_image_mobile",
+				  "label": "Featured Image Mobile",
+				  "info": "Optimal image size: 270 x 450."
+				},
+				{
+					"type":     "checkbox",
+					"id":       "medium_title_show",
+					"label":    "Show Title?",
+					"default":  true
+				},
+				{
+				   "type":      "text",
+				   "id":        "medium_featured_title", 
+				   "label":     "Title",
+				   "default":   "Title"
+				},
+				{
+				   "type":      "url",
+				   "id":        "medium_featured_link",
+				   "label":     "Link"
+				}
+			]
+		}
+  ],
+  "presets": [
+    {
+      "name": 		"Featured Images",
+      "category": 	"Images"
+    }
+  ]
+}
+{% endschema %}

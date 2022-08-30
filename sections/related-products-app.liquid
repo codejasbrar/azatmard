@@ -1,0 +1,32 @@
+<section class="featured-products product-related-products arp_slider_{{ block_id }}">
+    <div class="container">
+        <div class="row mb-3 mb-md-4">
+            <div class="col-12 col-md-8 mx-auto text-center mt-3 mt-lg-5">
+                <h2 class="h1">{{ title }}</h2>
+            </div>
+        </div><!-- row -->
+
+        <div class="row featured-products-slick">
+            {% for product in products %}
+                <div class="col-12 col-sm-6 featured-product">
+                    <div class="product-image">
+                        <a href="{{ product.uri }}" title="{{product.title}}">
+                            <img src="{{ product.image_url }}" alt="{{ product.name|e }}" class="img-fluid"  />
+                        </a>
+                    </div>
+                    <div class="product-details">
+                        <a href="{{ product.uri }}" title="{{product.title}}">
+                            <span class="product-title">{{ product.title }}</span>
+                            <span class="product-price">
+                                <span class="money">{{ product.min_price }}</span>
+                                {% if product.sale %}
+                                    <span class="product-price-original"><span class="money">{{ product.compare_at_price }}</span></span>
+                                {% endif %}
+                            </span>
+                        </a>
+                    </div> 
+                </div>
+            {% endfor %}
+        </div>
+    </div><!-- container -->
+</section>

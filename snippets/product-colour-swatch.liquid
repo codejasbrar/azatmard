@@ -1,0 +1,38 @@
+{% comment %} 
+BG: Richie's original code, find the Cap C and split based on that.
+{% endcomment %}
+{% assign current_product_title_nosplit = product.title  %}
+
+{% assign productTitleDowncase =  product.title | downcase %}
+{% if productTitleDowncase contains 'washed splash paint' %}
+    {% assign number = 4 %}
+{% else %}
+    {% assign number = 1 %}
+{% endif %}
+
+{% assign current_product_title = product.title | split: ' ' %}
+{% capture justProductTitle %}{% for word in current_product_title %}{% if forloop.index > number %} {{word}}{% endif %}{% endfor %}{% endcapture %}
+{% assign current_product_split = justProductTitle | strip %}
+
+<div class="product-colours-detail">
+  <div class="selected-colour d-none d-md-block">
+    <span class="color">Color: </span> 
+    {% for tag in product.tags%}{% if tag contains 'colour_' %}{{tag | remove: 'colour_' | remove: ' ' | remove: '|' | replace: '_', '/' }}{% endif %}{%endfor%} 
+  </div>
+    <ul>
+    {% assign collection = collections.all %}
+    {% paginate collection.products by 400 %}
+    {% for product_collect in collection.products %} 
+      	  {% if product_collect.metafields.custom_fields["color_meta_field"] != blank and product_collect.metafields.custom_fields["color_meta_field"] == product.metafields.custom_fields["color_meta_field"] %}
+            {% for tag in product_collect.tags %}
+                {% if tag contains 'colour_' %}
+                    <li class="{{tag | remove: 'colour_' | remove: ' ' | remove: '|' | downcase }} {% if product_collect.title == current_product_title_nosplit %}active{% endif %}">
+                        <a href="{{shop.url}}{{collection.url}}{{product_collect.url}}"></a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+      	  {% endif %}
+    {% endfor %}
+    {% endpaginate %}
+    </ul>
+</div>

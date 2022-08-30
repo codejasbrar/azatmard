@@ -1,0 +1,266 @@
+{% case section.settings.items_per_row %}
+    {% when 1 %}
+        {% assign col_class = 'col-12' %}
+    {% when 2 %}
+        {% assign col_class = 'col-6' %}
+    {% when 3 %}
+        {% assign col_class = 'col-6 col-md-4' %}
+	{% when 4 %}
+		{% assign col_class = 'col-6 col-md-3' %}
+	{% when 5 %}
+		{% assign col_class = 'col-6 col-lg' %}
+	{% when 6 %}
+		{% assign col_class = 'col-6 col-lg' %}
+{% endcase %}
+
+<div class="featured-gallery">
+    <div class="container-fluid">
+        <div class="row no-gutters gutters-sm">
+        
+        {% for block in section.blocks %}
+            {% case block.type %}
+            
+                {% when 'image_one' %}
+                    <div class="featured-gallery-item {{col_class}} mb-sm-4">
+                        <div class="featured-gallery-container lazyload image-content {{block.settings.featured_opacity_colour}} opacity-{{block.settings.featured_opacity}} {{block.settings.featured_ratio}} {{block.settings.featured_background}} {% if block.settings.featured_image == blank %}no-image{%endif%}" data-bgset="{% include 'responsive-bg-image', image: block.settings.featured_image %}">
+                            <div class="featured-gallery-content d-flex {{block.settings.featured_text_vertical}} {{block.settings.featured_text_horizontal}} {{block.settings.content_colour}}">
+                                <div>
+                                    <h2>{{block.settings.featured_title}}</h2>
+                                    {% if block.settings.featured_content != blank %}
+                                        <div class="rte">
+                                        {{block.settings.featured_content}}
+                                        </div><!-- rte -->
+                                    {% endif %}
+                                </div>
+                            </div><!-- featured-gallery-content -->
+                        <a href="{{block.settings.featured_link }}"></a>
+                        </div><!-- featured-gallery-container -->
+                    </div><!-- col -->
+
+            {% endcase %}
+        {% endfor %}
+        </div><!-- row -->
+    </div><!-- container -->
+</div><!-- featured gallery -->
+
+{% if section.settings.restrict_blocks == true %}
+<script>
+function featuredImages() {
+    if ($(window).width() < 768) {
+        rowMaker('.featured-gallery .featured-gallery-item', {{section.settings.restrict_show_block}},{% if block.settings.restrict_reveal_block == "all"%}"all"{% else %} {{section.settings.restrict_reveal_block}}{% endif %});
+    } else {
+        removeRowMaker('.featured-gallery .featured-gallery-item');
+    }
+};
+
+
+$(document).ready(function() {
+	featuredImages();
+});	
+
+$(window).on('resize',function() {
+    featuredImages();
+});
+</script>
+{% endif %}
+
+
+{% schema %}
+{
+    "name": "Featured Image Single",
+    "settings": [
+        {
+			"type": "range",
+			"id": "items_per_row",
+			"label": "Items Per Row",
+			"min": 1,
+			"max": 6,
+			"step": 1,
+			"default": 2
+		}, 
+        {
+            "type": 	"header",
+            "content": 	"Limit Visible Blocks on Devices"
+        },
+        {
+            "type": 	"paragraph",
+            "content": 	"Here we can limit the amount of blocks shown on Tablet (and lower) but with the option to view those blocks, should the user wish too."
+        },
+        {
+            "type":     "checkbox",
+            "id":       "restrict_blocks",
+            "label":    "Restrict block?",
+            "default":  true
+        },
+        {
+            "type": 	"range",
+            "id": 		"restrict_show_block",
+            "label": 	"Blocks to show",
+            "min": 		2,
+            "max": 		6,
+            "step": 	2,
+            "default": 	2,
+            "info": 	"How many initial blocks should be visible to the user"
+        },
+        {
+            "type": 	"range",
+            "id": 		"restrict_reveal_block",
+            "label": 	"Blocks to reveal",
+            "min": 		0,
+            "max": 		6,
+            "step": 	2,
+            "default": 	2,
+            "info": 	"How many blocks should show once the user clicks show more?. If 0 then show all"
+        }
+	],
+    "blocks": [
+		{
+			"type": "image_one",
+			"name": "Standard Text on image",
+			"settings": [
+                {
+					"type":      "select",
+					"id":        "featured_ratio",
+					"label":     "Set Fixed Ratio",
+					"options": [
+						{
+							"value": "fourbyfour",
+							"label": "4 x 4"
+						},
+						{
+							"value": "fourbythree",
+							"label": "4 x 3"
+						}
+					],
+					"default":   "fourbyfour"
+				},
+				{
+					"type":      "select",
+					"id":        "featured_background",
+					"label":     "Force entire image to show",
+					"options": [
+						{
+							"value": "background-contain",
+							"label": "Yes"
+						},
+						{
+							"value": "background-cover",
+							"label": "No"
+						}
+					],
+					"default":   "background-cover"
+				},
+			    {
+					"type": 	"image_picker",
+				 	"id": 		"featured_image",
+				 	"label": 	"Image"
+				},
+                {
+                    "type": "range",
+                    "id": "featured_opacity",
+                    "label": "Opacity",
+                    "min": 0,
+                    "max": 9,
+                    "step": 1,
+                    "default": 0
+                },
+                {
+					"type":      "select",
+					"id":        "featured_opacity_colour",
+					"label":     "Overlay Colour",
+					"options": [
+						{
+							"value": "overlay-default",
+							"label": "Black"
+						},
+						{
+							"value": "overlay-white",
+							"label": "White"
+						}
+					],
+					"default":   "overlay-default"
+				},
+                {
+                    "type":     "text",
+                    "id":       "featured_title",
+                    "label":    "Title",
+                    "default":  "Collection"
+                },
+                {
+                    "type":     "richtext",
+                    "id":       "featured_content",
+                    "label":    "Content"
+                },
+                {
+				   "type":  	"url",
+				   "id":    	"featured_link",
+				   "label": 	"Link"
+				},
+                {
+					"type":      "select",
+					"id":        "content_colour",
+					"label":     "Content Colour",
+					"options": [
+						{
+							"value": "text-black",
+							"label": "Black"
+						},
+						{
+							"value": "text-white",
+							"label": "White"
+						}
+					],
+					"default":   "text-black"
+				},
+                {
+					"type":      "select",
+					"id":        "featured_text_vertical",
+					"label":     "Text Vertical Alignment",
+					"options": [
+						{
+							"value": "align-items-start",
+							"label": "Top"
+						},
+						{
+							"value": "align-items-center",
+							"label": "Middle"
+						},
+						{
+							"value": "align-items-end",
+							"label": "Bottom"
+						}
+					],
+					"default":   "align-items-start"
+				},
+                {
+					"type":      "select",
+					"id":        "featured_text_horizontal",
+					"label":     "Text Horizontal Alignment",
+					"options": [
+						{
+							"value": "justify-content-start",
+							"label": "Left"
+						},
+						{
+							"value": "justify-content-center",
+							"label": "Center"
+						},
+						{
+							"value": "justify-content-end",
+							"label": "Right"
+						}
+					],
+					"default":   "justify-content-start"
+				}
+			]
+		}
+	],
+	"presets": [
+    {
+      "name": "Featured Image Single",
+      "category": "Images"
+    }
+  ]
+	
+}
+{% endschema %}

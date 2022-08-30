@@ -1,0 +1,378 @@
+<script>
+	/**
+	 * Velstar Ajaxify Cart
+	 **/
+	var config = {
+
+		/* Langauge */
+		addToCartBtnText: 		'Add to Basket', //Add to Basket
+		addedToCartBtnText: 	'Added to Basket', //Added to Basket
+		addingToCartBtnText: 	'Adding', //Adding...
+		soldOutBtnText: 		'Sold Out', //Sold Out
+		//After adding a product to the cart, how long to wait before it returns to normal?
+		returnBtnToNormal: 		4000, // milliseconds
+
+		/* Selectors */
+		cartCountSelector: 		'.cart-count',
+		cartTotalSelector: 		'.mini-cart-total',
+		cartRemoveSelector: 	'.cart-prod-remove',
+
+		/* Icons*/
+		successIcon: 			'<svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-check" viewBox="0 0 512 512"><path d="M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z"></path></svg>',
+		errorIcon: 				'<svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-times" viewBox="0 0 352 512"><path d="M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z"></path></svg>',
+		loadingIcon: 			'<svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-sync" viewBox="0 0 512 512"><path d="M500 8h-27.711c-6.739 0-12.157 5.548-11.997 12.286l2.347 98.575C418.212 52.043 342.256 8 256 8 134.813 8 33.933 94.924 12.296 209.824 10.908 217.193 16.604 224 24.103 224h28.576c5.674 0 10.542-3.982 11.737-9.529C83.441 126.128 161.917 60 256 60c79.545 0 147.942 47.282 178.676 115.302l-126.39-3.009c-6.737-.16-12.286 5.257-12.286 11.997V212c0 6.627 5.373 12 12 12h192c6.627 0 12-5.373 12-12V20c0-6.627-5.373-12-12-12zm-12.103 280h-28.576c-5.674 0-10.542 3.982-11.737 9.529C428.559 385.872 350.083 452 256 452c-79.546 0-147.942-47.282-178.676-115.302l126.39 3.009c6.737.16 12.286-5.257 12.286-11.997V300c0-6.627-5.373-12-12-12H12c-6.627 0-12 5.373-12 12v192c0 6.627 5.373 12 12 12h27.711c6.739 0 12.157-5.548 11.997-12.286l-2.347-98.575C93.788 459.957 169.744 504 256 504c121.187 0 222.067-86.924 243.704-201.824 1.388-7.369-4.308-14.176-11.807-14.176z"></path></svg>',
+
+
+		/* No need to change this elements. */
+		addToCartBtnSelector: 	'.btn-add-to-cart.variant-available',
+		addToCartFormSelector: 	'form[action="/cart/add"]',
+		shopifyAjaxAddURL: 		'/cart/add.js',
+		shopifyAjaxChangeURL: 	'/cart/change.js',
+		shopifyAjaxCartURL: 	'/cart.js'
+	}
+
+//Provide the user Feedback if the Ajax was sucessful or not.
+function ajaxFeedback(status, html, $addToCartForm) {
+	//$('.ajaxfeedback').remove();
+	var feedback = '<p class="ajaxfeedback ' + status + '">' + html + '</p>';
+
+	$addToCartForm.find(config.addToCartBtnSelector).after(feedback);
+	$('.ajaxfeedback').slideDown();
+}
+
+//BG: Provide the user feedback on the cart template when adjusting quantity / variant.
+function ajaxFeedbackCart(status,html,output) {
+	$('.ajaxFeedbackCart').remove();
+	var feedback = '<span class="ajaxFeedbackCart '+status+'">'+html+'</span>';
+
+	$(output).after(feedback);
+}
+
+//Update the button apperance during the various stages. Adding, added, and back to add.
+function updateBtnText($button, label, icon) {
+	if ($button.children().length) {
+		$button.children().each(function () {
+			if (icon) {
+				if ($.trim($(this).text()) !== '') {
+					$(this).html(label + icon);
+				}
+			} else {
+				if ($.trim($(this).text()) !== '') {
+					$(this).text(label);
+				}
+			}
+		});
+	} else {
+		$button.val(label).text(label);
+	}
+}
+
+//Format the money
+function formatMoney(cents, format) {
+	if (typeof cents == 'string') {
+		cents = cents.replace('.', '');
+	}
+	var value = '';
+	var placeholderRegex = /\{\{\s*(\w+)\s*\}\}/;
+	var formatString = (format || this.money_format);
+
+	function defaultOption(opt, def) {
+		return (typeof opt == 'undefined' ? def : opt);
+	}
+
+	function formatWithDelimiters(number, precision, thousands, decimal) {
+		precision = defaultOption(precision, 2);
+		thousands = defaultOption(thousands, ',');
+		decimal = defaultOption(decimal, '.');
+
+		if (isNaN(number) || number == null) {
+			return 0;
+		}
+
+		number = (number / 100.0).toFixed(precision);
+
+		var parts = number.split('.'),
+			dollars = parts[0].replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1' + thousands),
+			cents = parts[1] ? (decimal + parts[1]) : '';
+
+		return dollars + cents;
+	}
+
+	switch (formatString.match(placeholderRegex)[1]) {
+		case 'amount':
+			value = formatWithDelimiters(cents, 2);
+			break;
+		case 'amount_no_decimals':
+			value = formatWithDelimiters(cents, 0);
+			break;
+		case 'amount_with_comma_separator':
+			value = formatWithDelimiters(cents, 2, '.', ',');
+			break;
+		case 'amount_no_decimals_with_comma_separator':
+			value = formatWithDelimiters(cents, 0, '.', ',');
+			break;
+	}
+
+	return formatString.replace(placeholderRegex, value);
+};
+
+//BG: Function to update the Cart Dropdown with the newly added product(s)	
+function updateMiniCartContents() {
+
+	//ajax get request to cart.js
+	$.ajax({
+		type: 'GET',
+		url: config.shopifyAjaxCartURL,
+		dataType: 'json',
+		success: function (data) {
+			//Debug
+			//console.log(data);
+
+			//Get Cart Total Cost (format it) & Cart Count. 
+			var cartTotalCost = formatMoney(data.total_price, "{{ shop.money_format }}"),
+				cartCount = data.item_count;
+
+			//Output cart total
+			$(config.cartTotalSelector).text(cartTotalCost);
+			$(config.cartCountSelector).text(cartCount);
+          
+			if (cartCount > 0) {
+				$(config.cartCountSelector).removeClass('no-items');
+			} else {
+				$(config.cartCountSelector).addClass('no-items');
+			}
+
+
+			//remove all items within cart.
+			$('.cart-mini-contents .cart-row .cart-item').remove();
+
+			//with the returned data, focus soley on the items. For each item...
+			$.each(data.items, function (i, item) {
+				//debugging
+				//console.log(item);
+
+				var itemTitle = item.product_title;
+				var itemPrice = formatMoney(item.price, "{{ shop.money_format }}");
+				var itemQuantity = item.quantity;
+				var itemVariant = item.variant_title;
+				var itemVariantId = item.variant_id;
+				var itemImage = item.image;
+				var itemUrl = item.url;
+
+				//add each product back to mini cart preview.
+				$('.cart-mini-contents .cart-row').append('<div class="cart-item"><div class="cart-item-left"><div class="cart-prod-img"><a href="' + itemUrl + '"><img src="' + itemImage + '" class="img-fluid"></a></div></div><div class="cart-item-right"><div class="cart-prod-name"><a href="' + itemUrl + '">' + itemTitle + '</a></div><div class="cart-prod-price"><span class="money">' + itemPrice + '</span></div><div class="cart-prod-variant"><span>' + itemVariant + '</span></div><div class="cart-prod-quantity"><span class="label">Quantity:</span><span class="quantity-value">' + itemQuantity + '</span></div><div class="cart-prod-remove"><span data-variant-id="' + itemVariantId + '">Remove</span></div></div></div>');
+
+			});
+
+			//re-trigger the remove functionality.
+			removeCartItemTrigger();
+		}
+	});
+}
+
+//remove product by setting quantity to zero via the data attribute.
+function removeItemFromCart(variant_id) {
+	//ajax get request to cart.js
+	$.ajax({
+		type: 'POST',
+		url: config.shopifyAjaxChangeURL,
+		data: 'quantity=0&id=' + variant_id,
+		dataType: 'json',
+		success: function (data) {
+
+			//console.log('Remove Item Triggered');
+			
+			//Update the cart to reflect new contents.
+			updateMiniCartContents();
+
+		},
+		error: function (XMLHttpRequest) {
+			var response = eval('(' + XMLHttpRequest.responseText + ')');
+			response = response.description;
+			console.log(response);
+
+		}
+	});
+}
+
+//BG: Function will trigger on the cart page if user changes variant
+function addItem(variant_id,quantity,old_variant_id) {
+	$.ajax({
+		type: 'POST',
+		url: config.shopifyAjaxAddURL,
+		data: 'quantity='+quantity+'&id=' + variant_id,
+		dataType: 'json',
+		success: function (data) {
+			ajaxFeedbackCart('success','Updated size','.product-title[data-variant-id='+old_variant_id+'] .cart-product-variant-select');
+		},
+		error: function (XMLHttpRequest) {
+			var response = eval('(' + XMLHttpRequest.responseText + ')');
+			response = response.description;
+		}
+	});
+}
+
+//BG: function can be triggered by Quantity update, or variant update.
+function quantityItemChange(variant_id,value,addProduct,new_variant_id,quantity) {
+	//convert string to int
+	var variant_id = parseInt(variant_id);
+
+	//ajax get request to cart.js
+	$.ajax({
+		type: 'POST',
+		url: config.shopifyAjaxChangeURL,
+		data: 'quantity='+value+'&id=' + variant_id,
+		dataType: 'json',
+		success: function (data) {
+			if (addProduct == 'add') {
+				addItem(new_variant_id,quantity,variant_id);
+			} else {
+				$.each(data.items, function(index,item) {
+					if (variant_id === item.variant_id) {
+						if (item.quantity == value) {
+							ajaxFeedbackCart('success','Quantity updated','.basket-item[data-variant-id='+variant_id+'] .product-quantity-select');
+
+						//BG: if the amount has changed, but not to the value the user wanted.
+						} else if (item.quantity < value) {
+							ajaxFeedbackCart('warning','Quantity Updated to '+item.quantity+'. This is the last remaining amount.','.basket-item[data-variant-id='+variant_id+'] .product-quantity-select');
+						}
+						return false
+					}
+				});
+			}
+			
+			//Update Total Price
+			var cartTotalCost = formatMoney(data.total_price, "{{ shop.money_format }}");
+			$('.basket-total-value span').text(cartTotalCost);
+		},
+		error: function (XMLHttpRequest) {
+			var response = eval('(' + XMLHttpRequest.responseText + ')');
+			response = response.description;
+		}
+	});
+}
+
+
+
+
+//Define the remove cart item selector, use the .off & .on feature to ensure it works correctly after new contents added to mini cart.
+function removeCartItemTrigger() {
+	//Remove Item from Cart
+	$(config.cartRemoveSelector + ' span').off().on("click", function () {
+		var varientID = $(this).attr('data-variant-id');
+
+		$(this).parents('.cart-item').slideUp();
+		
+		//Pass over to removeItemFromCart Function.
+		removeItemFromCart(varientID);
+
+	});
+}
+
+function addToCart(form) {
+		$('.ajaxfeedback').remove();
+		//e.preventDefault();
+		var $addToCartForm = form;
+		var $addToCartBtn = $addToCartForm.find(config.addToCartBtnSelector+':first-of-type');
+
+		//Adding button stage
+		updateBtnText($addToCartBtn, config.addingToCartBtnText, config.loadingIcon);
+		$addToCartBtn.addClass('btn-adding').prop('disabled', true);
+
+		// Add to cart.
+		$.ajax({
+			url: config.shopifyAjaxAddURL,
+			dataType: 'json',
+			type: 'post',
+			data: $addToCartForm.serialize(),
+			success: function (itemData) {
+
+				//Added button stage
+				updateBtnText($addToCartBtn, config.addedToCartBtnText, config.successIcon);
+				$addToCartBtn.removeClass('btn-adding').addClass('btn-added');
+
+				//Once added, reset button back to add.
+				window.setTimeout(function () {
+					$addToCartBtn.prop('disabled', false).removeClass('btn-added');
+					updateBtnText($addToCartBtn, config.addToCartBtnText);
+				}, config.returnBtnToNormal);
+
+				updateMiniCartContents();
+
+
+				window.setTimeout(function () {
+					//$('.header-basket .cart-icon').addClass('swing animated');
+					$('.header-basket').addClass('hover');
+				}, 1000);
+
+				window.setTimeout(function () {
+					$('.header-basket').removeClass('hover');
+					//$('.header-basket .cart-icon').removeClass('swing animated');
+				}, 4000);
+				
+			},
+			error: function (XMLHttpRequest) {
+				var response = eval('(' + XMLHttpRequest.responseText + ')');
+				response = response.description;
+				if (response.slice(0, 4) === 'All ') {
+					ajaxFeedback('error', response.replace('All 1 ', 'All '), $addToCartForm);
+					$addToCartBtn.prop('disabled', false);
+					updateBtnText($addToCartBtn, config.soldOutBtnText);
+					$addToCartBtn.prop('disabled', true).removeClass('btn-adding').removeClass('btn-added');
+				} else {
+					ajaxFeedback('error', '<i class="fa fa-warning"></i> ' + response, $addToCartForm);
+					$addToCartBtn.prop('disabled', false).removeClass('disabled');
+					updateBtnText($addToCartBtn, config.addToCartBtnText);
+				}
+
+			}
+
+		});
+		return false;
+}
+
+
+
+//BG: allows the user to update the quantity and/or variant on the cart page.
+function cartItemQuantityVariant() {
+	var cartItem = $('.basket-item');
+	cartItem.each(function(){
+		var variantSelect = $(this).find('product-variant-select'),
+			variantSelectValueOriginal = '',
+			quantitySelect = $(this).find('.product-quantity-select'),
+			quantitySelectId = quantitySelect.attr('data-variant-id'),
+			quantitySelectValue = quantitySelect.val();
+
+		variantSelect.on('focus', function(){
+			variantSelectValueOriginal = $(this).val();
+		});
+
+		variantSelect.on('change', function(){
+			var variantSelectValue = $(this).val();
+			quantitySelectId = quantitySelect.attr('data-variant-id',variantSelectValue);
+			quantityItemChange(variantSelectValueOriginal,0,'add',variantSelectValue,quantitySelectValue);
+
+		});
+
+		quantitySelect.on('change',function(){
+			quantitySelectValue = $(this).val();
+			quantitySelectId = quantitySelect.attr('data-variant-id');
+			quantityItemChange(quantitySelectId,quantitySelectValue);
+		})	
+	});
+}
+
+$(document).ready(function() {
+	if ($('body').hasClass('template-cart')) {
+		//cartItemQuantity();
+		//cartItemVariantSize();
+		cartItemQuantityVariant();
+	}
+	removeCartItemTrigger();
+	
+	$(config.addToCartFormSelector).submit(function (e) {
+		e.preventDefault();
+		addToCart($(this));
+	});
+});
+</script>

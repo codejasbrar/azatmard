@@ -1,0 +1,44 @@
+{% if shop.domain contains "us" %}
+<ul class="current-country">
+    <li><span>US {% include 'icon-chevron-down' %}</span>
+        <ul class="country-select">
+            <li><a href="https://uk.lindafarrow.com/">GB</a></li>
+            <li><a href="https://eu.lindafarrow.com/">EU</a></li>
+            <li><a href="https://int.lindafarrow.com/">INT</a></li>
+        </ul>
+    </li>
+</ul>
+{% elsif shop.domain contains "eu" %}
+<ul class="current-country">
+    <li><span>EU {% include 'icon-chevron-down' %}</span>
+        <ul class="country-select">
+            <li><a href="https://uk.lindafarrow.com/">GB</a></li>
+            <li><a href="https://us.lindafarrow.com/">US</a></li>
+            <li><a href="https://int.lindafarrow.com/">INT</a></li>
+        </ul>
+    </li>
+</ul>
+{% elsif shop.domain contains "int" %}
+<ul class="current-country">
+    <li><span>INT {% include 'icon-chevron-down' %}</span>
+        <ul class="country-select">
+            <li><a href="https://uk.lindafarrow.com/">GB</a></li>
+            <li><a href="https://us.lindafarrow.com/">US</a></li>
+            <li><a href="https://eu.lindafarrow.com/">EU</a></li>
+        </ul>
+    </li>
+</ul>
+{% else %}
+<ul class="current-country">
+    <li><span>GB {% include 'icon-chevron-down' %}</span>
+        <ul class="country-select">
+            <li><a href="https://us.lindafarrow.com/">US</a></li>
+            <li><a href="https://eu.lindafarrow.com/">EU</a></li>
+            <li><a href="https://int.lindafarrow.com/">INT</a></li>
+        </ul>
+    </li>
+</ul>
+{% endif %}
+
+
+

@@ -1,0 +1,371 @@
+{% comment %}
+This is section that can be moved and placed anywhere on the page.
+
+You will need:
+ 
+- Slick CDN files (found in the layout/theme.liquid)
+- Custom Styles (found in styles/sections/hero.scss)
+{% endcomment %}
+
+{% assign slickInfinite = section.settings.slide_infinite %}
+{% assign slickDots = section.settings.slide_dots %}
+{% assign slickArrows = section.settings.slide_arrows %}
+{% assign slickAutoplay = section.settings.slide_autoplay %}
+{% assign slickSpeed = section.settings.slide_speed %}
+
+{% capture slide_settings %}{"slidesToShow": 1, "slidesToScroll": 1, "arrows":{{slickArrows}}, "autoplay":{{slickAutoplay}}, "autoplaySpeed": {{slickSpeed}}, "dots": {{slickDots}}, "infinite": {{slickInfinite}}}{% endcapture %}
+
+
+<div class="hero hero-static">
+	<div class="hero-static-slick" data-slick='{{ slide_settings }}'>
+	{% for block in section.blocks %}
+		{% case block.type %}
+		{% when 'slide' %}
+		<div class="hero-item" data-aos="fade-up">
+
+			
+			<div class="hero-image">
+			  {% if block.settings.widescreen_hero_image != blank %}
+
+						{% if block.settings.hero_slide_link != blank %}
+							<a href="{{block.settings.hero_slide_link}}">
+						{% endif %}
+
+						{% if block.settings.hero_overlay_check == true %}
+							<span class="hero-overlay {{block.settings.hero_overlay_colour}} opacity-{{block.settings.hero_overlay_opacity}}"></span>
+						{% endif %}
+
+						<picture>
+							<source media="(max-width: 767px)" srcset="{{ block.settings.portrait_hero_image | img_url: '540x' }}">
+							<source media="(max-width: 800px)" srcset="{{ block.settings.widescreen_hero_image | img_url: '1440x' }}">
+							<source media="(max-width: 1440px)" srcset="{{ block.settings.widescreen_hero_image | img_url: '1920x' }}">
+							<img src="{{ 'transparent-gif.png' | img_url: '1920x973' }}" data-src="{{ block.settings.widescreen_hero_image | img_url: '1920x' }}" class="lazyload" alt="{{ block.settings.widescreen_hero_image.alt }}">
+						</picture>
+
+						{% if block.settings.hero_slide_link != blank %}
+							</a>
+						{% endif %}
+
+			  {% else %}
+				{{ 'image' | placeholder_svg_tag: 'hero-placeholder img-fluid' }}
+			  {% endif %}
+			</div>
+			
+			{% if block.settings.hero_content_check == true %}
+			<div class="hero-content {{block.settings.content_vertical_position}}">
+				<div class="container">
+					<div class="row {{block.settings.content_horizontal_position}}">
+						<div class="col-12 col-md-{{block.settings.tablet_col_size}} col-lg-{{block.settings.desktop_col_size}}">
+							<div class="content {% if block.settings.hero_button_check == true %} content-btn {% endif%} {{block.settings.content_text_alignment}} content-{{block.settings.content_colour}}">
+								{% if block.settings.hero_title != blank %}
+									<h2>{{ block.settings.hero_title }}</h2>
+								{% endif %}
+								<div class="rte d-none">
+									{{ block.settings.hero_content }}
+								</div>
+								{% if block.settings.hero_button_check == true %}
+									<a href="{{ block.settings.hero_slide_link }}" class="hero-btn"><span>{{ block.settings.hero_button_text }}</span></a>
+								{% endif %}
+							</div><!-- content -->
+						</div>
+					</div> <!-- row -->
+				</div><!-- container -->
+			</div><!-- hero-content -->
+			{% endif  %}
+
+		</div>
+		{% endcase %}
+	{% endfor %}
+	</div>
+</div>
+
+{% schema %}
+{
+    "name": "Hero Static",
+    "max_blocks": 3,
+    "settings": [
+       	{
+		    "type": "header",
+			"content": "Slider Options"
+		},
+		{
+			"type": "checkbox",
+			"id": "slide_infinite",
+			"label": "Infinite Loop?",
+			"default": true
+		},
+		{
+			"type": "checkbox",
+			"id": "slide_dots",
+			"label": "Dots?",
+			"default": false
+		},
+		{
+			"type": "checkbox",
+			"id": "slide_arrows",
+			"label": "Arrows?",
+			"default": true
+		},
+		{
+			"type": "checkbox",
+			"id": "slide_autoplay",
+			"label": "Autoplay?",
+			"default": false
+		},
+		{
+			"type": "range",
+			"id": "slide_speed",
+			"label": "Speed",
+			"min": 1000,
+			"max": 5000,
+			"step": 1000,
+			"default": 2000,
+			"info": "1000 = 1 Second"
+		}
+	],
+    "blocks": [
+		{
+			"type": "slide",
+			"name": "Slide",
+			"settings": [
+		    {
+					"type": 	"header",
+					"content": 	"Desktop Image"
+				},
+
+			  {
+				  "type": "image_picker",
+				  "id": "widescreen_hero_image",
+				  "label": "Widescreen Image",
+				  "info": "Optimal image size: 1920 x 973."
+				},
+				{
+					"type": 	"header",
+					"content": 	"Mobile Image"
+				},
+				{
+				  "type": "image_picker",
+				  "id": "portrait_hero_image",
+				  "label": "Standard Image",
+				  "info": "Optimal image size: 540 x 540."
+				},
+				{
+				   "type":      "url",
+				   "id":        "hero_slide_link",
+				   "label":     "Banner Link"
+				},
+				{
+					"type": 	"header",
+					"content": 	"Hero Content"
+				},
+				{
+					"type": 		"checkbox",
+					"id": 			"hero_content_check",
+					"label": 		"Show Content?",
+					"default": 	true
+				},
+				{
+				   "type":      "text",
+				   "id":        "hero_title",
+				   "label":     "Title",
+				   "default":   "Hero Title"
+				},
+				{
+				   "type":      "richtext",
+				   "id":        "hero_content",
+				   "label":     "Hero Content",
+				   "default":   "<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatem nam eius voluptates vel molestias, ipsa labore esse ab doloribus. Nam.</p>"
+				},
+				{
+					"type":      "select",
+					"id":        "content_colour",
+					"label":     "Content Colour",
+					"options": [
+						{
+							"value": "white",
+							"label": "White"
+						},
+						{
+							"value": "black",
+							"label": "Black"
+						}
+					],
+					"default":   "white"
+				},
+				{
+					"type":      "select",
+					"id":        "content_text_alignment",
+					"label":     "Content Text Alignment",
+					"options": [
+						{
+							"value": "text-center text-sm-left",
+							"label": "Left"
+						},
+						{
+							"value": "text-center text-sm-center",
+							"label": "Middle"
+						},
+						{
+							"value": "text-center text-sm-right",
+							"label": "Right"
+						}
+					],
+					"default":   "text-center text-sm-center"
+				},
+				{
+					"type": "header",
+					"content": "Overlay Config"
+				},
+				{
+					"type": 		"checkbox",
+					"id": 			"hero_overlay_check",
+					"label": 		"Need a overlay?",
+					"default": 	false,
+					"info":			"An overlay creates a contrast between the image and content"
+				},
+				{
+					"type":      "select",
+					"id":        "hero_overlay_colour",
+					"label":     "Hero Overlay Colour",
+					"options": [
+						{
+							"value": "black",
+							"label": "Black"
+						},
+						{
+							"value": "white",
+							"label": "White"
+						}
+					],
+					"default":   "black"
+				},
+				{
+					"type": 		"range",
+					"id": 			"hero_overlay_opacity",
+					"label": 		"Hero Overlay Opacity",
+					"min": 			1,
+					"max": 			9,
+					"step": 		1,
+					"default": 	1
+				},
+				{
+					"type": "header",
+					"content": "Button Config"
+				},
+				{
+					"type": "checkbox",
+					"id": "hero_button_check",
+					"label": "Need a button?",
+					"default": true
+				},
+				{
+				   "type":      "text",
+				   "id":        "hero_button_text",
+				   "label":     "Button Text",
+				   "default":   "Read more"
+				},
+				{
+					"type": 	"header",
+					"content": 	"Content Positioning"
+				},
+				{
+				  	"type": 	"paragraph",
+				  	"content": 	"Determine where the content should be positioned both vertical and horizontal."
+				},
+				{
+					"type":      "select",
+					"id":        "content_vertical_position",
+					"label":     "Content Vertical Position",
+					"options": [
+						{
+							"value": "hero-content-top",
+							"label": "Top"
+						},
+						{
+							"value": "hero-content-middle",
+							"label": "Middle"
+						},
+						{
+							"value": "hero-content-bottom",
+							"label": "Bottom"
+						}
+					],
+					"default":   "hero-content-middle"
+				},
+				{
+					"type":      "select",
+					"id":        "content_horizontal_position",
+					"label":     "Content Horizontal Position",
+					"options": [
+						{
+							"value": "justify-content-start",
+							"label": "Left"
+						},
+						{
+							"value": "justify-content-center",
+							"label": "Middle"
+						},
+						{
+							"value": "justify-content-end",
+							"label": "Right"
+						}
+					],
+					"default":   "justify-content-center"
+				},
+				{
+					"type": 	"header",
+					"content": 	"Content Size"
+				},
+				{
+				  	"type": 	"paragraph",
+				  	"content": 	"Select the size of the content for Tablet and Desktop."
+				},
+				{
+					"type": 	"range",
+					"id": 		"desktop_col_size",
+					"label": 	"Desktop Content Size",
+					"min": 		1,
+					"max": 		12,
+					"step": 	1,
+					"default": 	12,
+					"info": 	"1 being the smallest and 12 being full width"
+				},
+				{
+					"type": 	"range",
+					"id": 		"tablet_col_size",
+					"label": 	"Tablet Content Size",
+					"min": 		1,
+					"max": 		12,
+					"step": 	1,
+					"default": 	12,
+					"info": 	"1 being the smallest and 12 being full width"
+				}
+			]
+		}
+	],
+	"presets": [
+    {
+      "name": "Hero Static",
+      "category": "Images",
+      "blocks": [
+        { 
+          "type": "slide"
+        }
+      ]
+    }
+  ]
+	
+}
+{% endschema %}
+
+{% javascript %}
+	$(document).ready(function() {
+		$('.hero-static-slick').each(function(){
+			var heroSlick = $(this);
+			$(heroSlick).slick({
+					prevArrow: slickPrevArrow,
+					nextArrow: slickNextArrow
+			});
+		});
+	});
+{% endjavascript %}

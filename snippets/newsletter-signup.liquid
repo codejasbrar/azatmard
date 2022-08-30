@@ -1,0 +1,104 @@
+<style>
+  @media only screen and (max-width: 1500px) { 
+    #footer-newsLetterPopup {
+      margin-top: -35px;
+    }
+  }
+  #footer-newsLetterPopup img {
+  	display: none;
+  }
+  #footer-newsLetterPopup form {
+  	background-color: transparent;
+    border-color: black !important;
+    padding-top: 0px;
+  }
+  
+  #footer-newsLetterPopup form p span, #footer-newsLetterPopup form p strong {
+  	color: black !important;
+    background-color: transparent !important;
+  }
+  #footer-newsLetterPopup form, #footer-newsLetterPopup form > .needsclick:nth-child(1) {
+  	display: inline-block !important;
+  }
+  #footer-newsLetterPopup form div .needsclick:nth-child(4){ 
+  	display: inline-block !important;
+    width: 70%;
+  } 
+  #footer-newsLetterPopup form div .needsclick:nth-child(5) {
+  	display: inline-block !important;
+    width: 30%;
+  }
+  #footer-newsLetterPopup form div .needsclick:nth-child(4) div, #footer-newsLetterPopup form div .needsclick:nth-child(5) div {
+  	padding: 10px 2px;
+  }
+  #footer-newsLetterPopup form input {
+  	background: white !important;
+    border-color: black !important; 
+    color: black !important;
+  }
+  #footer-newsLetterPopup form input::placeholder { 
+      	color: black !important;
+  }
+  @media only screen and (min-width: 600px) { 
+    #footer-newsLetterPopup form button { 
+    	width: 75%;
+    }
+    #footer-newsLetterPopup form div .needsclick:nth-child(4) div {
+      margin-left: 35px;
+  	}
+  }
+  @media only screen and (max-width: 600px) { 
+    #footer-newsLetterPopup form button {
+/*     	font-size: 15px !important; */
+    }    
+    #footer-newsLetterPopup form input::placeholder {
+      	font-size: 13px !important;
+    }
+  }
+</style>
+
+
+{% comment %} <!-- Begin Mailchimp Signup Form -->
+<div id="mc_embed_signup">
+<form action="" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+
+<div id="mc_embed_signup_scroll">
+<div class="row no-gutters">
+
+	<div class="col-12">
+		<div id="mce-responses" class="clear">
+			<div class="response" id="mce-error-response" style="display:none"></div>
+			<div class="response" id="mce-success-response" style="display:none"></div>
+		</div><!--mce-responses -->
+	</div><!-- col -->
+
+	<div class="col-10">
+		<div class="mc-field-group form-group">
+			<label for="mce-EMAIL" class="sr-only">Email Address</label>
+			<input type="email" value="" name="EMAIL" class="required email" id="mce-EMAIL" placeholder="Email Address">
+		</div><!-- mc-field-group -->
+	</div><!-- col -->
+
+	<div class="col-2">
+		<input type="submit" value="" name="subscribe" id="mc-embedded-subscribe" class="btn">
+	</div><!-- col -->
+
+	<div class="col-12">
+		<!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
+		 <div style="position: absolute; left: -5000px;" aria-hidden="true"><input type="text" name="b_32e9f549717f8a25546f9f84c_0418443ba6" tabindex="-1" value=""></div>
+	</div><!-- col -->
+
+
+</div><!-- row -->
+</div><!--mc_embed_signup_scroll -->
+</form>
+
+</div><!--mc_embed_signup -->
+<script src='//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js'></script><script>(function($) {window.fnames = new Array(); window.ftypes = new Array();fnames[0]='EMAIL';ftypes[0]='email';fnames[1]='FNAME';ftypes[1]='text';fnames[2]='LNAME';ftypes[2]='text';fnames[3]='MMERGE3';ftypes[3]='dropdown';fnames[4]='MMERGE4';ftypes[4]='dropdown';fnames[5]='MMERGE5';ftypes[5]='birthday';fnames[6]='MMERGE6';ftypes[6]='dropdown';}(jQuery));var $mcj = jQuery.noConflict(true);</script>
+<!--End mc_embed_signup--> {% endcomment %}
+
+<!-- <div class="klaviyo-form-LGTzpP"></div> -->
+<div id="footer-newsLetterPopup" style="display:none;">
+	<div class="klaviyo-form-Ygzshd"></div>
+<!--   <div class="klaviyo-form-UNhrHL"></div> -->
+</div>

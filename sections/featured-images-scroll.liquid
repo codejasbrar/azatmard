@@ -1,0 +1,105 @@
+{% comment %}
+This is section that can be moved and placed anywhere on the page.
+
+You will need:
+ 
+- Slick CDN files (found in the layout/theme.liquid)
+- Custom Styles (found in styles/sections/featured-products.scss)
+{% endcomment %}
+
+<section class="featured-images-scroll">
+	<div class="container">
+	{% if section.settings.section_title != blank or section.settings.section_content != blank %}
+	<div class="row mb-3 mb-md-4">
+		<div class="col-12 col-md-8 mx-auto text-center mt-3 mt-lg-5">
+			<h2 class="h1">{{ section.settings.section_title }}</h2>
+			<div class="rte">
+				{{ section.settings.section_content }}
+			</div>
+		</div>
+	</div>
+	{% endif %}
+
+	<div class="row featured-images-scroll-slick">
+		{% for image in section.blocks %}
+      		<a href="{{ image.settings.featured_link }}">
+				<div class="col-12 col-md-6">
+				<div class="featured-image-scroll" data-aos="fade-up">
+					<div class="featured-image">
+						{% if image.settings.featured_image != blank %}
+							<img src="{{ image.settings.featured_image| img_url: '700x' }}" class="img-fluid" alt="{{image.settings.featured_image.alt}}" />
+						{% else %}
+							{{ 'image' | placeholder_svg_tag: 'product-placeholder img-fluid' }}
+						{% endif %}
+					</div>
+					<div class="featured-image-details">
+						<span class="featured-image-title">{{ image.settings.featured_title }}</span>
+						<a href="{{ image.settings.featured_link }}" class="btn btn-draw" title="{{image.settings.featured_title}}"><span>Shop Now</span></a>
+					</div>
+				</div>
+			</div>
+      		</a>
+		{% endfor %}
+	</div>
+	
+	</div>
+</section>
+
+{% schema %}
+{
+  "name": "Featured Images Slider",
+  "settings": [
+    {
+      "type": 		"text",
+      "id": 		"section_title",
+      "label": 		"Heading",
+      "default": 	"Featured products"
+    },
+    {
+	   "type":      "richtext",
+	   "id":        "section_content",
+	   "label":     "Content",
+	   "default":   "<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatem nam eius voluptates vel molestias, ipsa labore esse ab doloribus. Nam.</p>"
+	}
+  ],
+  "blocks": [
+		{
+			"type": "image",
+			"name": "Image",
+			"settings": [
+				{
+				  "type": "image_picker",
+				  "id": "featured_image",
+				  "label": "Featured Image",
+				  "info": "Optimal image size: 700 x 730."
+				},
+				{
+				   "type":      "text",
+				   "id":        "featured_title", 
+				   "label":     "Title",
+				   "default":   "Title"
+				},
+				{
+				   "type":      "url",
+				   "id":        "featured_link",
+				   "label":     "Link"
+				}
+			]
+		}
+  ],
+  "presets": [
+    {
+      "name": 		"Featured Images Scroll",
+      "category": 	"Images"
+    }
+  ]
+}
+{% endschema %}
+{% javascript %}
+
+$(document).ready(function() {	
+	var stHeight = $('.featured-images-scroll-slick .slick-track').height();
+	$('.featured-images-scroll-slick .slick-slide').css('height',stHeight + 'px' );
+});
+
+{% endjavascript %}

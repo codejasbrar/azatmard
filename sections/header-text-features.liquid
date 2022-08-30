@@ -1,0 +1,45 @@
+<div class="header-text-features" {% if section.blocks.size < 1 %} style="display: none;" {% endif %}>
+	<div class="container">
+		<div class="d-flex align-items-center align-items-md-stretch justify-content-center text-features-slick">
+			{% for block in section.blocks %}
+				{% case block.type %}
+					{% when 'text_message' %}
+						<div class="text-feature {% if block.settings.show_on_mobile == false %}d-none{% endif%} d-sm-block">
+							<h4 class="text-feature-heading">{% if block.settings.featured_link != blank %}<a href="{{block.settings.featured_link}}">{% endif %}{{ block.settings.featured_heading }}{% if block.settings.featured_link != blank %}</a>{% endif %}</h4>
+						</div>
+					{% endcase %}
+			{% endfor %}
+		</div><!-- text-features -->
+	</div><!-- container -->
+</div><!-- header-text-features -->
+
+{% schema %}
+{
+    "name": "Header Assurance Messages",
+    "max_blocks": 3,
+    "blocks": [
+		{
+			"type": "text_message",
+			"name": "USP Column",             
+			"settings": [
+				{
+                    "type":     "text",
+				    "id":       "featured_heading",
+				    "label":    "Heading"
+				},
+                {
+                    "type":     "url",
+                    "id":       "featured_link",
+                    "label":    "Link"
+                },
+				{
+					"type": "checkbox",
+					"id": "show_on_mobile",
+					"default": true,
+					"label": "Show on mobile?"
+				}
+			]
+		}
+	]
+}
+{% endschema %}

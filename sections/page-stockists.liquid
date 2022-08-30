@@ -1,0 +1,94 @@
+<div class="container-fluid py-3 py-md-5">
+	<div class="row">
+		<div class="col-12 text-center">{% include 'breadcrumbs' %}</div>
+	</div><!-- row -->
+</div><!-- container -->
+
+<header class="page-header">
+	<div class="container">
+		<div class="row align-items-center">
+			<div class="col-12 mb-3 text-center">
+				<h1>{{ page.title }}</h1>
+			</div>
+		</div><!-- row -->
+	</div>
+</header>
+
+<div class="container mt-3 mt-md-5">
+	<div class="row">
+		{% for block in section.blocks %}
+			<div class="col-12 col-md-6 col-lg-4 mb-md-5">
+				<div class="stockist-item" data-aos="fade-up">
+					<div class="stockist-title">
+						<h3>{{block.settings.store_name}}{% include 'icon-plus' %} {% include 'icon-minus' %}</h3>
+					</div>
+					<div class="stockist-content">
+						<div class="openingTimes">
+							Opening Times:
+							{{block.settings.opening_times}}
+						</div>
+						<div class="address">
+							Address:
+							{{block.settings.address}}
+						</div>
+						<div class="contact">
+							Tel: {{block.settings.telephone}}
+							<span class="website">{{block.settings.website}}</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		{% endfor %}
+		<div class="col-12">
+			<div class="stockist_footer_text text-center" data-aos="fade-up">
+				{{section.settings.text_under_stockists}}
+			</div>
+		</div>
+	</div>
+</div>
+
+{% schema %}
+{
+  "name": "Page",
+	"settings": [
+		{
+			"type": "richtext",
+			"id": "text_under_stockists",
+			"label": "Text Under Stockists"
+		}
+	],
+  "blocks": [
+		{
+			"type": "Stockist",
+			"name": "Stockist",
+			"settings": [
+				{
+					"type": "text",
+					"id": "store_name",
+					"label": "Store Name"
+				},
+				{
+					"type": "richtext",
+					"id": "opening_times",
+					"label": "Opening Times"
+				},
+				{
+					"type": "richtext",
+					"id": "address",
+					"label": "Address"
+				},
+				{
+					"type": "richtext",
+					"id": "telephone",
+					"label": "Telephone"
+				},
+				{
+					"type": "richtext",
+					"id": "website",
+					"label": "Website"
+				}
+			]
+		}
+  ]
+}
+{% endschema %}

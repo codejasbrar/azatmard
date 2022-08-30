@@ -1,0 +1,15 @@
+{% capture message %}
+Take a look at {{product.title}} on {{shop.name}} - {{shop.url}}{{ product.url }}
+{% endcapture %}
+<div class="clearfix"></div>
+<ul class="social-sharing-products">
+    {% comment %} <li class="whatsapp d-none"><a href="whatsapp://send?text={{ message | url_encode }}" target="_blank">{% include 'icon-whatsapp' %}</a></li> {% endcomment %}
+    <li class="facebook"><a href="https://www.facebook.com/sharer/sharer.php?u={{shop.url}}{{ product.url }}" target="_blank">{% include 'icon-facebook' %}</a></li>
+    <li class="twitter"><a class="twitter-share-button"
+  href="https://twitter.com/intent/tweet?text={{ message | url_encode }}" target="_blank">{% include 'icon-twitter' %}</a></li>
+    {% comment %} <li class="tumblr"><a href="http://tumblr.com/widgets/share/tool?canonicalUrl={{shop.url}}{{ product.url }}" target="_blank">{% include 'icon-tumblr' %}</a></li>
+    <li class="pinterest"><a href="https://pinterest.com/pin/create/button/?url={{shop.url}}{{ product.url }}&media={{ featured_image | img_url: '600x600' }}&description={{ message | url_encode }}" target="_blank">{% include 'icon-pinterest' %}</a></li>
+    <li class="email">
+    <a href="mailto:?&subject={{shop.name}} - {{product.title}}&body={{ message | url_encode }}" target="_blank">{% include 'icon-email' %}</a>
+    </li> {% endcomment %}
+</ul>

@@ -1,0 +1,20 @@
+<form action="/search" class="site-search" method="get" role="search">
+	<label class="label-hidden">
+		{{ 'general.search.placeholder' | t }}
+	</label>
+	
+	<input type="search" name="q" value="{{ search.terms | escape }}" placeholder="{{ 'general.search.placeholder' | t }}">
+	
+	{% if search_button == 'true' %}
+		<button type="submit">
+	
+		{% if search_icon == 'true' %}
+			{% include 'icon-search' %}
+			<span class="icon-fallback-text">{{ 'general.search.submit' | t }}</span>
+		{% else %}
+			{{ 'general.search.submit' | t }}
+		{% endif %}
+  		</button>
+  		
+  	{% endif %}
+</form>

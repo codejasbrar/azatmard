@@ -1,0 +1,50 @@
+{% assign seperator = '<span class="seperator" aria-hidden="true">|</span>' %}
+
+<div class="breadcrumb">
+	{% unless template == 'index' or template == 'cart' or template == 'list-collections' %}
+		<nav aria-label="breadcrumbs">
+		<a href="/" title="Home">Home</a>
+	{% if template contains 'page' %}
+		{{seperator}}
+		<span>{{ page.title }}</span>
+	{% elsif template contains 'product' %}
+	{% if collection.url %}
+		{{seperator}}
+		{{ collection.title | link_to: collection.url }}
+	{% endif %}
+		{{seperator}}
+		<span>{{ product.title }}</span>
+	{% elsif template contains 'collection' and collection.handle %}
+		{{seperator}}
+	{% if current_tags %}
+		{% capture url %}/collections/{{ collection.handle }}{% endcapture %}
+		{{ collection.title | link_to: url }}
+		{{seperator}}
+		<span>{{ current_tags | join: " + " }}</span>
+	{% else %}
+		<span>{{ collection.title }}</span>
+	{% endif %}
+
+	{% elsif template == 'blog' %}
+
+		{{seperator}}
+		{% if current_tags %}
+			{{ blog.title | link_to: blog.url }}
+			{{seperator}}
+			<span>{{ current_tags | join: " + " }}</span>
+		{% else %}
+			<span>{{ blog.title }}</span>
+		{% endif %}
+
+	{% elsif template == 'article' %}
+		{{seperator}}
+		{{ blog.title | link_to: blog.url }}
+		{{seperator}}
+		<span>{{ article.title }}</span>
+	{% else %}
+		{{seperator}}
+		<span>{{ page_title }}</span>
+	{% endif %}
+		</nav>
+	{% endunless %}
+</div>

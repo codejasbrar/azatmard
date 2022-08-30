@@ -1,0 +1,48 @@
+ <section class="featured-products related-products" data-product-id="{{product.id}}" data-image-ratio="{{section.settings.related_products_ratio}}">
+	<div class="container">
+    <div class="row">
+      <div class="col-12 col-md-8 mx-auto text-center mt-3 mt-lg-5">
+        <h3 class="h4 uppercase mb-4">You May Also Like</h3>
+      </div>
+    </div>
+		<div class="row justify-content-center featured-products-slick">
+			
+		</div>
+	</div>
+</section>
+
+<script>
+  
+  $(document).ready(function(){
+  	
+    relatedProductsAPI();
+  
+  });
+  
+  function relatedProductsAPI() {
+var productID = $('.featured-products.related-products').attr('data-product-id');
+
+    //Make the JSON request to the recommendations API, pass over the current product ID.
+    $.getJSON('/recommendations/products.json?product_id='+productID+'&limit=4', function(data) {
+        //for each product in the API Response, pass over to the output function.
+        $.each(data.products,function(i, product) {
+            //BG: outputProduct function used in settings/common.js. It's basic styling.
+          
+          console.log(data);
+          console.log(product);
+          console.log( outputProduct(product,'.featured-products.related-products'));
+          
+          
+           
+            var increment = i + 1;
+
+            //BG: if we've cycled through all products, trigger the slickInit
+            if (data.products.length == increment) {
+                //persistentCheck function in setting/common.js
+                persistentCheck('.featured-products.related-products .featured-product',4,relatedSlickSlider,'.featured-products.related-products .featured-products-slick',5000);
+            }
+        });
+    });
+}
+  
+</script>

@@ -1,0 +1,36 @@
+<div class="filter-container">
+    <div class="row">
+      {%comment%}
+        <div class="col-5 col-sm-6">
+            <div id="bc-sf-filter-top-sorting"></div>
+        </div><!-- col -->
+        <div class="col-2 d-sm-none">
+            <ul class="collection-view d-flex">
+                <li class="collection-view-six active">
+                    <span class="d-sm-block d-md-none">
+                        {% include '2x2' %}
+                    </span>
+                    <span class="d-none d-md-block">
+                        {% include 'icon-collection-view-4' %}
+                    </span>
+                </li>
+                <li class="collection-view-three">
+                    <span class="d-sm-block d-md-none">
+                        {% include '1x1' %}
+                    </span>
+                    <span class="d-none d-md-block">
+                        {% include 'icon-collection-view-3' %}
+                    </span>
+                </li>
+            </ul>
+        </div>{%endcomment%}
+        <div class="col-12 col-sm-12">
+            <h3 class="filter-title ">Filter {% include 'icon-arrow_down' %}</h3>
+        </div><!-- col -->
+    </div><!-- row -->
+    <div class="filter-sidebar" style="display: none;">
+        <div id="bc-sf-filter-tree-h"></div>
+        <div id="bc-sf-filter-tree-mobile"></div>
+        <div id="bc-sf-filter-tree"></div>
+    </div><!-- filter-sidebar -->
+</div><!-- filter-container -->

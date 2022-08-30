@@ -1,0 +1,193 @@
+<div class="container-fluid py-3 py-md-5">
+	<div class="row">
+		<div class="col-12 text-center">{% include 'breadcrumbs' %}</div>
+	</div><!-- row -->
+</div><!-- container -->
+
+<div class="container">
+
+<div class="row">
+	<div class="col-12 col-md-8 col-lg-6 mx-auto">
+		<div id="CustomerLoginForm">
+	  		<h2 class="text-center">Sign In</h2>
+	  		
+		  	{% form 'customer_login' %}
+
+			{{ form.errors | default_errors }}
+			<div class="form-group">
+			<label for="CustomerEmail" class="d-none">
+			  {{ 'customer.login.email' | t }}
+			</label>
+			<input type="email"
+				   name="customer[email]"
+				   id="CustomerEmail"
+				   class="{% if form.errors contains 'email' %}input-error{% endif %}"
+				   spellcheck="false"
+				   autocomplete="off"
+				   autocapitalize="off"
+					 placeholder="Email"
+				   autofocus>
+			</div>
+
+			{% if form.password_needed %}
+		  	<div class="form-group">
+			  <label for="CustomerPassword" class="d-none">
+				{{ 'customer.login.password' | t }}
+			  </label>
+			  <input type="password"
+					 name="customer[password]"
+					 id="CustomerPassword"
+					 placeholder="Password"
+					 class="{% if form.errors contains 'password' %}input-error{% endif %}">
+			</div>
+			{% endif %}
+			
+			<div class="row align-items-center">
+				{% comment %} <div class="col-6">
+					{% if form.password_needed %}
+						<a href="#recover" id="RecoverPassword">{{ 'customer.login.forgot_password' | t }}</a>
+					{% endif %}
+				</div> {% endcomment %}
+				
+				<div class="col text-center">
+					<div class="pseudo-blue">
+						<button type="submit" class="btn btn-submit btn-primary">{{ 'customer.login.sign_in' | t }}</button>
+						<span class="forgotPassword mt-3">Forgot Password?</span>
+					</div>
+				</div>
+			</div>
+			
+		  {% endform %}
+		  
+		</div><!-- CustomerLoginForm -->
+
+		<div id="RecoverPasswordForm" class="mt-5">
+			<h2 class="text-center">{{ 'customer.recover_password.title' | t }}</h2>
+			<div class="form-success hide" id="ResetSuccess">
+				{{ 'customer.recover_password.success' | t }}
+			</div>
+
+			{% form 'recover_customer_password' %}
+			{{ form.errors | default_errors }}
+
+			{% if form.posted_successfully? %}
+				<span class="hide reset-password-success"></span>
+			{% endif %}
+
+			<div class="form-group">
+			<label for="RecoverEmail" class="d-none">
+				{{ 'customer.recover_password.email' | t }}
+			</label>
+			<input type="email"
+					name="email"
+					id="RecoverEmail"
+					spellcheck="false"
+					autocomplete="off"
+					placeholder="Email"
+					autocapitalize="off">
+			</div>
+			
+			<div class="row align-items-center">
+				<div class="col text-center">
+					<div class="pseudo-blue">
+						<button type="submit" class="btn btn-submit btn-primary"> {{ 'customer.recover_password.submit' | t }}</button>
+					</div>
+				</div>
+			</div>
+			{% endform %}
+		</div> <!-- RecoverPasswordForm -->
+		<div id="CreateAccount" class="mt-5">
+			<h2 class="text-center">Create Account</h2>
+			{% form 'create_customer' %}
+			{{ form.errors | default_errors }}
+			<div class="row">
+				<div class="form-group col-12">
+
+					<label for="FirstName" class="d-none">
+					{{ 'customer.register.first_name' | t }}
+					</label>
+					<input type="text"
+					name="customer[first_name]"
+					id="FirstName"
+					placeholder="First Name"
+
+					autofocus
+					{% if form.first_name %}value="{{ form.first_name }}"{% endif %}>
+				</div>
+
+				<div class="form-group col-12">
+					<label for="LastName" class="d-none">
+					{{ 'customer.register.last_name' | t }}
+					</label>
+					<input type="text"
+					name="customer[last_name]"
+					id="LastName"
+					placeholder="Surname"
+					{% if form.last_name %}value="{{ form.last_name }}"{% endif %}>
+				</div>
+
+				<div class="form-group col-12">
+					<label for="Email" class="d-none">
+					{{ 'customer.register.email' | t }}
+					</label>
+					<input type="email"
+					name="customer[email]"
+					id="Email"
+					class="{% if form.errors contains 'email' %}input-error{% endif %}"
+					value="{% if form.email %}{{ form.email }}{% endif %}"
+					spellcheck="false"
+					autocomplete="off"
+					autocapitalize="off"
+					placeholder="Email">
+				</div>
+
+				<div class="form-group col-12">
+					<label for="CreatePassword" class="d-none">
+					{{ 'customer.register.password' | t }}
+					</label>
+					<input type="password"
+					name="customer[password]"
+					id="CreatePassword"
+					placeholder="Create Password"
+					class="{% if form.errors contains 'password' %}input-error{% endif %}">
+				</div>
+				<div class="form-group col-12 newsletterConsent">
+					<input type="hidden" name="customer[accepts_marketing]" value="" />
+					<input type="checkbox" name="customer[accepts_marketing]" /><div class="text">Sign up to Azat Mard marketing material</div>
+				</div>
+			</div>
+			<div class="row align-items-center">
+				<div class="col text-center">
+					<div class="pseudo-blue">
+						<button type="submit" class="btn btn-submit btn-primary">{{ 'customer.register.submit' | t }}</button>
+					</div>
+				</div>
+			</div>	
+			{% endform %}
+		</div>
+	</div>
+
+		{% if shop.checkout.guest_login %}
+		  <h2>{{ 'customer.login.guest_title' | t }}</h2>
+		  {% form 'guest_login' %}
+			<button type="submit" class="btn">{{ 'customer.login.guest_continue' | t }} </button>
+		  {% endform %}
+		{% endif %} 
+
+	</div><!-- col -->
+</div><!-- row -->
+</div>
+
+{% schema %}
+  {
+    "name": "Login",
+		"settings": [
+			{
+				"type": "image_picker",
+				"id": "background",
+				"label": "Header BG Image",
+				"info": "Optimal image size: 1920 x 350"
+			}
+		]
+  }
+{% endschema %}

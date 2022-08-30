@@ -1,0 +1,19 @@
+<div class="header-text-features">
+	<div class="container">
+		<div class="row align-items-stretch text-features-slick uk-content">
+			{% for block in section.blocks %}
+				{% case block.type %}
+					{% when 'text_message' %}
+						<div class="col text-feature">
+							<div class="row align-items-center">
+								<div class="col text-center">
+									<h4 class="text-feature-heading">{{ block.settings.featured_heading }}</h4>
+									<span class="text-feature-subheading">{{ block.settings.featured_subheading }}</span>
+								</div>
+							</div>
+						</div>
+					{% endcase %}
+			{% endfor %}
+		</div><!-- text-features -->
+	</div><!-- container -->
+</div><!-- header-text-features -->

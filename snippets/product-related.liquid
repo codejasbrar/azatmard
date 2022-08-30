@@ -1,0 +1,79 @@
+{% assign number_of_products = 8 %}
+{% assign number_of_products_to_fetch = number_of_products | plus: 1 %}
+
+{% if collection == null or collection.handle == 'frontpage' or collection.handle == 'all' %}
+  {% assign found_a_collection = false %}
+  {% for c in product.collections %}
+    {% if found_a_collection == false and c.handle != 'frontpage' and c.handle != 'all' and c.all_products_count > 1 %}
+      {% assign found_a_collection = true %}
+      {% assign collection = c %}
+    {% endif %}
+  {% endfor %}
+{% endif %}
+
+{% if collection and collection.products_count > 1 %}
+<section class="featured-products related-products">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-8 mx-auto text-center mt-3 mt-lg-5">
+				<h3 class="h4 uppercase mb-4">You May Also Like</h3>
+		  </div><!-- col -->
+    </div><!-- row -->
+    {% assign current_product = product %}
+    {% assign current_product_found = false %}
+    <div class="row justify-content-center featured-products-slick">
+    {% for product in collection.products limit: number_of_products_to_fetch %}
+      {% if product.handle == current_product.handle %}
+        {% assign current_product_found = true %}
+      {% else %}
+        {% unless current_product_found == false and forloop.last %}
+
+
+            {% unless image_size %}
+            {%- assign image_size = '600x600' -%}
+            {% endunless %}
+
+            {% unless current_collection %}
+            {% assign current_collection = collection %}
+            {% endunless %}
+
+            {% assign on_sale = false %}
+            {% if bold_compare_at_price > bold_price %}
+            {% assign on_sale = true %}
+            {% endif %}
+
+            {% assign sold_out = true %}
+            {% if product.available  %}
+            {% assign sold_out = false %}
+            {% endif %}
+
+			<div class="col col-md-4 col-lg-3 featured-product">
+				<div class="product-image">
+					<a href="{{ product.url | within: collection }}" title="{{product.title}}">
+						{% if product.featured_image != blank %}
+							<img data-src="{{ product.featured_image | img_url: '450x' }}" class="img-fluid lazyload" alt="{{product.title}}" />
+						{% else %}
+							{{ 'image' | placeholder_svg_tag: 'product-placeholder img-fluid' }}
+						{% endif %}
+					</a>
+				</div>
+				<div class="product-details">
+                <a href="{{ product.url | within: collection }}" title="{{product.title}}">
+                    <span class="product-title">{{ product.title }}</span>
+					<span class="product-price">
+							{{ product.price_min | money }}
+							{% if product.compare_at_price_min > product.price_min %}
+								<span class="product-price-original"><span>{{product.compare_at_price | money}}</span></span>
+							{% endif %}
+                    </span>
+                </a>
+				</div><!-- product-details --> 
+			</div><!-- featured-product -->
+
+        {% endunless %}
+      {% endif %}
+    {% endfor %}
+    </div>
+  </div><!-- container -->
+</section>
+{% endif %}

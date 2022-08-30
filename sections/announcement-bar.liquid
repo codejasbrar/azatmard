@@ -1,0 +1,204 @@
+
+<style>
+  #shopify-section-announcement-bar {
+  	margin-top: 0px;
+  }
+  .announcement-bar { 
+      visibility: hidden;
+    }
+  .announcement-bar .row {
+    background-color: #000000;
+    width: 100%;
+    margin: 0px;
+  }
+  
+  .announcement-bar .row .announcement-item {
+    background-color: #000000;
+    color: #ffffff;
+    padding: 15px 5px;
+    text-align: center;
+/*     height: 45px; */
+    margin: 0px;
+    line-height: 2em;
+    font-size: 10px;
+  }
+  .announcement-bar .row.desktop-slider .announcement-item {
+    width: 50% !important;
+  }
+  .announcement-bar .row .left-banner span {
+  	margin-left: 0px;
+  }
+  .announcement-bar .row .left-banner {
+  	border-right: 1px solid #fff;
+  }
+  .announcement-bar .row .middle-banner {
+  	border-right: 1px solid #fff;
+    border-left: 1px solid #fff;
+  }
+  .announcement-bar .row .right-banner { 
+    border-left: 1px solid #fff;
+  }
+  .announcement-bar .row .announcement-item a {
+      color: #ffffff;
+      margin-left: 5px;
+      border: 1px solid;
+      border-radius: 5px;
+      padding: 3px;
+      outline: none;
+      line-height: 0;
+  }
+  .announcement-bar .row.desktop-slider .full-width {
+  	width: 100% !important;
+    height: 45px;
+  }
+  .announcement-bar .row.desktop-slider .half-width {
+  	width: 50% !important;
+    height: 45px;
+  }
+  .announcement-bar .announcement-slick .click-here {
+  	visibility: hidden;
+  }
+  .clear {
+    clear: both; 
+  }
+  @media screen and (max-width: 1024px) {
+    .announcement-bar .row .announcement-item {
+      font-size: 9px;
+    }
+  }
+  @media screen and (max-width: 768px) {
+    .announcement-bar .row .announcement-item {
+    	height: 64px;
+      	border-left: none;
+      	border-right: none;
+      	font-size: 10px;
+    }
+    .announcement-bar .row .announcement-item a {
+    	display: none;
+    }
+  }  
+</style>
+{% assign slickInfinite = section.settings.slide_infinite %}
+{% assign slickAutoplay = section.settings.slide_autoplay %}
+{% assign slickSpeed = section.settings.slide_speed %}
+
+{% capture slide_settings %}{"slidesToScroll": 1, "arrows":false, "autoplay":{{slickAutoplay}}, "autoplaySpeed": {{slickSpeed}}, "infinite": {{slickInfinite}}}{% endcapture %}
+<section class="announcement-bar">
+{% if section.settings.section_left_title != "" or section.settings.section_middle_title != "" or section.settings.section_right_title != "" %}
+  <div class="row announcement-slick" data-slick='{{ slide_settings }}'>
+    <div class="left-banner announcement-item">
+      <span class="title-msg">{{ section.settings.section_left_title }}</span><a class="click-here" href="#">Click here</a>
+    </div>
+<!--     <div class="middle-banner announcement-item">{{ section.settings.section_middle_title }} </div> -->
+    <div class="right-banner announcement-item"><span class="title-msg">{{ section.settings.section_right_title }}</span></div>
+  </div>
+{% endif %}
+</section>
+{% schema %}
+{
+  "name": "Announcement Bar",
+  "settings": [
+    {
+      "type": 		"text",
+      "id": 		"section_left_title",
+      "label": 		"Left Heading"
+    },
+	{
+      "type": 		"text",
+      "id": 		"section_middle_title",
+      "label": 		"Middle Heading"
+    },
+	{
+      "type": 		"text",
+      "id": 		"section_right_title",
+      "label": 		"Right Heading"
+    },
+	{
+			"type": "checkbox",
+    "id": "slide_infinite",
+    "label": "Infinite Loop?",
+    "default": true
+    },
+    {
+    "type": "checkbox",
+    "id": "slide_autoplay",
+    "label": "Autoplay?",
+    "default": false
+    },
+    {
+    "type": "range",
+    "id": "slide_speed",
+    "label": "Speed",
+    "min": 1000,
+    "max": 5000,
+    "step": 1000,
+    "default": 2000,
+    "info": "1000 = 1 Second"
+    }
+  ]
+}
+{% endschema %}
+
+<script>
+  var setupSlider = function() {
+    $('.announcement-slick').slick({
+      slidesToShow: 2,
+      slidesToScroll: 0,
+      dots: false,
+      autoplay: false,
+      arrows: false,
+      responsive: [
+        {
+          breakpoint: 769, // mobile breakpoint
+          settings: {
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            autoplay: true
+          }
+        }
+      ]
+    });
+  }
+  var updateBannersOnCurrencyChange = function(currency) {
+    console.log(currency);
+    const screenWidth = $(window).width();
+    console.log(screenWidth);
+//     currency = 'PKR';
+    if($('.announcement-slick').length > 0) {
+      if($('.announcement-slick').hasClass('slick-slider')) {
+        $('.announcement-slick').slick('unslick');
+      }
+      if(screenWidth > 768) {
+      	$('.announcement-slick').addClass('desktop-slider');
+      } else {
+      	$('.announcement-slick').removeClass('desktop-slider');
+      }
+      if(currency == "GBP" || currency == undefined) { 
+        $('.announcement-slick .left-banner').removeClass('full-width');
+        $('.announcement-slick .right-banner').show();
+      } else {
+        $('.announcement-slick .left-banner').addClass('full-width');
+        $('.announcement-slick .right-banner').hide();
+      }
+      setupSlider();
+    }
+  }
+  
+  $(document).ready(function() {
+    	$('.announcement-slick').css('visibility','visible');
+      if($('.announcement-slick').length > 0) {
+        setupSlider();
+        if($(window).width() < 767) {
+          window.addEventListener('load', (event) => {
+            console.log('page is fully loaded');
+            const annoucementItem =  $('.announcement-bar .right-banner .title-msg').text();
+              if(annoucementItem.length<100) {
+                $('.announcement-bar .right-banner').css({ paddingTop: '22px' });
+              }
+
+          });
+        }
+      }
+    
+  });
+</script>

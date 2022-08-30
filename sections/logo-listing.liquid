@@ -1,0 +1,127 @@
+<section class="logo-listing {{section.settings.background}}">
+	<div class="container">
+	{% if section.settings.section_title != blank or section.settings.section_content != blank %}
+	<div class="row mb-3 mb-md-5">
+		<div class="col-12 col-md-8 mx-auto text-center">
+			<h2>{{ section.settings.section_title }}</h2>
+			<div class="rte">
+				{{ section.settings.section_content }}
+			</div>
+		</div>
+	</div>
+	{% endif %}
+	<div class="row align-items-center">
+	{% for logo in section.blocks %}
+		<div class="logo-listing-item col-12 col-sm-6 col-md-4 col-lg mb-2 mb-sm-4">
+		
+			{% if logo.settings.logo_link != blank %}
+			<a href="{{logo.settings.logo_link}}">
+			{% endif %}
+			
+				{% if logo.settings.logo_image != blank %}
+					<img src="{{ 'logo.svg' | asset_url }}" class="img-fluid" alt="{{ section.settings.logo_image.alt }}">
+				{% else %}
+					{{ 'image' | placeholder_svg_tag: 'logo-placeholder img-fluid' }}
+				{% endif %}
+				
+			{% if logo.settings.logo_link != blank %}
+			</a>
+			{% endif %}
+		</div>
+	{% endfor %}
+	</div>
+	</div>
+</section>
+
+
+{% schema %}
+{
+    "name": "Logo Listing",
+    "max_blocks": 6,
+    "settings": [
+       	{
+		    "type": "header",
+			"content": "Section Options"
+		},
+		{
+		   "type":      "text",
+		   "id":        "section_title",
+		   "label":     "Section Title",
+		   "default":   "As seen on..."
+		},
+		{
+		   "type":      "richtext",
+		   "id":        "section_content",
+		   "label":     "Content",
+		   "default":   "<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatem nam eius voluptates vel molestias, ipsa labore esse ab doloribus. Nam.</p>"
+		},
+		{
+		   "type":      "select",
+		   "id":        "background",
+		   "label":     "Background",
+		   "options": [
+		   	 {
+			   "value": "bg-white",
+			   "label": "White Background"
+			 },
+			 {
+			   "value": "bg-grey",
+			   "label": "Grey Background"
+			 },
+			 {
+			   "value": "bg-green",
+			   "label": "Light Green Background"
+			 },
+			 {
+			   "value": "border-t",
+			   "label": "Border Top Divider"
+			 },
+			 {
+			   "value": "border-b",
+			   "label": "Border Bottom Divider"
+			 }
+		   ],
+		   "default":   "bg-white"
+		}
+	],
+    "blocks": [
+		{
+			"type": "logo",
+			"name": "Logo",
+			"settings": [
+			    {
+				  "type": 		"image_picker",
+				  "id": 		"logo_image",
+				  "label": 		"Logo"
+				},
+				{
+				   "type":      "url",
+				   "id":        "logo_link",
+				   "label":     "Link"
+				}
+			]
+		}
+	],
+	"presets": [
+    {
+      "name": "Logo List",
+      "category": "Images",
+      "blocks": [
+        {
+          "type": "logo"
+        },
+        {
+          "type": "logo"
+        },
+        {
+          "type": "logo"
+        },
+        {
+          "type": "logo"
+        }
+      ]
+    }
+  ]
+	
+}
+{% endschema %}

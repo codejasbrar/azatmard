@@ -1,0 +1,220 @@
+<footer data-aos="fade-up">
+  <div class="container-fluid">
+    <div class="row d-flex justify-content-center">
+        {% for block in section.blocks %}
+                {% case block.type %}
+                    {% when 'newsletter' %}
+                        <div class="footer-col-social footer-col col-md-6 col-sm-12 col-xs-12">
+                            {% if block.settings.newsletter_show == true %}
+                            <div class="newsletter-signup">
+                                    <div class="row align-items-center">
+                                        {% comment %} {% if block.settings.newsletter_title != blank %}
+                                        <div class="col-12 col-sm-12 col-xs-12">
+                                            <h4 class="footer-title nocollapse">{{block.settings.newsletter_title}}</h4>
+                                        </div>
+                                        {% endif %} {% endcomment %}
+                                        <div class="col-12 col-sm-12 col-xs-12 news-letter">
+                                            {% include 'newsletter-signup' %}
+                                        </div>
+                                    </div>
+                            </div>
+                            {% endif %}
+
+                        </div>
+
+                    {% endcase %}
+        {% endfor %}
+    </div>
+  </div>
+  
+	<div class="container-fluid">
+		<div class="row">
+
+		<div class="footer-logo footer-logo-mobile d-md-none">
+			{% include 'site-logo' %}
+		</div>
+		{% assign social_icons = "https://cdn.shopify.com/s/files/1/0175/6626/9494/files/Instagram.png?v=1599809256, https://cdn.shopify.com/s/files/1/0175/6626/9494/files/Facebook.png?v=1599809248, https://cdn.shopify.com/s/files/1/0175/6626/9494/files/Twitter.png?v=1599809263" | split: ','%}
+		{% for block in section.blocks %}
+			{% case block.type %}
+				{% when 'menu' %}
+
+				<div class="footer-col footer-col-menu col-12 col-md-4 col-lg">
+					<h4 class="footer-title">{{ block.settings.menu_heading | escape }} {% include 'icon-plus' %} {% include 'icon-minus' %}</h4>
+					{%- assign footer_linklist = block.settings.menu -%}
+
+					{% if linklists[footer_linklist].links.size > 0 %}
+						<div class="footer-content">
+							<ul class="footer-links">
+								{% for link in linklists[footer_linklist].links %}
+									<li><a href="{{ link.url }}">{{ link.title }}</a></li>
+								{% endfor %}
+							</ul>
+						</div>
+					{% endif %}
+				</div>
+          
+				{% when 'social_menu' %}
+
+          		<div class="footer-col footer-col-social-menu col-12 col-md-4 col-lg delivery">
+					<h4 class="footer-title">Delivery {% include 'icon-plus' %} {% include 'icon-minus' %}</h4>
+						<div class="footer-content delivery">
+							<ul class="footer-links GBP">
+                              <li><span class="delivery-price">Free</span> UK STANDARD DELIVERY- 4 TO 5 WORKING DAYS </li>
+                              <li><span class="delivery-price">£6.95</span> UK EXPRESS DELIVERY- 1-3 BUSINESS DAY</li>
+                            
+                              <li><span class="delivery-price">£14.99</span>EUROPE STANDARD DELIVERY- 5 TO 6 WORKING DAYS</li>
+                              
+                              <li><span class="delivery-price">£19.99</span> US/CANADA- 5 TO 6 WORKING DAYS</li>
+                              <li><span class="delivery-price">£19.99</span>AUSTRALIA- 5 TO 6 WORKING DAYS</li>
+							</ul>
+                          	
+                          	
+<!--                           	<ul class="footer-links rest">
+                              <p> Rest of World </p>
+                              <li><span class="delivery-price">£25.99</span> Express Delivery 5-10 Working Days </li>
+                              <li><span class="delivery-price">£19.99</span> Standard Delivery Up to 14 working days</li>
+							</ul> -->
+						</div>
+                      <div class="payments-sec">
+                        <h4 class="footer-title"> Accepted Payments </h4>
+                          <ul>
+                              {% for type in shop.enabled_payment_types %}
+                                {%- assign icon_class = 'payment-icon payment-icon--' | append: type -%}
+                                <li>
+                                  {{ type | payment_type_svg_tag: class:icon_class }}
+                                </li>
+                              {% endfor %}
+                          </ul>
+                      </div>
+				</div>
+				<!-- social icons -->
+          		<div class="d-none d-md-block footer-col footer-col-social-menu col-12 col-md-4 col-lg">
+					<h4 class="footer-title">{{ block.settings.menu_heading | escape }} {% include 'icon-plus' %} {% include 'icon-minus' %}</h4>
+					{%- assign footer_linklist = block.settings.menu -%}
+					{%- assign social_accounts = 'Instagram, Facebook, Twitter, Pinterest, Snapchat, Tumblr, YouTube, Vimeo,' | split: ', ' -%}
+					{% if linklists[footer_linklist].links.size > 0 %}
+						<div class="footer-content">
+							<ul class="footer-links">
+                              	{% assign index = 0 %}
+								{% for link in linklists[footer_linklist].links %}                              		
+                                    {%- assign social_handle = social_accounts[index] | handleize -%}
+                                    {% capture social_link %}social_{{ social_handle }}_link{% endcapture %}
+                                    {% capture social_icon %}icon-{{ social_handle }}{% endcapture %}
+									<li>
+                                      <a href="{{ link.url }}">
+                                        {% include social_icon %}
+                                        {{ link.title }}
+                                      </a>
+                              		</li>
+                              		{% assign index = index | plus: 1 %}
+								{% endfor %}
+							</ul>
+						</div>
+					{% endif %}
+				</div>
+          			
+			{% endcase %}
+		{% endfor %}
+          
+		<div class="footer-social nocollapse text-center d-md-none">
+			{%- assign social_accounts = 'Facebook, Pinterest, Instagram, Twitter, Snapchat, Tumblr, YouTube, Vimeo,' | split: ', ' -%}
+			<ul class="mobile-footer-social-icons">
+				{% for social in social_accounts %}
+				{%- assign social_handle = social | handleize -%}
+				{% capture social_link %}social_{{ social_handle }}_link{% endcapture %}
+				{% capture social_icon %}icon-{{ social_handle }}{% endcapture %}
+
+				{% if settings[social_link] != blank %}
+				<li>
+					<a href="{{ settings[social_link] }}" title="{{ 'layout.footer.social_platform' | t: name: shop.name, platform: social }}" target="_blank">
+						{% include social_icon %}
+						<span class="icon-fallback-text">{{ social }}</span>
+					</a>
+				</li>
+				{% endif %}
+
+			{% endfor %}
+			</ul>
+		</div>
+
+		</div>
+	</div>
+	<div class="footer-copy">
+		<div class="container-fluid">
+			<div class="row align-items-center">
+				<div class="col-12 text-center">
+					{{shop.name}} &copy; {{ 'now' | date: "%Y" }}
+				</div>
+				{% comment %} <div class="col-12 col-sm-6 text-sm-right">
+					<span>Shopify by <a href="https://www.velstar.co.uk/" title="Shopify by Velstar">{% include 'icon-velstar-logo' %}</a></span>
+				</div> {% endcomment %}
+			</div>
+		</div>
+	</div>
+</footer>
+
+{% schema %}
+  {
+    "name": "Footer",
+    "blocks": [
+		{
+			"type": "menu",
+			"name": "Footer Menu",
+			"limit": 2,
+			"settings": [
+				{
+					"type":		"text",
+					"id":     "menu_heading",
+					"label":  "Heading"
+				},
+				{
+					"type": 	"link_list",
+					"id": 		"menu",
+					"label": 	"Menu"
+				}
+			]
+		},
+		{
+			"type": "social_menu",
+			"name": "Social Menu",
+			"limit": 1,
+			"settings": [
+				{
+					"type":		"text",
+					"id":     "menu_heading",
+					"label":  "Heading"
+				},
+				{
+					"type": 	"link_list",
+					"id": 		"menu",
+					"label": 	"Menu"
+				}
+			]
+		}, 
+		{
+			"type": "newsletter",
+			"name": "Newsletter",
+			"limit": 1,
+			"settings": [
+				{
+					"type": "header",
+					"content": "Newsletter Options"
+				},
+				{
+					"type": 	"checkbox",
+					"id": 		"newsletter_show",
+					"label": 	"Show Newsletter signup section",
+					"default": 	true
+				},
+				{
+					"type":      "text",
+					"id":        "newsletter_title",
+					"label":     "Newsletter Content",
+					"default":   "Sign up for our newsletters"
+				}
+			]
+		}
+	]
+  }
+
+{% endschema %}

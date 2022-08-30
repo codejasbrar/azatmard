@@ -1,0 +1,23 @@
+{% for block in section.blocks %}
+    {% case block.type %}
+    {% when 'banner' %}
+<div class="product-banner-container mt-3">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="product-banner">
+                    <a href="{{block.settings.hero_slide_link}}">
+                    <picture>
+                        <source media="(max-width: 767px)" srcset="{{ block.settings.portrait_hero_image | img_url: '540x' }}">
+                        <source media="(max-width: 800px)" srcset="{{ block.settings.hero_image | img_url: '1440x' }}">
+                        <source media="(max-width: 1440px)" srcset="{{ block.settings.widescreen_hero_image | img_url: '1920x' }}">
+                        <img class="lazyload" data-src="{{ block.settings.widescreen_hero_image | img_url: '1920x' }}" alt="{{ block.settings.widescreen_hero_image.alt }}">
+                    </picture>
+                    </a>
+                </div><!-- product-banner -->
+            </div><!-- col -->
+        </div><!-- row -->
+    </div><!-- container -->
+</div><!-- product-banner-container -->
+    {% endcase %}
+{% endfor %}

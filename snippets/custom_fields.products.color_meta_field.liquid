@@ -1,0 +1,13 @@
+{% comment %}
+  DO NOT MODIFY THIS FILE DIRECTLY. THIS FILE WILL BE OVERWRITTEN.
+  YOU CAN MODIFY THE LIQUID CODE FOR THIS CUSTOM FIELD HERE:
+  https://customfields.bonify.io/dashboard/azat-mard.myshopify.com/products/configure/193984/edit
+{% endcomment %}
+{% if product.metafields.custom_fields["color_meta_field"] != blank %}
+  <div class="custom-field custom-field__color-meta-field custom-field__type--text">
+    <h3 class="custom-field--title">Color Meta Field</h3>
+    <div class="custom-field--value">
+      {{ product.metafields.custom_fields["color_meta_field"] }}
+    </div>
+  </div>
+{% endif %}

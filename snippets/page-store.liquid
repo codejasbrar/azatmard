@@ -1,0 +1,92 @@
+<div class="container-fluid py-3">
+	<div class="row">
+		<div class="col-12 text-v-small">{% include 'breadcrumbs' %}</div>
+	</div><!-- row -->
+</div><!-- container -->
+
+<header class="page-header{% if section.settings.background %} image lazyload {%endif%}" {% if section.settings.background %} data-bgset="{% include 'responsive-bg-image', image: section.settings.background %}"{% endif %}>
+	<div class="container">
+		<div class="row align-items-center">
+			<div class="col-12 mb-md-0 col-md-8 col-lg-6 mx-auto text-center">
+				<h1>{{ page.title }}</h1>
+			</div>
+		</div><!-- row -->
+	</div>
+</header>
+
+<div class="container">
+	<div class="row mt-3 mt-lg-5">
+		<div class="col-12 col-md-3 ">
+			<div class="sidebar-navigation mb-3 mb-md-0">
+				<h4 class="sidebar-title">{{linklists.store-locations.title}} {% include 'icon-chevron-down' %}</h4>
+				<div class="sidebar-content">
+				<ul>
+				{% for link in linklists.store-locations.links %}
+					<li class="{% if link.active %}active{% endif %}"><a href="{{ link.url }}">{{ link.title }}</a></li>
+				{% endfor %}
+				</ul>
+				</div><!-- sidebar-content -->
+			</div><!-- sidebar-navigation -->
+		</div>
+		<div class="col-12 col-md-9">
+			<div class="row no-gutters">
+				<div class="col-12 col-lg-5 pb-3 pb-lg-0">
+					{% for block in section.blocks %}
+                        {% case block.type %}
+                        {% when 'rich_text' %}
+                            <div class="richtext-block pb-3">
+                                <div class="richtext-title">
+                                    <h2>{{block.settings.rte_title}}</h2>
+                                </div>
+                                <div class="richtext-content">
+                                    <div class="rte">
+                                        {{block.settings.rte_content}}
+                                    </div>
+                                </div>
+                            </div><!-- richtext-block -->
+                        {% endcase %}
+                    {% endfor %}
+                    <div class="richtext-block pb-3">
+                        <div class="richtext-title">
+                            <h2>Opening Times</h2>
+                        </div>
+                    </div>
+                    {% for block in section.blocks %}
+                        {% case block.type %}
+                        {% when 'times' %}
+                        
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>{{block.settings.shop_day}}</span>
+                                <span>{{block.settings.shop_time}}</span>
+                            </div>
+
+                        {% endcase %}
+                    {% endfor %}
+                    <span class="d-block pt-3 text-small text-center">Opening hours may differ on public holidays.</span>
+				</div>
+                <div class="col-12 col-lg-7">
+                    <div class="rte__map-wrapper mx-3">
+                        {% for block in section.blocks %}
+                            {% case block.type %}
+                                {% when 'google_map' %}
+                                    {{block.settings.html_area}}
+                            {% endcase %}
+                        {% endfor %}
+                    </div>
+                </div>
+                
+			</div><!-- row -->
+
+            <div class="row">
+                <div class="col-12">
+                    {% for block in section.blocks %}
+                        {% case block.type %}
+                            {% when 'photo' %}
+                            <img src="{{ block.settings.store_photo | img_url: '1024x' }}" class="d-block img-fluid py-3" title="" >
+                        {% endcase %}
+                    {% endfor %}
+                </div>
+            </div><!-- row -->
+		</div>
+	</div>
+</div><!-- container -->

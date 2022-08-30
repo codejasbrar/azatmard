@@ -1,0 +1,118 @@
+<div class="container-fluid py-3 py-md-5">
+	<div class="row">
+		<div class="col-12 text-center">{% include 'breadcrumbs' %}</div>
+	</div><!-- row -->
+</div><!-- container -->
+
+<header class="page-header">
+	<div class="container">
+		<div class="row align-items-center">
+			<div class="col-12 mb-3 text-center">
+				<h1>{{ page.title }}</h1>
+			</div>
+		</div><!-- row -->
+	</div>
+</header>
+
+<div class="container mt-3 mt-md-5">
+	<div class="row">
+		<div class="col-12">
+			<div class="row no-gutters">
+				<div class="col-12 pb-3">
+					<div class="rte">
+						{{page.content}}
+					</div>
+				</div>
+				<div class="col-12">
+					<div class="contact-form">
+
+					<div class="row">
+						<div class="col-12">
+							<h3 class="h4 uppercase underline">{{ 'contact.form.title' | t }}</h3>
+						</div><!-- col -->
+					</div><!-- row -->
+					{% form 'contact' %}
+
+					  <div class="row">
+						  <div class="col-12">
+						  {% if form.posted_successfully? %}
+							<p class="form-success">
+							  {{ 'contact.form.post_success' | t }}
+							</p>
+						  {% endif %}
+						  	{{ form.errors | default_errors }}
+						 </div>
+
+						  <div class="form-group col-12">
+							  <label for="ContactFormName" class="sr-only">{{ 'contact.form.name' | t }}</label>
+							  <input type="text"
+								name="contact[name]" pattern="[A-Za-z]{3-30}" title="Alphabets only and Atleast 3 Letters"
+								id="ContactFormName"
+								placeholder="{{ 'contact.form.name' | t }}"
+								value="{% if form[name] %}{{ form[name] }}{% elsif customer %}{{ customer.name }}{% endif %}">
+						   </div>
+
+						  <div class="form-group col-12">
+							  <label for="ContactFormEmail" class="sr-only">{{ 'contact.form.email' | t }}</label>
+							  <input type="email"
+								name="contact[email]"
+								id="ContactFormEmail"
+								placeholder="{{ 'contact.form.email' | t }}"
+								value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
+								spellcheck="false"
+								autocomplete="off"
+								autocapitalize="off">
+						  </div>
+
+						  <div class="form-group col-12">
+							  <label for="ContactFormPhone" class="sr-only">{{ 'contact.form.phone' | t }}</label>
+							  <input type="tel"
+								name="contact[phone]"
+								id="ContactFormPhone"
+								placeholder="{{ 'contact.form.phone' | t }}"
+								value="{% if form[phone] %}{{ form[phone] }}{% elsif customer %}{{ customer.phone }}{% endif %}"
+								pattern="[0-9\-]*">
+						   </div>
+
+							  <div class="form-group col-12">
+							  <label for="ContactFormOrderNumber" class="sr-only">{{ 'contact.form.phone' | t }}</label>
+							  <input type="text"
+								name="contact[ordernumber]"
+								id="ContactFormOrderNumber"
+								placeholder="{{ 'contact.form.order' | t }}">
+						   </div>
+
+						  <div class="form-group col-12">
+							  <label for="ContactFormMessage" class="sr-only">{{ 'contact.form.message' | t }}</label>
+							  <textarea rows="10"
+								name="contact[body]" minlength="10"
+								id="ContactFormMessage"
+								placeholder="{{ 'contact.form.message' | t }}">{% if form.body %}{{ form.body }}{% endif %}</textarea>
+						  </div>
+						  <div class="form-group col-12 text-center">
+								<button id="contactSubmit" type="submit" class="btn btn-primary">{{ 'contact.form.send' | t }}</button>
+						  </div>
+
+						</div>
+					{% endform %}
+					</div><!-- contact-form -->
+				</div><!-- col -->
+			</div>
+			
+		</div>
+	</div>
+</div>
+
+{% schema %}
+{
+  "name": "Contact Us",
+	"settings": [
+		{
+			"type": "image_picker",
+			"id": "background",
+			"label": "Header Background Image",
+			"info": "Optimal image size: 1920 x 350"
+		}
+	]
+}
+{% endschema %}

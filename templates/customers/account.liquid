@@ -1,0 +1,93 @@
+<div class="container-fluid py-3 py-md-5">
+	<div class="row">
+		<div class="col-12 text-center">{% include 'breadcrumbs' %}</div>
+	</div><!-- row -->
+</div><!-- container -->
+
+<header class="page-header">
+	<div class="container">
+		<div class="row align-items-center">
+			<div class="col-12 mb-3 text-center">
+				<h1>Account</h1>
+			</div>
+		</div><!-- row -->
+	</div>
+</header>
+
+
+<div class="container mt-3 mt-md-5">
+	<div class="row">
+		<div class="col-12 col-md-2 text-center text-md-left mt-5 mt-md-0 order-2 order-md-1">
+			<div class="sideNavWrapper">
+				<ul>
+				{% for link in linklists.account-navigation.links %}
+					<li><a href="{{ link.url }}" class="{% if link.active %}active{% endif %}">{{ link.title }}</a></li>
+				{% endfor %}
+				</ul>
+			</div>
+		</div>
+		<div class="col-12 col-md-10 account-my-orders order-1 order-md-2">
+			<h3>Your order history</h3>
+			<span class="orderInfo">Get the latest update on your orders or to return an order, click the order number.</span>
+			<div class="row orderTableHeader d-none d-md-flex">
+				<div class="col-12 col-md-3 text-left text-md-center">
+					<h3 class="tableHeading">Orders #</h3>
+				</div>
+				<div class="col-3 d-none d-md-block text-left text-md-center">
+					<h3 class="tableHeading">Order Date</h3>
+				</div>
+				<div class="col-3 d-none d-md-block text-left text-md-center">
+					<h3 class="tableHeading">Order Total</h3>
+				</div>
+				<div class="col-3 d-none d-md-block text-left text-md-center">
+					<h3 class="tableHeading">Order Status</h3>
+				</div>
+			</div>
+		{% paginate customer.orders by 20 %}
+		  {% if customer.orders.size != 0 %}
+
+			{% for order in customer.orders %}
+			<div class="row orderTableContent mt-5 mt-md-0">
+				<div class="col-3 text-center d-none d-md-block">
+					<a href="{{order.customer_url}}">#{{ order.order_number }}</a>
+				</div>
+				<div class="col-3 text-center d-none d-md-block">
+					<span>{{ order.created_at | date: format: 'month_day_year' }}</span>
+				</div>
+				<div class="col-3 text-center d-none d-md-block">
+				<span>{{ order.total_price | money_with_currency }}</span>
+				</div>
+				<div class="col-3 text-center d-none d-md-block">
+				{% if order.cancelled %}
+					<span>Status: {{order.cancel_reason_label}}</span>
+				{% else %}
+					<span>{{ order.fulfillment_status }}</span>
+				{% endif %}
+				</div>
+
+				<div class="col-12 mobile-orders d-md-none">
+					<div class="row mobile-order">
+						<div class="col-6"><span class="order-title">Order Number</span></div>
+						<div class="col-6 text-right"><a href="{{order.customer_url}}">#{{ order.order_number }}</a></div>
+						<div class="col-6"><span class="order-title">Order Date</span></div>
+						<div class="col-6 text-right"><span>{{ order.created_at | date: format: 'month_day_year' }}</span></div>
+						<div class="col-6"><span class="order-title">Order Total</span></div>
+						<div class="col-6 text-right"><span>{{ order.total_price | money_with_currency }}</span></div>
+						<div class="col-6"><span class="order-title">Order Status</span></div>
+						<div class="col-6 text-right">{% if order.cancelled %}<span>Status: {{order.cancel_reason_label}}</span>{% else %}<span>{{ order.fulfillment_status }}</span>{% endif %}</div></div>
+				</div>
+			</div><!-- row -->
+			{% endfor %}
+
+		  {% else %}
+			<p>{{ 'customer.orders.none' | t }}</p>
+		  {% endif %}
+
+		  {% if paginate.pages > 1 %}
+				{% include 'pagination' %}
+				{% endif %}
+
+			{% endpaginate %}
+		</div>
+	</div>
+</div>

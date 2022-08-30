@@ -1,0 +1,716 @@
+<div class="container-fluid product-detail-container">
+ <div class="containers">
+  <div class="row" id="product_details_block" data-section-id="{{ section.id }}" data-section-type="product" data-enable-history-state="true">
+
+    {%- assign current_variant = product.selected_or_first_available_variant -%}
+    {%- assign featured_image = current_variant.featured_image | default: product.featured_image -%}
+
+    <div class="col-12 py-3 py-md-5">
+      <div class="pdp-breadcrumbs">
+        {% include 'breadcrumbs' %}
+      </div>
+    </div>
+    <div class="col-12 col-md-6 col-xxl-6 px-md-0">
+
+
+      {% comment %}
+
+      BG: I'm not going mad....but i've lopped through the images and thumbnails twice, because slick was struggling with the lack of thumbnails, so it was causing the script to bug out. however, if there's more than 3 thumbnails, it works as intended, so i've looped through it twice to ensure there is. 
+
+      {% endcomment %}
+
+      <div class="product-detail-image-container">
+        {% comment %}
+        {% if product.images.size > 0 %}
+        <div class="product-detail-primary-images d-none">
+          <div class="product-detail-images">
+            {% for image in product.images %}
+            <div class="product-image">
+              <div class="{{section.settings.main_ratio}}">
+                {% comment %} {% include 'responsive-image' with image: image, image_class: "img-fluid lazyload", max_width: 1140, max_height: 1425 %} {% endcomment %}
+                <img data-src="{{ image.src | img_url: '975x' }}" class="img-fluid lazyload" alt="{{ image.alt | escape }}">
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div><!-- product-detail-primary-images -->
+        {% endif %}
+
+        {% endcomment %}
+        <style>
+          .main-image .carousel-cell{
+            width: 100%!important;
+            height: 100%!important;
+            margin-right: 8px!important;
+            transform: none!important;
+          }  
+          .main-image .flickity-viewport{
+            height:627px!important;
+          }
+          .shopify-product-form select.no-js-option-select {
+            height: 35px;
+          }
+          .main-image .carousel-cell{
+          }
+          .carousel-cell .img-fluid{
+            object-fit:cover!important;
+          }
+          .carousel-main {
+            height:auto!important;
+            margin-bottom: 40px;
+          }
+          .desktop-slider {
+            height: auto !important;
+          }
+          @media(max-width:768px){
+            .mobile .carousel-cell{
+              width: 100%!important;
+              height: 100%!important;
+              margin-right: 8px!important;
+              transform: none!important;
+            }
+
+            .carousel-cell .img-fluid{
+              object-fit: contain!important;
+            }
+          }
+        </style>  
+        {% if product.images.size > 0 %}
+        <div class="product-detail-secondary-images">
+          <div class="container">
+            <div class="d-none d-md-block">
+              <div class="row desktop-slider">
+ <div class="col-10 col-md-3 {%comment%}col-xxl-12{%endcomment%} thumbnails_img">
+                  <div class="carousel carousel-nav" data-flickity='{
+                                                                    "asNavFor": ".carousel-main",
+                                                                    "draggable": false,
+                                                                    "percentPosition": false,
+                                                                    "groupCells": "100%",
+                                                                    "pageDots": false
+                                                                    }'>
+                    {% for image in product.images %}
+                    <div class="carousel-cell"> <img src="{{ image.src | img_url: '450x' }}" data-src="{{ image.src | img_url: '450x' }}" class="img-fluid" alt="{{ image.alt | escape }}"> </div>
+                    {% endfor %}
+                  </div>
+                </div>
+                <div class="col-10 col-md-9 {%comment%}col-xxl-12{%endcomment%}"> 
+                  <div class="carousel carousel-main main-image"  data-flickity='{
+                                                                                 "contain": true,
+                                                                                 "pageDots": true
+                                                                                 }'>
+                    {% for image in product.images %}
+                    <div class="carousel-cell pinch-zoom-ex"> <img src="{{ image.src | img_url: '975x' }}" data-src="{{ image.src | img_url: '975x' }}" data-zoom-img="{{ image.src | img_url: '1950x' }}" class="img-fluid" alt="{{ image.alt | escape }}"> </div>
+                    {% endfor %}
+                  </div>
+                </div>
+                                                                                    
+               
+
+
+              </div>
+            </div>
+            <div class="d-md-none d-sm-block mobile">
+              <div class="carousel carousel-main" data-flickity='{
+                                                                 "contain": true,
+                                                                 "pageDots": true
+                                                                 }'>
+                {% for image in product.images %}
+                <div class="carousel-cell"> <img src="{{ image.src | img_url: '975x' }}" data-src="{{ image.src | img_url: '975x' }}" class="img-fluid" alt="{{ image.alt | escape }}"> </div>
+                {% endfor %}
+              </div>
+              <div class="carousel carousel-nav" data-flickity='{
+                                                                "asNavFor": ".carousel-main",
+                                                                "draggable": false,
+                                                                "percentPosition": true,
+                                                                "groupCells": "100%",
+                                                                "pageDots": false
+                                                                }'>
+                {% for image in product.images %}
+                <div class="carousel-cell"> <img src="{{ image.src | img_url: '375x' }}" data-src="{{ image.src | img_url: '375x' }}" class="img-fluid" alt="{{ image.alt | escape }}"> </div>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+          {% comment %}
+          {% for image in product.images %}
+          <div class="thumbnail-wrapper" data-aos="fade-up">
+            <div class="product-image-thumbnail {{section.settings.thumbnail_ratio}}">
+              {% comment %} {% include 'responsive-image' with image: image, image_class: "img-fluid lazyload", max_width: 1140, max_height: 1425 %} {% endcomment %}
+              <img data-src="{{ image.src | img_url: '975x' }}" data-zoom-img="{{ image.src | img_url: '1950x' }}" class="img-fluid" alt="{{ image.alt | escape }}">
+            </div>
+          </div>
+          {% endfor %}
+          {% endcomment %}
+        </div><!-- product-detail-secondary-images -->
+        {% endif %}
+      </div><!-- product detail image container -->
+
+      {% if section.settings.show_related_products %}
+      <div class="related-desktop">
+        {% include 'product-related-api' %}
+      </div>
+      {% endif %}
+
+    </div>
+    <div class="col-12 {%comment%}offset-md-1{%endcomment%} col-md-4 col-xxl-6 text-center text-md-left product-right-col">
+
+      <h1 class="product-title text-center">{{ product.title }}
+        {% if product.compare_at_price_max > product.price %}
+        <span class="visually-hidden" data-compare-text>{{ 'products.product.regular_price' | t }}</span>
+        <span class="product-price-original" data-compare-price>
+          {% if current_variant.compare_at_price > current_variant.price %}
+          <span class="money">{{ current_variant.compare_at_price | money }}</span>
+          {% endif %}
+        </span>
+        {% endif %}
+      </h1>
+      <a href="#shopify-product-reviews" class="text-center"><span class="shopify-product-reviews-badge text-center" data-id="{{ product.id }}"></span></a>
+
+      <div class="row align-items-sm-center">
+        <div class="col-12">
+          <div class="product-detail-price-wrapper text-md-left {% if current_variant.compare_at_price > current_variant.price %} money-sale-price {% endif %}" data-price-wrapper>
+
+            <span class="product-detail-price" data-product-price>
+              <span class="money">{{ current_variant.price | money }}</span>
+            </span>
+
+          </div>
+        </div><!-- col-12 -->
+      </div><!-- row -->
+
+      <div>
+        {% if section.settings.clearpay_text != '' %}
+        <div class="clearpay-text">
+          <strong>{{ section.settings.clearpay_text }}<img src="https://cdn.shopify.com/s/files/1/0175/6626/9494/files/clearpay.png?v=1598007772" /></strong>
+        </div>
+        {% endif %}
+
+        {% form 'product', product %}
+
+        {% include 'product-colour-swatch'%}
+
+        <select name="id" class="no-js no-js-option-select" data-product-select>
+          <option value="" selected="selected">SELECT A SIZE</option>
+          {% for variant in product.variants %}
+          <option
+                  {% if variant == current_variant %}selected="selected"{% endif %}
+                  {% unless variant.available %}disabled="disabled"{% endunless %}
+                  value="{{ variant.id }}">
+            {{ variant.title }}
+          </option>
+          {% endfor %}
+        </select>
+
+        <div class="row d-none">
+          <div class="col-12">
+            <div class="ajaxFeedbackCart variant-status warning">
+              <span>This size will be available to ship in 3 weeks. In the meantime, it can be pre-ordered. Once available, it will be dispatched.</span>
+            </div><!-- variant-status -->
+          </div>
+        </div>
+        {% if product.available and product.variants.size > 1 %}
+        {% for option in product.options %}
+        {% include 'swatch' with option %}
+        {% endfor %}
+        {% endif %}
+          <div class="size-guide d-none d-md-block d-lg-block d-xl-block">Size Guide</div>          
+
+        {% unless product.has_only_default_variant %}
+        {% for option in product.options_with_values %}
+        <div class="selector-wrapper variant-{{ option.name | downcase }}" data-variant-name="{{option.name | downcase}}">
+          <div class="swatch-header">Select a {{ option.name }}</div>
+          <label for="SingleOptionSelector-{{ forloop.index0 }}" class="sr-only">
+            {{ option.name }}
+          </label>
+
+          <select
+                  id="SingleOptionSelector-{{ forloop.index0 }}"
+                  class="single-option-selector"
+                  data-single-option-selector
+                  data-index="option{{ option.position }}">
+            {% for value in option.values %}
+            <option
+                    value="{{ value | escape }}"
+                    {% if option.selected_value == value %}selected="selected"{% endif %}>
+              {{ value }}
+            </option>
+            {% endfor %}
+          </select>
+        </div>
+        {% endfor %}
+        {% endunless %}
+
+        <div class="product-quantity-container">
+          <label for="Quantity" class="sr-only">{{ 'products.product.quantity' | t }}</label>
+          <input type="number" id="Quantity" class="product-quantity" name="quantity" value="1" min="1">
+          <div class="quantity-controls">
+            <span class="quantity-increase">
+              {% include 'icon-plus' %}
+            </span>
+            <span class="quantity-decrease">
+              {% include 'icon-minus' %}
+            </span>
+          </div>
+        </div>
+
+        <div class="product-add-to-baskets">
+          {% unless product.has_only_default_variant %}
+          <div class="add-to-cart-wrappers pseudo-blue">
+            <button type="submit" name="add" data-add-to-cart class="btn-add-to-cart btn btn-tertiary {% if current_variant.inventory_quantity > 0 %}variant-available{% elsif current_variant.inventory_quantity <= 0 and current_variant.inventory_policy == "continue" %}variant-preorder{% else %}variant-not-available btn-soldOut{% endif %}">
+              <span data-add-to-cart-text>
+                {% if current_variant.inventory_quantity > 0 %}
+                {{ 'products.product.add_to_cart' | t }}
+                {% elsif current_variant.inventory_quantity <= 0 and current_variant.inventory_policy == "continue" %}
+                {{ 'products.product.preorder' | t }}
+                {% else %}
+                {{ 'products.product.sold_out' | t }}
+                {% endif %}
+              </span>
+            </button>
+          </div>
+          {% if product.tags contains '3rdnovdelivery' %}
+          <p style="margin-top:2%;font-weight: bold;">Item will be dispatched on the 3rd of November.</p>
+          {% endif %}
+          <div class="emailAvailWrapper pseudo-blue d-none">
+            <a class="emailAvail btn btn-tertiary variant-not-available">Email When Available</a>
+          </div>
+          {% endunless %}
+<!--           <span class="product-wishlist"><span class="smartwishlist" data-product="{{ product.id }}" data-variant="{{ product.variants.first.id }}"></span></span> -->
+        </div><!-- product-add-to-basket -->
+        {% if product.available %}
+        {{ form | payment_button }}
+        {% endif %}	
+
+        {% comment %} {% include 'product-usp' %} {% endcomment %}
+
+        {% for block in section.blocks %}
+        {% case block.type %}
+        {% when 'product_countdown' %}
+
+        {% if product.available  %}
+        {% include 'product-countdown' %}
+        {% endif %}
+
+        {% endcase %}
+        {% endfor %}
+
+        {% endform %}
+
+      </div>
+
+      <div class="product-acordians">
+
+        <button class="accordion">PRODUCT DESCRIPTION</button>
+        <div class="panel">
+
+          {{ product.description }}
+
+        </div>
+
+        {% for block in section.blocks %}
+        {% case block.type %}
+        {% when 'featured_detail' %}
+
+        <button class="accordion">{{block.settings.featured_detail_title}}</button>
+        <div class="panel">
+
+          {{block.settings.featured_detail_content}}
+
+        </div>
+
+        {% endcase %}
+        {% endfor %}
+
+
+        <script>
+          var acc = document.getElementsByClassName("accordion");
+          var i;
+
+          for (i = 0; i < acc.length; i++) {
+            acc[i].addEventListener("click", function() {
+              this.classList.toggle("active");
+              var panel = this.nextElementSibling;
+              if (panel.style.maxHeight) {
+                panel.style.maxHeight = null;
+              } else {
+                panel.style.maxHeight = panel.scrollHeight + "px";
+              } 
+            });
+          }
+        </script>
+
+
+      </div>
+
+
+
+
+
+      {% if section.settings.show_share_buttons %}
+      {% include 'social-sharing-products' %}
+      {% endif %}
+
+      {% unless product == empty %}
+      <script type="application/json" data-product-json>
+		  {{ product | json }}
+      </script>
+      {% endunless %}
+    </div>
+  </div><!-- row -->
+  </div>
+<!--   <section class="product_review">
+    <div class="container">
+      <div id="shopify-product-reviews" data-id="{{product.id}}">{{ product.metafields.spr.reviews }}</div>
+    </div>
+  </section> -->
+
+  <div class="related-mobile">
+    {% include 'product-related-api' %}
+  </div>
+
+
+
+  {% include 'product-recently-viewed', recentlyViewedTitle: 'Recently Viewed' %}
+
+
+</div>
+
+{% include 'size-guide' %}
+
+
+{% for block in section.blocks %}
+{% case block.type %}
+{% when 'product_countdown' %}
+<script>
+  //Product Countdown
+  //Countdown function
+  (function() {
+    var target = new Date;
+    //Hours, Minutes, Seconds
+    target.setHours({{ block.settings.countdown_hours}}, {{ block.settings.countdown_minutes }}, 0); // default is 4pm
+
+    function pad(num) {
+      return ("0" + parseInt(num)).substr(-2);
+    }
+
+    function countdown() {
+      var outputId = 'product-countdown';
+      var now = new Date;
+      //if greater than target time...
+      if (now > target) {
+        //missed today's time, so add a day to the target time.
+        target.setDate(target.getDate() + 1);
+        //add expired class
+        document.getElementById('product-countdown-timer').classList.add('expired');
+      }
+      var remain = ((target - now) / 1000);
+      var hh = pad((remain / 60 / 60) % 60);
+      var mm = pad((remain / 60) % 60);
+      var ss = pad(remain % 60);
+      document.getElementById(outputId).innerHTML =
+        "<div><span class='hours'>" + hh + "</span><span class='smalltext'>Hours</span></div><div><span class='minutes'>" + mm + "</span><span class='smalltext'>Minutes</span></div><div><span class='seconds'>" + ss + "</span><span class='smalltext'>Seconds</span></div>";
+      setTimeout(countdown, 1000);
+    }
+
+    document.addEventListener('DOMContentLoaded', countdown);
+  })();
+
+  //End Product Countdown
+</script>
+
+{% endcase %}
+{% endfor %}
+
+{% schema %}
+{
+"name": "Product pages",
+"settings": [
+{
+"type": 		"header",
+"content": 		"Main Image"
+},
+{
+"type":         "select",
+"id":           "main_ratio",
+"label":        "Main Image - Fixed Ratio?",
+"options": [
+{
+"value": "fixed-ratio square-crop",
+"label": "Square (4x4 Cropped)"
+},
+{
+"value": "fixed-ratio square",
+"label": "Square (4x4)"
+},
+{
+"value": "fixed-ratio portrait-crop",
+"label": "Portrait (4x5 Cropped)"
+},
+{
+"value": "fixed-ratio portrait",
+"label": "Portrait (4x5)"
+},
+{
+"value": "",
+"label": "No Set Ratio"
+}
+],
+"default":   "fixed-ratio square"
+},
+{
+"type": 		"header",
+"content": 		"Thumbnail Image"
+},
+{
+"type":         "select",
+"id":           "thumbnail_ratio",
+"label":        "Thumbnail Image - Fixed Ratio?",
+"options": [
+{
+"value": "fixed-ratio square-crop",
+"label": "Square (4x4 Cropped)"
+},
+{
+"value": "fixed-ratio square",
+"label": "Square (4x4)"
+},
+{
+"value": "fixed-ratio portrait-crop",
+"label": "Portrait (4x5 Cropped)"
+},
+{
+"value": "fixed-ratio portrait",
+"label": "Portrait (4x5)"
+},
+{
+"value": "",
+"label": "No Set Ratio"
+}
+],
+"default":   "fixed-ratio square"
+},
+{
+"type": 	"header",
+"content": 	"Related Products Options"
+},
+{
+"type": "checkbox",
+"id": "show_related_products",
+"label": "Show related products?",
+"default": true
+},
+{
+"type":         "select",
+"id":           "related_products_ratio",
+"label":        "Related Products - Fixed Ratio?",
+"options": [
+{
+"value": "fixed-ratio square-crop",
+"label": "Square (4x4 Cropped)"
+},
+{
+"value": "fixed-ratio square",
+"label": "Square (4x4)"
+},
+{
+"value": "fixed-ratio portrait-crop",
+"label": "Portrait (4x5 Cropped)"
+},
+{
+"value": "fixed-ratio portrait",
+"label": "Portrait (4x5)"
+},
+{
+"value": "",
+"label": "No Set Ratio"
+}
+],
+"default":   "fixed-ratio portrait-crop"
+},
+{
+"type": 	"header",
+"content": 	"Recently Viewed Options"
+},
+{
+"type": "checkbox",
+"id": "show_recently_viewed_products",
+"label": "Show recently viewed products?",
+"default": true
+},
+{
+"type":         "select",
+"id":           "recently_viewed_ratio",
+"label":        "Recently Viewed - Fixed Ratio?",
+"options": [
+{
+"value": "fixed-ratio square-crop",
+"label": "Square (4x4 Cropped)"
+},
+{
+"value": "fixed-ratio square",
+"label": "Square (4x4)"
+},
+{
+"value": "fixed-ratio portrait-crop",
+"label": "Portrait (4x5 Cropped)"
+},
+{
+"value": "fixed-ratio portrait",
+"label": "Portrait (4x5)"
+},
+{
+"value": "",
+"label": "No Set Ratio"
+}
+],
+"default":   "fixed-ratio portrait-crop"
+},
+{
+"type": 	"header",
+"content": 	"Social Share Option"
+},
+{
+"type": "checkbox",
+"id": "show_share_buttons",
+"label": "Show Social Share Buttons?",
+"default": true
+},
+{
+"type": 	"header",
+"content": 	"Clearpay Options"
+},
+{
+"type": "text",
+"id": "clearpay_text",
+"label": "Clearpay Banner Text"
+}
+],
+"blocks": [
+{
+"type": "featured_detail",
+"name": "Featured Detail",
+"settings": [
+{
+"type":      "text",
+"id":        "featured_detail_title",
+"label":     "Title",
+"default":   "Featured Detail Title"
+},
+{
+"type":      "richtext",
+"id":        "featured_detail_content",
+"label":     "Content",
+"default":   "<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatem nam eius voluptates vel molestias, ipsa labore esse ab doloribus. Nam.</p>"
+}
+]
+},
+{
+"type": "product_countdown",
+"name": "Countdown Timer",
+"limit": 1,
+"settings": [
+{
+"id": "countdown_top",
+"type": "text",
+"label": "Countdown Heading",
+"info": "This text sits above the countdown timer",
+"default": "Order within the next..."
+},
+{
+"id": "countdown_hours",
+"type": "text",
+"label": "Countdown to Hours",
+"info": "Format is 24 hours, value should be between 0 - 24",
+"default": "16"
+},
+{
+"id": "countdown_minutes",
+"type": "text",
+"label": "Countdown to Minutes",
+"info": "Value should be between 0 - 59",
+"default": "0"
+},
+{
+"id": "countdown_bottom",
+"type": "text",
+"label": "Countdown Footer",
+"info": "This text sits below the countdown timer",
+"default": "For next day delivery (Free if over £100)"
+}
+]
+}
+]
+}
+{% endschema %}
+
+{% javascript %}
+$(document).ready(function() {
+$('.product-detail-images').slick({
+slidesToShow: 1,
+slidesToScroll: 1,
+infinite: false,
+prevArrow:slickPrevArrow,
+nextArrow:slickNextArrow,
+arrows: false,
+dots: true,
+responsive: [
+{
+breakpoint: 992,
+settings: {
+slidesToShow: 1,
+slidesToScroll: 1,
+}
+}
+]
+});
+
+/*$('.product-detail-thumbnails').slick({
+slidesToShow: 4,
+slidesToScroll: 1,
+infinite: true,
+prevArrow: slickPrevArrow,
+nextArrow: slickNextArrow,
+asNavFor: '.product-detail-images',
+focusOnSelect: true,
+responsive: [
+{
+breakpoint: 992,
+settings: {
+slidesToShow: 3
+}
+}
+]
+});*/
+
+//if user on mobile
+if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+$('.social-sharing-products .whatsapp').removeClass('d-none');
+}
+});
+{% endjavascript %}
+<script>
+
+  $(document).ready(function(){
+  $(document).on("change",".no-js-option-select",function(){
+  	var cust_select = $(this).val();
+    console.log("cust_select");
+    console.log(cust_select);
+    if(cust_select ==""){
+      $('.btn-add-to-cart').prop('disabled', true);
+    }else{
+      $('.btn-add-to-cart').prop('disabled', false);
+    }
+  });
+  });
+
+</script>
+<style>
+  #shopify-product-reviews {
+    max-width: 1140px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  section.product_review {
+    margin-top: 100px;
+  }
+</style>

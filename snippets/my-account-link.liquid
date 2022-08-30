@@ -1,0 +1,15 @@
+{% if customer %}
+    {% if customer.first_name != blank %}
+        {% capture accountLabel %}
+            Logged in as: {{customer.first_name}}
+        {% endcapture %}
+    {% else %}
+        {% assign accountLabel = "My Account" %}
+    {% endif %}
+    {% assign accountUrl = "/account" %}
+{% else %}
+    {% assign accountLabel = "Log In" %}
+    {% assign accountUrl = "/account/login" %}
+{% endif %}
+
+<a href="{{ accountUrl }}" title="{{ accountLabel }}">{% include 'icon-account' %}</a>

@@ -1,0 +1,411 @@
+/* .basket .breadcrumb {
+    font-size: 20px;
+    font-family: Montserrat,'sans-serif';
+    font-weight: 500;
+    color: #000;
+    text-align: center;
+} */
+ 
+.page_header {
+	text-align: center;
+}
+.page_title {
+	 font-family: Montserrat,'sans-serif' !important;
+    font-weight: 500 !important;
+    color: #000;
+    letter-spacing: 0.86px !important;
+}
+.template-cart .page_title {
+    font-family: 'M PLUS 1p' !important;
+}
+.items_in_bag {
+	 font-family: Montserrat,'sans-serif';
+    font-weight: 300;
+    font-size:20px;
+    color: #000;
+    letter-spacing: 0.32px;
+}
+
+.cart_content_main {
+    margin-top: 60px;
+}
+
+.cart_items_header {
+	margin-bottom: 30px;
+}
+.car_items_main .cart_item_header {
+		 font-family: Montserrat,'sans-serif';
+    font-weight: 500;
+    font-size:20px;
+    color: #000;
+    letter-spacing: 0.32px;
+}
+.row.item {
+    vertical-align: middle;
+    align-items: center;
+    margin-bottom: 30px;
+  	border-top: none;
+  	border-bottom: none;
+  	padding: 0px;
+}
+.cart_item_img {
+    text-align: center;
+  	display: inline-block;
+    width: 120px;
+}
+.cart_value{
+	 font-family: Montserrat,'sans-serif';
+    font-weight: 500;
+    font-size:18px;
+    color: #000;
+    letter-spacing: 0.32px;
+}
+.cart_item_title {
+    line-height: 28px;
+    margin-bottom: 15px;
+}
+.cart_item_title {
+    line-height: 28px;
+    margin-bottom: 10px;
+}
+.contact_us_before_footer {
+    text-align: center;
+    margin-top: 70px;
+    margin-bottom: 30px;
+}
+
+.need_assistence_text {
+	 font-family: 'M PLUS 1p';
+    font-weight: 500;
+    font-size:24px;
+    letter-spacing: .65px;
+    margin-bottom: 20px;
+}
+
+.please_contact_customer_text{
+	 font-family: 'M PLUS 1p';
+    font-weight: 300;
+    font-size:18px;
+    letter-spacing: 0;
+    margin-bottom: 20px;
+}
+.card_detail_inner {
+	max-width: 408px;
+	margin:0 auto;
+}
+
+.contact_us_button {
+	font-family: 'M PLUS 1p';
+    font-weight: 500;
+    font-size:18px;
+    letter-spacing: 0;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #000;
+}
+
+.card_detail {
+    box-shadow: 0px 10px 20px #00000021;
+    background: #fff;
+    padding: 80px 40px;
+  	height: fit-content;
+}
+.we_accept_text {
+    font-size: 20px;
+    text-align: center;
+    margin-bottom: 20px;
+    	font-family: Montserrat,'sans-serif';
+    font-weight: 500;
+    letter-spacing: 0.6px;
+}
+.creditcard_image {
+	margin-bottom: 50px;
+}
+.creditcard_image img {
+    width: 100%;
+}
+
+.sub_total_text{
+	font-size: 24px;
+    font-family: Montserrat,'sans-serif';
+    font-weight: 500;
+    letter-spacing: 0.6px;
+}
+
+.cart_sub_total{
+		font-size: 30px;
+    font-family: Montserrat,'sans-serif';
+    font-weight: 500;
+    letter-spacing: 0.78px;
+}
+
+.shipping_and_taxes_text{
+	font-size: 19px;
+    font-family: Montserrat,'sans-serif';
+    font-weight: 300;
+    letter-spacing: 0px;
+    text-align: left;
+    margin-bottom: 60px;
+    margin-top: 30px;
+}
+
+.checkout_button a, .checkout_button .button  {
+  	outline: 0;
+	background: #03880C;
+    color: #fff;
+    border-radius: 56px;
+    font-size: 17px;
+    font-weight: 500;
+    letter-spacing: .85px;
+    font-family: Montserrat,'sans-serif';
+    text-transform: uppercase;
+    height: 80px;    
+    display: inline-block;
+    width: 200px;
+    text-align: center;
+  	border: transparent;
+}
+
+/* The container */
+.checkbox_container {
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 19px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  font-family: Montserrat,'sans-serif';
+  letter-spacing: 0.38px;
+
+}
+.checkbox_container span {
+	font-weight: bold;
+	font-style: italic;
+}
+
+/* Hide the browser's default checkbox */
+.checkbox_container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 25px;
+  width: 25px;
+  background-color: #eee;
+}
+
+/* On mouse-over, add a grey background color */
+.checkbox_container:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+
+/* When the checkbox is checked, add a blue background */
+.checkbox_container input:checked ~ .checkmark {
+  background-color: #03880C;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the checkmark when checked */
+.checkbox_container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the checkmark/indicator */
+.checkbox_container .checkmark:after {
+left: 11px;
+    top: 7px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+.term_and_condition_box {
+    margin-bottom: 50px;
+}
+
+span.minus_item {
+    font-size: 62px;
+    margin-right: 10px;
+  	cursor: pointer;
+}
+
+span.item_quantity {
+    font-size: 47px;
+/*     margin-right: 10px; */
+  	position: absolute;
+    top: 5px;
+  	font-weight: 400;
+}
+
+.breadcrumb .seperator {
+  	font-weight: lighter;
+}
+
+span.plus_item {
+    font-size: 53px;
+  	cursor: pointer;
+}
+
+
+@media(max-width: 1440px){
+.cart_item_title {
+    line-height: 28px;
+    margin-bottom: 10px;
+    font-size: 15px;
+}
+}
+
+@media(min-width: 480px){
+	.cart_sub_total {
+    font-size: 24px;
+	}
+	.cart_item_title {
+    line-height: 24px;
+    margin-bottom: 10px;
+    font-size: 13px;
+	}
+	
+}
+
+	span.minus_item {
+      font-size: 57px;
+      margin-right: 0px;
+	}
+	span.item_quantity {
+      font-size: 25px;
+      margin-right: 10px;
+	}
+
+	span.plus_item {
+      font-size: 40px;
+      margin-left: 25px;  
+	}
+
+@media(max-width: 1112px){
+	.col-lg-8.col-sm-12.car_items_main {
+    width: 100%;
+    flex: 0 0 100%;
+    max-width: 100%;
+	}
+	.card_detail {
+    box-shadow: 0px 10px 20px #00000021;
+    background: #fff;
+    padding: 80px 40px;
+    width: 100%;
+    max-width: 100%;
+    flex: 0 0 100%;
+    margin-top: 20px;
+	}
+	.cart_item_img img {
+/*     max-height: 135px; */
+	}
+	.cart_value {
+    font-size: 16px;
+	}
+}
+@media(min-width: 480px){
+  .page_title {
+	font-size:44px !important;
+  }
+}
+@media(max-width: 480px){
+  .card_detail_inner {
+    margin-top: 20px;
+  }
+  .cart_content_main {
+  	margin-top: 0px;
+  }
+	.cart_value {
+    width: 100%;
+    max-width: 100%;
+    flex: 0 0 100%;
+    text-align: center;
+        margin: 10px 0;
+	}
+  	.card_detail {
+      margin-top: 0px;
+      padding-top: 0px;
+  	}
+	.row.item {
+    vertical-align: middle;
+    align-items: center;
+    margin-bottom: 30px;
+    border: 1px solid #000;
+    margin: 0 auto 25px;
+    padding: 20px 0;  
+	}
+	.cart_items_header {
+    margin-bottom: 30px;
+    display: none;
+	}
+	.cart_item_title {
+    line-height: 24px;
+    margin-bottom: 10px;
+    font-size: 17px;
+	}
+	.page_title {
+    font-size: 39px;
+	}
+}
+
+@media(max-width: 375px){
+	.sub_total_text {
+    font-size: 20px;
+	}
+	.cart_sub_total {
+    font-size: 20px;
+	}
+	.shipping_and_taxes_text {
+    font-size: 14px;
+	}
+	.checkbox_container {
+		font-size: 16px;
+	}
+	.need_assistence_text {
+    font-size: 20px;
+	}
+	.please_contact_customer_text {
+    font-size: 16px;
+	}
+	.checkout_button a, .checkout_button .button {
+    background: #000 !important;
+    color: #fff;
+    border-radius: 56px;
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: .85px;
+    font-family: Montserrat,'sans-serif';
+    text-transform: uppercase;
+    height: 48px;    
+    display: inline-block;
+    width: 160px;
+    text-align: center;
+	}
+}
+
+@media(max-width: 320px){
+	.checkbox_container {
+    font-size: 13px;
+	}
+}

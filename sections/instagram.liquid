@@ -1,0 +1,68 @@
+<section class="instagram-feed">
+    <div class="container pb-3">
+        <div class="row mb-3 mb-md-4">
+            <div class="col-12 col-md-8 mx-auto text-center">
+                {% if section.settings.section_title != blank %}
+                    <h2 class="h1">{{ section.settings.section_title }}</h2>
+                {% endif %}
+                 {% if section.settings.section_content != blank %}
+                <div class="rte">
+                    {{ section.settings.section_content }}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        <div class="instagram-feed-embed">
+            <script src="https://showcase.abovemarket.com/embed/gallery/11175" data-gallery-id="11175"></script>
+        </div>
+        {% if section.settings.button_check == true %}
+        <div class="row">
+            <div class="col text-center pt-4">
+                <a href="{{ section.settings.button_link }}" class="btn btn-primary">{{ section.settings.button_text }}</a>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% schema %}
+{
+  "name": "Instagram Feed",
+  "settings": [
+    {
+      "type": 		"text",
+      "id": 		"section_title",
+      "label": 		"Heading",
+      "default": 	"#cariscloset"
+    },
+    {
+	   "type":      "richtext",
+	   "id":        "section_content",
+	   "label":     "Content",
+	   "default":   "<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatem nam eius voluptates vel molestias, ipsa labore esse ab doloribus. Nam.</p>"
+	},
+    {
+       "type":      "checkbox",
+       "id":        "button_check",
+       "label":     "Need a button?",
+       "default":   true
+    },
+    {
+       "type":      "text",
+       "id":        "button_text",
+       "label":     "Button Text",
+       "default":   "See More"
+    },
+    {
+       "type":      "url",
+       "id":        "button_link",
+       "label":     "Button Link"
+    }
+  ],
+  "presets": [
+    {
+      "name": 		"Instagram Feed",
+      "category": 	"Product"
+    }
+  ]
+}
+{% endschema %}

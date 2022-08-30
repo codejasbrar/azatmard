@@ -1,0 +1,126 @@
+<style>
+  @media screen and (min-width: 767px) {
+    #site-navigation .top-level li.active::after {
+    }
+    #site-navigation .sub-menu-container {
+      padding: 15px;
+    }
+    #site-navigation .sub-menu-container .container {
+      max-width: 900px;
+    }
+    #site-navigation .sub-menu-container .menu-img {
+      max-width: 232px;
+    }
+    #site-navigation .sub-menu-container .sub-menu-row {
+      text-align: left;
+      margin: 0px 20px;
+    }
+    #site-navigation .sub-menu-container .sub-menu-row .sub-menu .row .col-6 a {
+      line-height: 2em;
+    }
+    #site-navigation .sub-menu-container .sub-menu-row .sub-menu .row .col-6.active a {
+      border-bottom: 2px solid #000000;
+      display: inline-block;
+    }
+  }
+  .nav-currency .doubly-wrapper ul.list{
+    top:-285px;
+  }
+  .anchor-active {
+    	border-bottom: 2px solid #000000;
+  }
+  @media screen and (max-width: 767px) {
+    #site-navigation .sub-menu-container .sub-menu-row .sub-menu .row a {
+      padding: 15px;
+    }
+    #site-navigation {
+	top: 120px !important;
+	
+}
+  }
+</style>
+
+
+<nav id="site-navigation">
+    <div class="top-section">
+        <div class="search-bar-mobile">
+            {% include 'search', search_icon: 'true', search_button: 'true' %}
+        </div><!-- search-bar -->
+    </div>
+    <ul class="top-level">
+        {% for mainlink in linklists['main-menu'].links %}
+        <li class="menu-item-{{ mainlink.title | handle }} {% if mainlink.links != blank %}has-child {% endif %} ">
+            <a href="{{ mainlink.url }}">{{ mainlink.title }} {% include 'icon-plus' %} {% include 'icon-minus' %}</a>
+            {% if mainlink.links != blank %}
+            <div class="sub-menu-container">
+            <div class="container no-gutters">
+                <div class="row no-gutters">
+                    <div class="col">
+                        <div class="row no-gutters">
+                            <div class="col-12 col-md-4 d-none">
+                              <img class="menu-img lazyload" loading="lazy" src="https://cdn.shopify.com/s/files/1/0426/3572/2908/files/200304_AZM_0555-small.jpg?v=1600085696" />
+                            </div>
+                            <div class="col-12 col-md-8">
+                                <div class="sub-menu-row">                                  
+                                    <div class="sub-menu">
+                                        <div class="row">
+                                          <div class="col-12 col-md-6">
+                                        		{% for link in mainlink.links %}
+                                              		<a class="{% if link.current %}anchor-active{% endif %}" href="{{ link.url }}">{{ link.title }}</a>
+                                                      {% if link.links != blank %}
+                                                        <ul class="thirld-sub-menu">
+                                                          {% for sublink in link.links %}
+                                                          <li><a href="{{ sublink.url }}">{{ sublink.title }}</a></li>
+                                                          {% endfor %}
+                                                        </ul>
+                                                        {% endif %}                                            		
+                                        		{% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>                                  
+                                </div><!-- sub-menu-row -->
+                            </div><!-- col -->
+                        </div><!-- row -->
+                    </div><!-- col -->
+                </div><!-- row -->
+
+                <div class="row">
+                    <div class="col">
+                        <a href="{{ block.settings.first_level_url }}" class="go-to">{% include 'icon-subdirectory-arrow-right' %} Go to {{ block.settings.first_level_title }}</a>
+                    </div>
+                </div><!-- row -->
+                </div><!-- container -->
+            </div><!-- sub-menu-container -->
+           
+            {% endif %}
+        </li>
+
+        {% endfor %}
+
+    </ul>
+    <ul class="account-navigation-links d-none">
+        {% if customer %}
+            {% assign accountLabel = "My Orders" %}
+            {% assign accountUrl = "/account" %}
+        {% else %}
+            {% assign accountLabel = "Login" %}
+            {% assign accountUrl = "/account/login" %}
+        {% endif %}
+        <li><a href="{{accountUrl}}">{{accountLabel}}</a></li>
+        <li><a href="/a/wishlist">Wishlist</a></li>
+        <li><a href="/pages/contact-us">Contact Us</a></li>  
+    </ul>
+
+    <div class="nav-footer">
+            <div class="nav-wishlist">
+                <a href="/a/wishlist">{% include 'wishlist' %}</a>
+            </div>
+            <div class="nav-account">
+                <a href="/account">{% include 'icon-account' %}</a>
+            </div>
+            <div class="nav-currency">
+                <div class="doubly-wrapper">
+				</div>
+            </div>
+        </div>
+</nav>

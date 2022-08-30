@@ -1,0 +1,132 @@
+<style>
+  #newsLetterPopup {
+  	display: flex;
+    z-index: 90000;
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    width: 0;
+    height: 100%;
+    -webkit-box-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    align-items: center;
+    overflow: auto;
+    background-color: rgba(20, 20, 20, 0.6);
+  }
+  #newsLetterPopup .klaviyo-form {
+  	 max-width: 500px;
+  }
+  #newsLetterPopup .close-icon {
+  	border: 2px solid #ffffff;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    color: #fff;
+    text-align: center;
+    line-height: 1.6em;
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: inline-block;
+    z-index: 2222;
+    visibility: hidden;
+  }
+</style>
+
+
+<div id="newsLetterPopup1">
+  <a href="#" class="close-icon">X</a>
+   <div class="klaviyo-form-Ygzshd"></div>
+</div>
+
+<script>
+    function setCookie(cname, cvalue, exdays) {
+      var d = new Date();
+      d.setTime(d.getTime() + (exdays*24*60*60*1000));
+      var expires = "expires="+ d.toUTCString();
+      document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+    }
+    function getCookie(cname) {
+      var name = cname + "=";
+      var decodedCookie = decodeURIComponent(document.cookie);
+      var ca = decodedCookie.split(';');
+      for(var i = 0; i <ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+          c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+          return c.substring(name.length, c.length);
+        }
+      }
+      return "";
+    }
+  	function setCloseIconPosition(formElement) {
+    if(formElement) {      
+      let closeIconTop = formElement.offset().top;
+      const formWidth = formElement.width();
+      const formLeft = formElement.offset().left;
+      let closeIconLeft = (formWidth + formLeft) - $('#newsLetterPopup .close-icon').width();
+      console.log(closeIconTop, closeIconLeft);
+      	if($(window).width() < 767) {
+            $('#newsLetterPopup .close-icon').css('top', '30%');
+        } else {
+          $('#newsLetterPopup .close-icon').css('top', closeIconTop+'px');
+        }
+      	
+          $('#newsLetterPopup .close-icon').css('left', closeIconLeft+'px');
+      
+        setTimeout(function() {
+          $('#newsLetterPopup .close-icon').css('visibility', 'visible');
+        }, 200);
+    }
+  }
+  	function showPopupWithDelay(delay) {    
+    setTimeout(function() {      
+      const formElement = $('#newsLetterPopup .klaviyo-form');
+        if(formElement) {
+    	$("#newsLetterPopup").css('width', '100%');
+          setCloseIconPosition(formElement);
+        }
+    }, delay);
+  }
+  
+  $(window).on('load', function() {
+    const isPopUpVisited = getCookie('KL_FORMS_MODAL');
+    let isPopupLoaded = false;
+    const newsletterInterval = setInterval(function() {
+      console.log($('#newsLetterPopup .needsclick').length);
+      if($('#newsLetterPopup .needsclick').length > 0) {
+        clearInterval(newsletterInterval);
+        console.log("Newsletter Loaded");
+        isPopupLoaded = true;
+        if(!isPopUpVisited) {
+        	showPopupWithDelay(0); 
+        }
+      }
+    }, 100);
+	$(".announcement-bar .announcement-slick .click-here").css('visibility', 'visible');
+    
+    $('body').on('click', '.announcement-bar .left-banner a', function(e) {
+    	e.preventDefault();
+//         showPopupWithDelay(700);
+    });
+    $('body').on('click', '#newsLetterPopup .close-icon', function(e) {
+    	e.preventDefault();
+        $("#newsLetterPopup").css('display', 'none');
+    });
+  });
+  
+  $(function($) {
+//     const isPopUpVisited = getCookie('KL_FORMS_MODAL');
+//     $('#newsLetterPopup .needsclick').on('load', function() {
+//      	console.log("Loaded");
+//       	showPopupWithDelay(0);  
+//       	if(!isPopUpVisited) {
+//         	showPopupWithDelay(0);
+//       	}
+//     }());
+ });
+  
+</script>
