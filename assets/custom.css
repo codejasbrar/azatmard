@@ -944,3 +944,6 @@ body.template-index #site-header.headroom--top .search-bar.active {
 .featured-products .slick-slider .slick-dots li + li {
 	margin-left: 5px !important;
 }
+select.locale-selectors__selector {
+    width: 100% !important;
+}
