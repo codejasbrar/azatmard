@@ -1009,3 +1009,7 @@ body.template-index #site-header.headroom--top .search-bar.active {
     letter-spacing: normal;
   }
 }
+
+select.locale-selectors__selector {
+    width: 100% !important;
+}
