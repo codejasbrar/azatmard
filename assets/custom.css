@@ -944,3 +944,68 @@ body.template-index #site-header.headroom--top .search-bar.active {
 .featured-products .slick-slider .slick-dots li + li {
 	margin-left: 5px !important;
 }
+
+@media only screen and (min-width: 768px) and (max-width: 1024px){
+  .block-list.block-list--loose::-webkit-scrollbar {
+    display: none;
+  }
+  .featured-products .slick-slider .slick-arrow {
+    top: 40%;
+  }
+  .featured-products-slick .slick-arrow::before {
+    display: none;
+  }
+  #site-header .header-row .col-6{
+    max-width: 70%;
+    flex: 0 0 70%;
+  }
+  #site-header .header-row .col-3{
+    max-width: 15%;
+    flex: 0 0 15%;
+  }
+}
+@media only screen and (max-width: 480px){
+  div#insta-feed a .instafeed-container img {
+    position: initial;
+    min-height: 240px;
+  }
+  div#insta-feed a .instafeed-container {
+    width: 100% !important;
+    padding: 0 !important;
+  }
+  div#insta-feed a{
+    width: 50%;
+    display: inline-block;
+  }
+  .featured-products div form {
+    display: flex!important;
+    position: absolute;
+    bottom: 20%;
+    left: 0;
+    z-index: 99;
+  }
+  .home-page-feture-images .featured-image img {
+    width: 100%;
+    min-height: 200px;
+    object-fit: contain;
+  }
+  #site-header.headroom--not-top {
+    padding-bottom: 20px;
+  }
+  div.hero .hero-slick {
+    margin-top: 15px;
+  }
+  .hero-slick .slick-list {
+    display: inline-block;
+    width: 100%;
+  }
+  #site-header .mobile div.col-2.right-header-actions{
+    float: left;
+    max-width: 16.666667%;
+  }
+  #site-navigation div.sub-menu-container .go-to {
+    padding: 16px !important;
+    font-size: 14px;
+    letter-spacing: normal;
+  }
+}
